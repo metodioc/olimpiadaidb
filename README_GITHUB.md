@@ -60,7 +60,7 @@ Sistema completo para gestão de olimpíadas escolares com controle de inscriç�
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/SEU_USUARIO/olimpiadaidb.git
+git clone https://github.com/metodioc/olimpiadaidb.git
 cd olimpiadaidb
 ```
 
