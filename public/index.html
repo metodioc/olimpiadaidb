@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      background: linear-gradient(135deg, var(--primary-blue-darker) 0%, var(--primary-blue) 50%, var(--primary-blue-light) 100%);
+    }
+
+    .login-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+      color: var(--white);
+    }
+
+    .login-logo {
+      width: 120px;
+      height: 120px;
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--primary-blue);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .login-title {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .login-subtitle {
+      font-size: 18px;
+      opacity: 0.9;
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .login-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+      background: var(--white);
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .login-box-header {
+      margin-bottom: 32px;
+    }
+
+    .login-box-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+
+    .login-box-description {
+      color: var(--gray-600);
+      font-size: 14px;
+    }
+
+    .login-form {
+      margin-bottom: 24px;
+    }
+
+    .login-footer {
+      text-align: center;
+      color: var(--gray-600);
+      font-size: 14px;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .alert-error {
+      background-color: #FFEBEE;
+      color: #C62828;
+      border: 1px solid #EF5350;
+    }
+
+    .alert-success {
+      background-color: #E8F5E9;
+      color: #2E7D32;
+      border: 1px solid #66BB6A;
+    }
+
+    @media (max-width: 768px) {
+      .login-container {
+        flex-direction: column;
+      }
+
+      .login-left {
+        padding: 32px;
+      }
+
+      .login-right {
+        padding: 32px 16px;
+      }
+
+      .login-title {
+        font-size: 28px;
+      }
+
+      .login-box-title {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-left">
+      <div class="login-logo">🏆</div>
+      <h1 class="login-title">Olimpíada IDB</h1>
+      <p class="login-subtitle">Sistema de Gestão de Olimpíadas Escolares - Controle completo de inscrições, resultados e rankings</p>
+    </div>
+
+    <div class="login-right">
+      <div class="login-box">
+        <div class="login-box-header">
+          <h2 class="login-box-title">Bem-vindo de volta!</h2>
+          <p class="login-box-description">Faça login para acessar o sistema</p>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <form class="login-form" id="loginForm">
+          <div class="form-group">
+            <label class="form-label required" for="email">E-mail</label>
+            <input 
+              type="email" 
+              class="form-input" 
+              id="email" 
+              name="email" 
+              placeholder="seu.email@exemplo.com"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required" for="senha">Senha</label>
+            <input 
+              type="password" 
+              class="form-input" 
+              id="senha" 
+              name="senha" 
+              placeholder="••••••••"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" name="lembrar" id="lembrar">
+              <span style="font-size: 14px; color: var(--gray-700);">Lembrar de mim</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;" id="loginBtn">
+            Entrar
+          </button>
+        </form>
+
+        <div class="login-footer">
+          <p>&copy; 2025 Olimpíada IDB - Todos os direitos reservados</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:5101/api';
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+      const loginBtn = document.getElementById('loginBtn');
+      const alertContainer = document.getElementById('alertContainer');
+      
+      // Limpar alertas anteriores
+      alertContainer.innerHTML = '';
+      
+      // Desabilitar botão
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Entrando...';
+      
+      try {
+        const response = await fetch(`${API_URL}/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, senha })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.token) {
+          // Salvar token
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('usuario', JSON.stringify(data.usuario));
+          
+          // Mostrar sucesso
+          alertContainer.innerHTML = `
+            <div class="alert alert-success">
+              ✓ Login realizado com sucesso! Redirecionando...
+            </div>
+          `;
+          
+          // Redirecionar para dashboard
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1000);
+        } else {
+          throw new Error(data.message || 'Erro ao fazer login');
+        }
+      } catch (error) {
+        alertContainer.innerHTML = `
+          <div class="alert alert-error">
+            ✕ ${error.message}
+          </div>
+        `;
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Entrar';
+      }
+    });
+
+    // Verificar se já está logado
+    if (localStorage.getItem('token')) {
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>

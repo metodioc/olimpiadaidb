@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuários - Olimpíada IDB</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Relatórios</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item active">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title">Usuários</h1>
+          <div class="breadcrumb">
+            <span>Administração</span>
+            <span class="breadcrumb-separator">/</span>
+            <span>Usuários</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="user-menu">
+            <div class="user-avatar" id="userAvatar">M</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Carregando...</div>
+              <div class="user-role" id="userRole">Administrador</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Header com botão -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <h2 style="font-size: 24px; font-weight: 600; color: var(--gray-900);">Gerenciamento de Usuários</h2>
+            <p style="color: var(--gray-600); margin-top: 4px;">Gerencie usuários e suas permissões no sistema</p>
+          </div>
+          <button class="btn btn-primary" onclick="window.location.href='usuario-form.html'">
+            <span class="material-icons">add</span>
+            Novo Usuário
+          </button>
+        </div>
+
+        <!-- Filtros integrados -->
+        <div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;">
+          <input 
+            type="search" 
+            class="form-input" 
+            placeholder="Buscar por nome, email ou CPF..." 
+            id="searchInput"
+            style="flex: 1; min-width: 300px;"
+            onkeyup="filterUsuarios()"
+          >
+          <select id="filterPerfil" class="form-select" style="width: 200px;" onchange="filterUsuarios()">
+            <option value="">Todos os perfis</option>
+            <option value="1">Administrador</option>
+            <option value="2">Coordenador</option>
+            <option value="3">Professor</option>
+            <option value="4">Visualizador</option>
+          </select>
+          <select id="filterStatus" class="form-select" style="width: 150px;" onchange="filterUsuarios()">
+            <option value="">Todos os status</option>
+            <option value="true">Ativo</option>
+            <option value="false">Inativo</option>
+          </select>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #E3F2FD;">
+              <span class="material-icons" style="color: #1976D2;">people</span>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value" id="statTotal">0</div>
+              <div class="stat-label">Total de Usuários</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #E8F5E9;">
+              <span class="material-icons" style="color: #388E3C;">check_circle</span>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value" id="statAtivos">0</div>
+              <div class="stat-label">Ativos</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #FFF3E0;">
+              <span class="material-icons" style="color: #F57C00;">admin_panel_settings</span>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value" id="statAdmins">0</div>
+              <div class="stat-label">Administradores</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #FCE4EC;">
+              <span class="material-icons" style="color: #C2185B;">block</span>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value" id="statInativos">0</div>
+              <div class="stat-label">Inativos</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Lista de Usuários</h3>
+          </div>
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>CPF</th>
+                  <th>Perfil</th>
+                  <th>Status</th>
+                  <th>Último Acesso</th>
+                  <th style="width: 150px;">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="usuariosTable">
+                <tr>
+                  <td colspan="7" class="text-center">Carregando...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    checkAuth();
+    
+    const user = getUser();
+    if (user) {
+      document.getElementById('userName').textContent = user.nome || user.email;
+      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
+      
+      const nivelMap = {
+        1: 'Administrador',
+        2: 'Coordenador',
+        3: 'Professor',
+        4: 'Visualizador'
+      };
+      document.getElementById('userRole').textContent = nivelMap[user.nivel_acesso] || 'Usuário';
+      
+      // Mostrar seção de administração apenas para administradores
+      if (user.nivel_acesso === 1) {
+        document.getElementById('adminSection').style.display = 'block';
+      } else {
+        // Redirecionar se não for administrador
+        showNotification('Acesso negado. Apenas administradores podem acessar esta página.', 'error');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 2000);
+      }
+    }
+
+    let usuarios = [];
+    let perfis = {
+      1: 'Administrador',
+      2: 'Coordenador',
+      3: 'Professor',
+      4: 'Visualizador'
+    };
+
+    async function loadUsuarios() {
+      try {
+        const response = await fetchAuth('/usuarios');
+        usuarios = response.data || [];
+        renderUsuarios();
+        updateStats();
+      } catch (error) {
+        console.error('Erro ao carregar usuários:', error);
+        showNotification('Erro ao carregar usuários', 'error');
+        usuarios = [];
+        renderUsuarios();
+      }
+    }
+
+    function filterUsuarios() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const perfil = document.getElementById('filterPerfil').value;
+      const status = document.getElementById('filterStatus').value;
+
+      return usuarios.filter(u => {
+        const matchSearch = !search || 
+          u.nome_completo.toLowerCase().includes(search) ||
+          u.email.toLowerCase().includes(search) ||
+          (u.cpf && u.cpf.includes(search));
+        
+        const matchPerfil = !perfil || u.id_perfil == perfil;
+        const matchStatus = !status || u.ativo.toString() === status;
+
+        return matchSearch && matchPerfil && matchStatus;
+      });
+    }
+
+    function renderUsuarios() {
+      const tbody = document.getElementById('usuariosTable');
+      const filtered = filterUsuarios();
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center">Nenhum usuário encontrado</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(u => `
+        <tr>
+          <td><strong>${u.nome_completo}</strong></td>
+          <td>${u.email}</td>
+          <td>${u.cpf ? formatCPF(u.cpf) : '-'}</td>
+          <td><span class="badge badge-${getPerfilBadge(u.id_perfil)}">${perfis[u.id_perfil] || 'Desconhecido'}</span></td>
+          <td>
+            <span class="badge badge-${u.ativo ? 'success' : 'danger'}" onclick="toggleStatus(${u.id_usuario})" style="cursor: pointer;" title="Clique para alterar">
+              ${u.ativo ? 'Ativo' : 'Inativo'}
+            </span>
+          </td>
+          <td>${u.ultimo_acesso ? new Date(u.ultimo_acesso).toLocaleString('pt-BR') : 'Nunca'}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" onclick="window.location.href='usuario-form.html?id=${u.id_usuario}'" title="Editar">
+              <span class="material-icons">edit</span>
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="deletarUsuario(${u.id_usuario}, '${u.nome_completo}')" title="Desativar" ${!u.ativo ? 'disabled' : ''}>
+              <span class="material-icons">block</span>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateStats() {
+      const filtered = filterUsuarios();
+      
+      document.getElementById('statTotal').textContent = filtered.length;
+      document.getElementById('statAtivos').textContent = filtered.filter(u => u.ativo).length;
+      document.getElementById('statInativos').textContent = filtered.filter(u => !u.ativo).length;
+      document.getElementById('statAdmins').textContent = filtered.filter(u => u.id_perfil === 1).length;
+    }
+
+    function getPerfilBadge(idPerfil) {
+      const badges = {
+        1: 'danger',
+        2: 'warning',
+        3: 'info',
+        4: 'secondary'
+      };
+      return badges[idPerfil] || 'secondary';
+    }
+
+    function formatCPF(cpf) {
+      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+
+    async function toggleStatus(id) {
+      try {
+        const response = await fetchAuth(`/usuarios/${id}/toggle-status`, {
+          method: 'PATCH'
+        });
+
+        showNotification(response.message || 'Status alterado com sucesso!', 'success');
+        await loadUsuarios();
+      } catch (error) {
+        console.error('Erro ao alterar status:', error);
+        showNotification(error.message || 'Erro ao alterar status do usuário', 'error');
+      }
+    }
+
+    async function deletarUsuario(id, nome) {
+      if (!confirm(`Tem certeza que deseja desativar o usuário "${nome}"?`)) {
+        return;
+      }
+
+      try {
+        await fetchAuth(`/usuarios/${id}`, {
+          method: 'DELETE'
+        });
+
+        showNotification('Usuário desativado com sucesso!', 'success');
+        await loadUsuarios();
+      } catch (error) {
+        console.error('Erro ao desativar usuário:', error);
+        showNotification(error.message || 'Erro ao desativar usuário', 'error');
+      }
+    }
+
+    loadUsuarios();
+  </script>
+</body>
+</html>

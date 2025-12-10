@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tipo de Correção - Olimpíada IDB</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Rankings</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-secondary btn-sm" onclick="window.location.href='tipos-correcao.html'">
+            <span class="material-icons">arrow_back</span>
+            Voltar
+          </button>
+          <h1 class="page-title" id="pageTitle">Novo Tipo de Correção</h1>
+        </div>
+        <div class="topbar-right">
+          <span class="topbar-user" id="userName">Carregando...</span>
+          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="content">
+      <!-- Breadcrumb -->
+      <div style="margin-bottom: 24px;">
+        <nav style="display: flex; align-items: center; gap: 8px; color: rgba(0,0,0,0.6); font-size: 14px; font-family: Roboto, sans-serif;">
+          <a href="tipos-correcao.html" style="color: #1976D2; text-decoration: none;">Tipos de Correção</a>
+          <span class="material-icons" style="font-size: 18px;">chevron_right</span>
+          <span id="breadcrumbTitle">Novo Tipo</span>
+        </nav>
+      </div>
+
+      <!-- Form Card -->
+      <div class="card" style="max-width: 800px; box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1);">
+        <div class="card-header">
+          <h2 style="margin: 0; font-size: 20px; font-weight: 500; font-family: Roboto, sans-serif; color: rgba(0,0,0,0.87);">
+            <span id="formTitle">Dados do Tipo de Correção</span>
+          </h2>
+        </div>
+        <div class="card-body">
+          <form id="formTipoCorrecao" onsubmit="salvarTipoCorrecao(event)" style="max-width: 600px;">
+            <input type="hidden" id="idTipoCorrecao">
+            
+            <!-- Campo Descrição -->
+            <div style="margin-bottom: 24px;">
+              <label for="descricao" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
+                Descrição *
+              </label>
+              <input 
+                type="text" 
+                id="descricao" 
+                class="mdc-text-field__input" 
+                required 
+                maxlength="50"
+                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s;"
+                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
+                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
+              >
+              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
+                Nome do tipo de correção (ex: Automática, Manual, Mista)
+              </div>
+            </div>
+
+            <!-- Campo Status -->
+            <div style="margin-bottom: 24px;">
+              <label for="ativo" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
+                Status *
+              </label>
+              <select 
+                id="ativo" 
+                class="mdc-text-field__input" 
+                required
+                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s; background: white;"
+                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
+                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
+              >
+                <option value="S">Ativo</option>
+                <option value="N">Inativo</option>
+              </select>
+              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
+                Se ativo, estará disponível para seleção nas olimpíadas
+              </div>
+            </div>
+
+            <!-- Campo Observação -->
+            <div style="margin-bottom: 32px;">
+              <label for="observacao" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
+                Observação
+              </label>
+              <textarea 
+                id="observacao" 
+                class="mdc-text-field__input" 
+                rows="4"
+                maxlength="500"
+                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s; resize: vertical;"
+                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
+                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
+              ></textarea>
+              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
+                Informações adicionais sobre este tipo de correção
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 12px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.12);">
+              <button 
+                type="button" 
+                class="mdc-button mdc-button--outlined" 
+                onclick="window.location.href='tipos-correcao.html'"
+                style="padding: 10px 24px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; background: transparent; color: #1976D2; font-family: Roboto, sans-serif; font-weight: 500; text-transform: uppercase; cursor: pointer; font-size: 14px; transition: all 0.2s;"
+                onmouseover="this.style.backgroundColor='rgba(25, 118, 210, 0.04)'"
+                onmouseout="this.style.backgroundColor='transparent'"
+              >
+                <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">arrow_back</span>
+                Cancelar
+              </button>
+              <button 
+                type="submit" 
+                class="mdc-button mdc-button--raised" 
+                style="padding: 10px 32px; border: none; border-radius: 4px; background: #1976D2; color: white; font-family: Roboto, sans-serif; font-weight: 500; text-transform: uppercase; cursor: pointer; font-size: 14px; box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12); transition: all 0.2s;"
+                onmouseover="this.style.backgroundColor='#1565C0'; this.style.boxShadow='0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)'"
+                onmouseout="this.style.backgroundColor='#1976D2'; this.style.boxShadow='0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)'"
+              >
+                <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">save</span>
+                Salvar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+  </main>
+  </div>
+
+  <!-- Material Design JS -->
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  
+  <script src="../js/app.js"></script>
+  <script>
+    // Verificar autenticação
+    checkAuth();
+    const user = getUser();
+    if (user) {
+      document.getElementById('userName').textContent = user.nome || user.email;
+      
+      // Mostrar seção de administração apenas para administradores
+      if (user.nivel_acesso === 1) {
+        document.getElementById('adminSection').style.display = 'block';
+      }
+    }
+
+    // Verificar se está editando
+    const urlParams = new URLSearchParams(window.location.search);
+    const idTipoCorrecao = urlParams.get('id');
+
+    if (idTipoCorrecao) {
+      // Modo edição
+      document.getElementById('pageTitle').textContent = 'Editar Tipo de Correção';
+      document.getElementById('breadcrumbTitle').textContent = 'Editar Tipo';
+      document.getElementById('formTitle').textContent = 'Editar Dados do Tipo de Correção';
+      carregarTipoCorrecao(idTipoCorrecao);
+    }
+
+    // Carregar dados do tipo de correção para edição
+    async function carregarTipoCorrecao(id) {
+      try {
+        const response = await fetchAuth(`/tipos-correcao/${id}`);
+        const tipoCorrecao = response.tipoCorrecao;
+        
+        document.getElementById('idTipoCorrecao').value = tipoCorrecao.idTipoCorrecao;
+        document.getElementById('descricao').value = tipoCorrecao.descricao;
+        document.getElementById('ativo').value = tipoCorrecao.ativo;
+        document.getElementById('observacao').value = tipoCorrecao.observacao || '';
+      } catch (error) {
+        showNotification('Erro ao carregar tipo de correção: ' + error.message, 'error');
+        setTimeout(() => window.location.href = 'tipos-correcao.html', 2000);
+      }
+    }
+
+    // Salvar tipo de correção (criar ou atualizar)
+    async function salvarTipoCorrecao(event) {
+      event.preventDefault();
+      
+      const idTipoCorrecao = document.getElementById('idTipoCorrecao').value;
+      const dados = {
+        descricao: document.getElementById('descricao').value.trim(),
+        ativo: document.getElementById('ativo').value,
+        observacao: document.getElementById('observacao').value.trim() || null
+      };
+
+      try {
+        if (idTipoCorrecao) {
+          // Atualizar
+          await fetchAuth(`/tipos-correcao/${idTipoCorrecao}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+          });
+          showNotification('Tipo de correção atualizado com sucesso!', 'success');
+        } else {
+          // Criar
+          await fetchAuth(`/tipos-correcao`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+          });
+          showNotification('Tipo de correção criado com sucesso!', 'success');
+        }
+        
+        setTimeout(() => window.location.href = 'tipos-correcao.html', 1500);
+      } catch (error) {
+        showNotification('Erro ao salvar tipo de correção: ' + error.message, 'error');
+      }
+    }
+  </script>
+  </div>
+</body>
+</html>

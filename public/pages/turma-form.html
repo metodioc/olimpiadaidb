@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turma - Olimpíada IDB</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Olimpíada IDB</h2>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Principal</div>
+        <a href="dashboard.html" class="nav-item">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Olimpíadas</div>
+        <a href="olimpiadas.html" class="nav-item">
+          <span class="nav-icon">🏅</span>
+          <span>Olimpíadas</span>
+        </a>
+        <a href="inscricoes.html" class="nav-item">
+          <span class="nav-icon">📝</span>
+          <span>Inscrições</span>
+        </a>
+        <a href="resultados.html" class="nav-item">
+          <span class="nav-icon">📈</span>
+          <span>Resultados</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Cadastros</div>
+        <a href="alunos.html" class="nav-item">
+          <span class="nav-icon">👥</span>
+          <span>Alunos</span>
+        </a>
+        <a href="turmas.html" class="nav-item active">
+          <span class="nav-icon">🎓</span>
+          <span>Turmas</span>
+        </a>
+        <a href="series.html" class="nav-item">
+          <span class="nav-icon">📚</span>
+          <span>Séries</span>
+        </a>
+        <a href="anos-letivos.html" class="nav-item">
+          <span class="nav-icon">📅</span>
+          <span>Anos Letivos</span>
+        </a>
+        <a href="filiais.html" class="nav-item">
+          <span class="nav-icon">🏫</span>
+          <span>Filiais</span>
+        </a>
+        <a href="tipos-correcao.html" class="nav-item">
+          <span class="nav-icon">✅</span>
+          <span>Tipos de Correção</span>
+        </a>
+        <a href="locais-aplicacao.html" class="nav-item">
+          <span class="nav-icon">📍</span>
+          <span>Locais de Aplicação</span>
+        </a>
+        <a href="tipos-pagamento.html" class="nav-item">
+          <span class="nav-icon">💰</span>
+          <span>Tipos de Pagamento</span>
+        </a>
+      </div>
+
+      <div class="nav-section" id="adminSection" style="display: none;">
+        <div class="nav-section-title">Administração</div>
+        <a href="usuarios.html" class="nav-item">
+          <span class="nav-icon">👤</span>
+          <span>Usuários</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Relatórios</div>
+        <a href="medalhistas.html" class="nav-item">
+          <span class="nav-icon">🥇</span>
+          <span>Medalhistas</span>
+        </a>
+        <a href="rankings.html" class="nav-item">
+          <span class="nav-icon">📊</span>
+          <span>Rankings</span>
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-wrapper">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 id="pageTitle">Nova Turma</h1>
+      </div>
+      <div class="topbar-right">
+        <span class="user-name" id="userName">Usuário</span>
+        <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="main-content">
+      <!-- Breadcrumb -->
+      <div style="margin-bottom: 24px;">
+        <nav style="display: flex; align-items: center; gap: 8px; color: rgba(0,0,0,0.6); font-size: 14px; font-family: Roboto, sans-serif;">
+          <a href="turmas.html" style="color: #1976D2; text-decoration: none;">Turmas</a>
+          <span class="material-icons" style="font-size: 18px;">chevron_right</span>
+          <span id="breadcrumbTitle">Nova Turma</span>
+        </nav>
+      </div>
+
+      <!-- Form Card -->
+      <div class="card" style="max-width: 800px; box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1);">
+        <div class="card-header">
+          <h2 style="margin: 0; font-size: 20px; font-weight: 500; font-family: Roboto, sans-serif; color: rgba(0,0,0,0.87);">
+            <span id="formTitle">Dados da Turma</span>
+          </h2>
+        </div>
+        <div class="card-body">
+          <form id="formTurma" onsubmit="salvarTurma(event)" style="max-width: 600px;">
+            <input type="hidden" id="idTurma">
+            
+            <!-- Campo Ano Letivo -->
+            <div style="margin-bottom: 24px;">
+              <label for="idAnoLetivo" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
+                Ano Letivo *
+              </label>
+              <select 
+                id="idAnoLetivo" 
+                class="mdc-text-field__input" 
+                required
+                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s; background: white;"
+                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
+                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
+              >
+                <option value="">Selecione o ano letivo</option>
+              </select>
+              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
+                Ano letivo ao qual a turma pertence
+              </div>
+            </div>
+
+            <!-- Campo Série -->
+            <div style="margin-bottom: 24px;">
+              <label for="idSerie" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
+                Série *
+              </label>
+              <select 
+                id="idSerie" 
+                class="mdc-text-field__input" 
+                required
+                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s; background: white;"
+                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
+                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
+              >
+                <option value="">Selecione uma série</option>
+              </select>
+              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
+                Série/ano escolar da turma
+              </div>
+            </div>
+
+            <!-- Campo Código -->
+            <div style="margin-bottom: 24px;">
+              <label for="codTurma" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
+                Código da Turma *
+              </label>
+              <input 
+                type="number" 
+                id="codTurma" 
+                class="mdc-text-field__input" 
+                required 
+                min="1"
+                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s;"
+                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
+                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
+              >
+              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
+                Código numérico único para identificar a turma
+              </div>
+            </div>
+
+            <!-- Campo Nome -->
+            <div style="margin-bottom: 24px;">
+              <label for="nomeTurma" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
+                Nome da Turma *
+              </label>
+              <input 
+                type="text" 
+                id="nomeTurma" 
+                class="mdc-text-field__input" 
+                required 
+                maxlength="50"
+                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s;"
+                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
+                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
+              >
+              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
+                Nome/identificação da turma (ex: Turma A, 1º A)
+              </div>
+            </div>
+
+            <!-- Campo Turno -->
+            <div style="margin-bottom: 32px;">
+              <label for="turno" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
+                Turno
+              </label>
+              <select 
+                id="turno" 
+                class="mdc-text-field__input"
+                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s; background: white;"
+                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
+                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
+              >
+                <option value="">Selecione o turno (opcional)</option>
+                <option value="Matutino">Matutino</option>
+                <option value="Vespertino">Vespertino</option>
+                <option value="Noturno">Noturno</option>
+                <option value="Integral">Integral</option>
+              </select>
+              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
+                Período em que a turma tem aulas
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 12px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.12);">
+              <button 
+                type="button" 
+                class="mdc-button mdc-button--outlined" 
+                onclick="window.location.href='turmas.html'"
+                style="padding: 10px 24px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; background: transparent; color: #1976D2; font-family: Roboto, sans-serif; font-weight: 500; text-transform: uppercase; cursor: pointer; font-size: 14px; transition: all 0.2s;"
+                onmouseover="this.style.backgroundColor='rgba(25, 118, 210, 0.04)'"
+                onmouseout="this.style.backgroundColor='transparent'"
+              >
+                <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">arrow_back</span>
+                Cancelar
+              </button>
+              <button 
+                type="submit" 
+                class="mdc-button mdc-button--raised" 
+                style="padding: 10px 32px; border: none; border-radius: 4px; background: #1976D2; color: white; font-family: Roboto, sans-serif; font-weight: 500; text-transform: uppercase; cursor: pointer; font-size: 14px; box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12); transition: all 0.2s;"
+                onmouseover="this.style.backgroundColor='#1565C0'; this.style.boxShadow='0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)'"
+                onmouseout="this.style.backgroundColor='#1976D2'; this.style.boxShadow='0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)'"
+              >
+                <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">save</span>
+                Salvar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Material Design JS -->
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  
+  <script src="../js/app.js"></script>
+  <script>
+    // Verificar autenticação
+    checkAuth();
+    const user = getUser();
+    if (user) {
+      document.getElementById('userName').textContent = user.nome;
+    }
+
+    // Carregar anos letivos
+    async function carregarAnosLetivos() {
+      try {
+        const response = await fetchAuth('/anos-letivos');
+        const anosLetivos = response.data || [];
+        
+        const select = document.getElementById('idAnoLetivo');
+        anosLetivos.forEach(ano => {
+          const option = document.createElement('option');
+          option.value = ano.idAnoLetivo;
+          option.textContent = `${ano.anoLetivo} - ${ano.status}`;
+          select.appendChild(option);
+        });
+      } catch (error) {
+        showNotification('Erro ao carregar anos letivos: ' + error.message, 'error');
+      }
+    }
+
+    // Carregar séries
+    async function carregarSeries() {
+      try {
+        const response = await fetchAuth('/series');
+        const series = response.data || [];
+        
+        const select = document.getElementById('idSerie');
+        series.forEach(serie => {
+          const option = document.createElement('option');
+          option.value = serie.idSerie;
+          option.textContent = `${serie.serie} - ${serie.filial}`;
+          select.appendChild(option);
+        });
+      } catch (error) {
+        showNotification('Erro ao carregar séries: ' + error.message, 'error');
+      }
+    }
+
+    // Verificar se está editando
+    const urlParams = new URLSearchParams(window.location.search);
+    const idTurma = urlParams.get('id');
+
+    if (idTurma) {
+      // Modo edição
+      document.getElementById('pageTitle').textContent = 'Editar Turma';
+      document.getElementById('breadcrumbTitle').textContent = 'Editar Turma';
+      document.getElementById('formTitle').textContent = 'Editar Dados da Turma';
+      Promise.all([carregarAnosLetivos(), carregarSeries()]).then(() => carregarTurma(idTurma));
+    } else {
+      Promise.all([carregarAnosLetivos(), carregarSeries()]);
+    }
+
+    // Carregar dados da turma para edição
+    async function carregarTurma(id) {
+      try {
+        const response = await fetchAuth(`/turmas/${id}`);
+        const turma = response.turma;
+        
+        document.getElementById('idTurma').value = turma.idTurma;
+        document.getElementById('idAnoLetivo').value = turma.idAnoLetivo;
+        document.getElementById('idSerie').value = turma.idSerie;
+        document.getElementById('codTurma').value = turma.codTurma;
+        document.getElementById('nomeTurma').value = turma.turma;
+        document.getElementById('turno').value = turma.turno || '';
+      } catch (error) {
+        showNotification('Erro ao carregar turma: ' + error.message, 'error');
+        setTimeout(() => window.location.href = 'turmas.html', 2000);
+      }
+    }
+
+    // Salvar turma (criar ou atualizar)
+    async function salvarTurma(event) {
+      event.preventDefault();
+      
+      const idTurma = document.getElementById('idTurma').value;
+      const turno = document.getElementById('turno').value;
+      const dados = {
+        idAnoLetivo: parseInt(document.getElementById('idAnoLetivo').value),
+        idSerie: parseInt(document.getElementById('idSerie').value),
+        codTurma: parseInt(document.getElementById('codTurma').value),
+        turma: document.getElementById('nomeTurma').value.trim(),
+        turno: turno || null
+      };
+
+      try {
+        if (idTurma) {
+          // Atualizar
+          await fetchAuth(`/turmas/${idTurma}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+          });
+          showNotification('Turma atualizada com sucesso!', 'success');
+        } else {
+          // Criar
+          await fetchAuth(`/turmas`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+          });
+          showNotification('Turma criada com sucesso!', 'success');
+        }
+        
+        setTimeout(() => window.location.href = 'turmas.html', 1500);
+      } catch (error) {
+        showNotification('Erro ao salvar turma: ' + error.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>

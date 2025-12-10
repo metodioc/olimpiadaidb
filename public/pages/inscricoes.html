@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscrições - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item active">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Relatórios</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title">Inscrições</h1>
+        </div>
+        <div class="topbar-right">
+          <span class="topbar-user" id="userName">Carregando...</span>
+          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Filters -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h3 class="card-title">Filtros</h3>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+              <div>
+                <label class="form-label">Olimpíada</label>
+                <select class="form-control" id="filterOlimpiada">
+                  <option value="">Todas as olimpíadas</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Status</label>
+                <select class="form-control" id="filterStatus">
+                  <option value="">Todos</option>
+                  <option value="Confirmada">Confirmada</option>
+                  <option value="Pendente">Pendente</option>
+                  <option value="Cancelada">Cancelada</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Turma</label>
+                <select class="form-control" id="filterTurma">
+                  <option value="">Todas as turmas</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Buscar Aluno</label>
+                <input type="text" class="form-control" id="searchAluno" placeholder="Nome ou RA do aluno">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid mb-4">
+          <div class="stat-card">
+            <div class="stat-icon blue">📝</div>
+            <div class="stat-info">
+              <div class="stat-label">Total de Inscrições</div>
+              <div class="stat-value" id="statTotal">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">✅</div>
+            <div class="stat-info">
+              <div class="stat-label">Confirmadas</div>
+              <div class="stat-value" id="statConfirmadas">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">⏳</div>
+            <div class="stat-info">
+              <div class="stat-label">Pendentes</div>
+              <div class="stat-value" id="statPendentes">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon red">❌</div>
+            <div class="stat-info">
+              <div class="stat-label">Canceladas</div>
+              <div class="stat-value" id="statCanceladas">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Lista de Inscrições</h3>
+            <div class="card-actions">
+              <button class="btn btn-primary" onclick="novaInscricao()">
+                <span>+ Nova Inscrição</span>
+              </button>
+            </div>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Aluno</th>
+                    <th>RA</th>
+                    <th>Turma</th>
+                    <th>Olimpíada</th>
+                    <th>Data Inscrição</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="inscricoesTable">
+                  <tr>
+                    <td colspan="8" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    // Verificar autenticação
+    checkAuth();
+    
+    // Carregar nome do usuário
+    const user = getUser();
+    if (user) {
+      document.getElementById('userName').textContent = user.nome || user.email;
+    }
+
+    let inscricoes = [];
+    let olimpiadas = [];
+    let turmas = [];
+
+    // Carregar dados
+    async function loadData() {
+      await Promise.all([
+        loadInscricoes(),
+        loadOlimpiadas(),
+        loadTurmas()
+      ]);
+      renderInscricoes();
+      updateStats();
+    }
+
+    async function loadInscricoes() {
+      try {
+        const data = await fetchAuth('/inscricoes');
+        inscricoes = data.data || [];
+      } catch (error) {
+        console.error('Erro ao carregar inscrições:', error);
+        showNotification('Erro ao carregar inscrições', 'error');
+        inscricoes = [];
+      }
+    }
+
+    async function loadOlimpiadas() {
+      try {
+        const data = await fetchAuth('/olimpiadas');
+        olimpiadas = data.data || [];
+        
+        // Preencher select de olimpíadas
+        const select = document.getElementById('filterOlimpiada');
+        olimpiadas.forEach(o => {
+          const option = document.createElement('option');
+          option.value = o.idOlimpiada;
+          option.textContent = `${o.nomeOlimpiada} (${o.anoOlimpiada})`;
+          select.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Erro ao carregar olimpíadas:', error);
+      }
+    }
+
+    async function loadTurmas() {
+      try {
+        const data = await fetchAuth('/turmas');
+        turmas = data.data || [];
+        
+        // Preencher select de turmas
+        const select = document.getElementById('filterTurma');
+        turmas.forEach(t => {
+          const option = document.createElement('option');
+          option.value = t.idTurma;
+          option.textContent = `${t.nomeTurma} - ${t.serie || ''} - ${t.filial || ''}`;
+          select.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Erro ao carregar turmas:', error);
+      }
+    }
+
+    function getFilteredInscricoes() {
+      const olimpiadaFilter = document.getElementById('filterOlimpiada').value;
+      const statusFilter = document.getElementById('filterStatus').value;
+      const turmaFilter = document.getElementById('filterTurma').value;
+      const searchAluno = document.getElementById('searchAluno').value.toLowerCase();
+
+      return inscricoes.filter(i => {
+        if (olimpiadaFilter && i.idOlimpiada != olimpiadaFilter) return false;
+        if (statusFilter && i.statusInscricao !== statusFilter) return false;
+        if (turmaFilter && i.idTurma != turmaFilter) return false;
+        if (searchAluno) {
+          const nomeMatch = (i.nome_aluno || '').toLowerCase().includes(searchAluno);
+          const raMatch = (i.ra || '').toLowerCase().includes(searchAluno);
+          if (!nomeMatch && !raMatch) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderInscricoes() {
+      const tbody = document.getElementById('inscricoesTable');
+      const filtered = getFilteredInscricoes();
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center">Nenhuma inscrição encontrada</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(i => {
+        const statusClass = {
+          'Confirmada': 'success',
+          'Pendente': 'warning',
+          'Cancelada': 'danger'
+        }[i.statusInscricao] || 'secondary';
+
+        return `
+          <tr>
+            <td>${i.idInscricao}</td>
+            <td>${i.nome_aluno || '-'}</td>
+            <td>${i.ra || '-'}</td>
+            <td>${i.nome_turma || '-'}</td>
+            <td>${i.nome_olimpiada || '-'}</td>
+            <td>${formatDate(i.dataInscricao)}</td>
+            <td><span class="badge badge-${statusClass}">${i.statusInscricao}</span></td>
+            <td>
+              <button class="btn btn-sm btn-secondary" onclick="verInscricao(${i.idInscricao})" title="Ver detalhes">👁️</button>
+              ${i.statusInscricao === 'Pendente' ? `
+                <button class="btn btn-sm btn-success" onclick="confirmarInscricao(${i.idInscricao})" title="Confirmar">✅</button>
+                <button class="btn btn-sm btn-danger" onclick="cancelarInscricao(${i.idInscricao})" title="Cancelar">❌</button>
+              ` : ''}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function updateStats() {
+      const filtered = getFilteredInscricoes();
+      
+      document.getElementById('statTotal').textContent = filtered.length;
+      document.getElementById('statConfirmadas').textContent = filtered.filter(i => i.statusInscricao === 'Confirmada').length;
+      document.getElementById('statPendentes').textContent = filtered.filter(i => i.statusInscricao === 'Pendente').length;
+      document.getElementById('statCanceladas').textContent = filtered.filter(i => i.statusInscricao === 'Cancelada').length;
+    }
+
+    // Event listeners
+    document.getElementById('filterOlimpiada').addEventListener('change', () => {
+      renderInscricoes();
+      updateStats();
+    });
+
+    document.getElementById('filterStatus').addEventListener('change', () => {
+      renderInscricoes();
+      updateStats();
+    });
+
+    document.getElementById('filterTurma').addEventListener('change', () => {
+      renderInscricoes();
+      updateStats();
+    });
+
+    document.getElementById('searchAluno').addEventListener('input', debounce(() => {
+      renderInscricoes();
+      updateStats();
+    }, 300));
+
+    // Ações
+    function novaInscricao() {
+      showNotification('Funcionalidade em desenvolvimento', 'info');
+    }
+
+    function verInscricao(id) {
+      const inscricao = inscricoes.find(i => i.idInscricao === id);
+      if (inscricao) {
+        alert(`Detalhes da Inscrição #${id}\n\nAluno: ${inscricao.nome_aluno}\nRA: ${inscricao.ra}\nOlimpíada: ${inscricao.nome_olimpiada}\nTurma: ${inscricao.nome_turma}\nStatus: ${inscricao.statusInscricao}\nData: ${formatDate(inscricao.dataInscricao)}`);
+      }
+    }
+
+    async function confirmarInscricao(id) {
+      if (!confirm('Confirmar esta inscrição?')) return;
+
+      try {
+        await fetchAuth(`/inscricoes/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ statusInscricao: 'Confirmada' })
+        });
+
+        showNotification('Inscrição confirmada com sucesso!', 'success');
+        await loadInscricoes();
+        renderInscricoes();
+        updateStats();
+      } catch (error) {
+        console.error('Erro ao confirmar inscrição:', error);
+        showNotification(error.message || 'Erro ao confirmar inscrição', 'error');
+      }
+    }
+
+    async function cancelarInscricao(id) {
+      if (!confirm('Cancelar esta inscrição?')) return;
+
+      try {
+        await fetchAuth(`/inscricoes/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ statusInscricao: 'Cancelada' })
+        });
+
+        showNotification('Inscrição cancelada com sucesso!', 'success');
+        await loadInscricoes();
+        renderInscricoes();
+        updateStats();
+      } catch (error) {
+        console.error('Erro ao cancelar inscrição:', error);
+        showNotification(error.message || 'Erro ao cancelar inscrição', 'error');
+      }
+    }
+
+    // Inicializar
+    loadData();
+  </script>
+</body>
+</html>

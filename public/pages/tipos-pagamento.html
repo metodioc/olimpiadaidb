@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tipos de Pagamento - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>🏆 Olimpíadas</h2>
+      </div>
+      
+      <nav class="nav-menu">
+        <div class="nav-section">
+          <div class="nav-section-title">Menu Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏆</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item active">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Relatórios</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="user-info">
+        <div class="user-avatar">👤</div>
+        <div class="user-details">
+          <div class="user-name" id="userName">Carregando...</div>
+          <div class="user-role" id="userRole">...</div>
+        </div>
+        <button class="btn-logout" onclick="logout()" title="Sair">🚪</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="page-header">
+        <div>
+          <h1>Tipos de Pagamento</h1>
+          <p class="page-subtitle">Gerencie os tipos de pagamento das olimpíadas</p>
+        </div>
+        <button class="btn btn-primary" onclick="novoTipoPagamento()">
+          ➕ Novo Tipo de Pagamento
+        </button>
+      </header>
+
+      <!-- Filtros -->
+      <div class="filters-card">
+        <div class="filter-group">
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Buscar tipo de pagamento..."
+            class="input-field"
+            onkeyup="carregarTiposPagamento()"
+          >
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="totalTipos">0</div>
+          <div class="stat-label">Total de Tipos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="tiposAtivos">0</div>
+          <div class="stat-label">Ativos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="tiposInativos">0</div>
+          <div class="stat-label">Inativos</div>
+        </div>
+      </div>
+
+      <!-- Tabela -->
+      <div class="card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Descrição</th>
+              <th>Status</th>
+              <th>Criado em</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tiposTableBody">
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 40px;">
+                Carregando tipos de pagamento...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    // Verificar autenticação
+    checkAuth();
+
+    // Atualizar informações do usuário na sidebar
+    function updateUserInfo() {
+      const user = getUser();
+      if (user) {
+        document.getElementById('userName').textContent = user.nome || 'Usuário';
+        document.getElementById('userRole').textContent = user.perfil || 'Perfil';
+        
+        // Mostrar seção de admin se for nível 1
+        if (user.nivel_acesso === 1) {
+          document.getElementById('adminSection').style.display = 'block';
+        }
+      }
+    }
+
+    updateUserInfo();
+
+    // Carregar tipos de pagamento
+    async function carregarTiposPagamento() {
+      try {
+        const search = document.getElementById('searchInput').value;
+        const queryParams = search ? `?search=${encodeURIComponent(search)}` : '';
+        
+        const response = await fetchAuth(`/tipos-pagamento${queryParams}`);
+        const tipos = response.data || [];
+
+        // Atualizar stats
+        const ativos = tipos.filter(t => t.status === 'ativo').length;
+        const inativos = tipos.filter(t => t.status === 'inativo').length;
+        
+        document.getElementById('totalTipos').textContent = tipos.length;
+        document.getElementById('tiposAtivos').textContent = ativos;
+        document.getElementById('tiposInativos').textContent = inativos;
+
+        // Renderizar tabela
+        const tbody = document.getElementById('tiposTableBody');
+        
+        if (tipos.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 40px;">
+                Nenhum tipo de pagamento encontrado
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = tipos.map(tipo => {
+          const statusBadge = tipo.status === 'ativo' 
+            ? '<span class="badge badge-success">Ativo</span>'
+            : '<span class="badge badge-danger">Inativo</span>';
+
+          const dataFormatada = new Date(tipo.createdAt).toLocaleDateString('pt-BR');
+
+          return `
+            <tr>
+              <td>${tipo.idTipoPagamento}</td>
+              <td><strong>${tipo.descricao}</strong></td>
+              <td>${statusBadge}</td>
+              <td>${dataFormatada}</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-action btn-edit" onclick="editarTipoPagamento(${tipo.idTipoPagamento}, '${tipo.descricao}')" title="Editar">
+                    ✏️
+                  </button>
+                  <button class="btn-action btn-toggle" onclick="toggleStatus(${tipo.idTipoPagamento})" title="Alterar Status">
+                    ${tipo.status === 'ativo' ? '🔴' : '🟢'}
+                  </button>
+                  <button class="btn-action btn-delete" onclick="deletarTipoPagamento(${tipo.idTipoPagamento}, '${tipo.descricao}')" title="Excluir">
+                    🗑️
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+      } catch (error) {
+        console.error('Erro ao carregar tipos de pagamento:', error);
+        showNotification('Erro ao carregar tipos de pagamento', 'error');
+      }
+    }
+
+    // Novo tipo de pagamento
+    async function novoTipoPagamento() {
+      const descricao = prompt('Digite a descrição do tipo de pagamento:');
+      
+      if (!descricao || descricao.trim() === '') {
+        return;
+      }
+
+      try {
+        await fetchAuth('/tipos-pagamento', {
+          method: 'POST',
+          body: JSON.stringify({ descricao: descricao.trim() })
+        });
+
+        showNotification('Tipo de pagamento criado com sucesso!', 'success');
+        carregarTiposPagamento();
+      } catch (error) {
+        console.error('Erro ao criar tipo de pagamento:', error);
+        showNotification(error.message || 'Erro ao criar tipo de pagamento', 'error');
+      }
+    }
+
+    // Editar tipo de pagamento
+    async function editarTipoPagamento(id, descricaoAtual) {
+      const novaDescricao = prompt('Digite a nova descrição:', descricaoAtual);
+      
+      if (!novaDescricao || novaDescricao.trim() === '' || novaDescricao === descricaoAtual) {
+        return;
+      }
+
+      try {
+        await fetchAuth(`/tipos-pagamento/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ descricao: novaDescricao.trim() })
+        });
+
+        showNotification('Tipo de pagamento atualizado com sucesso!', 'success');
+        carregarTiposPagamento();
+      } catch (error) {
+        console.error('Erro ao atualizar tipo de pagamento:', error);
+        showNotification(error.message || 'Erro ao atualizar tipo de pagamento', 'error');
+      }
+    }
+
+    // Alternar status
+    async function toggleStatus(id) {
+      try {
+        await fetchAuth(`/tipos-pagamento/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ toggleStatus: true })
+        });
+
+        showNotification('Status alterado com sucesso!', 'success');
+        carregarTiposPagamento();
+      } catch (error) {
+        console.error('Erro ao alterar status:', error);
+        showNotification(error.message || 'Erro ao alterar status', 'error');
+      }
+    }
+
+    // Deletar tipo de pagamento
+    async function deletarTipoPagamento(id, descricao) {
+      if (!confirm(`Tem certeza que deseja excluir o tipo de pagamento "${descricao}"?`)) {
+        return;
+      }
+
+      try {
+        await fetchAuth(`/tipos-pagamento/${id}`, {
+          method: 'DELETE'
+        });
+
+        showNotification('Tipo de pagamento excluído com sucesso!', 'success');
+        carregarTiposPagamento();
+      } catch (error) {
+        console.error('Erro ao excluir tipo de pagamento:', error);
+        showNotification(error.message || 'Erro ao excluir tipo de pagamento', 'error');
+      }
+    }
+
+    // Carregar ao iniciar
+    carregarTiposPagamento();
+  </script>
+</body>
+</html>

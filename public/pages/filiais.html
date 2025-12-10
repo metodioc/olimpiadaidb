@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filiais - Olimpíada IDB</title>
+  
+  <!-- Material Design CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item active">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Rankings</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title">Filiais</h1>
+          <div class="breadcrumb">
+            <span>Cadastros</span>
+            <span class="breadcrumb-separator">/</span>
+            <span>Filiais</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="user-menu">
+            <div class="user-avatar" id="userAvatar">M</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Carregando...</div>
+              <div class="user-role" id="userRole">Administrador</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Header com botão Nova Filial -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <h2 style="font-size: 24px; font-weight: 600; color: var(--gray-900);">Filiais Cadastradas</h2>
+          <button class="btn btn-primary" onclick="window.location.href='filial-form.html'">
+            <span>+ Nova Filial</span>
+          </button>
+        </div>
+
+        <!-- Grid de Filiais -->
+        <div id="filiaisGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 32px;">
+          <!-- Cards serão inseridos aqui -->
+        </div>
+
+        <!-- Séries por Filial -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Séries por Filial</h2>
+          </div>
+          <div class="card-body">
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Filial</th>
+                    <th>Código</th>
+                    <th>Série</th>
+                    <th>Abreviação</th>
+                  </tr>
+                </thead>
+                <tbody id="seriesTable">
+                  <tr>
+                    <td colspan="4" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    const token = checkAuth();
+    const user = getUser();
+
+    if (user) {
+      document.getElementById('userName').textContent = user.nome || user.email;
+      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
+      const nivelMap = { 1: 'Administrador', 2: 'Professor', 3: 'Aluno', 4: 'Responsável' };
+      document.getElementById('userRole').textContent = nivelMap[user.nivelAcesso] || 'Usuário';
+    }
+
+    // Mostrar seção de administração apenas para administradores
+    if (user.nivel_acesso === 1) {
+      document.getElementById('adminSection').style.display = 'block';
+    }
+
+    let filiais = [];
+    let series = [];
+
+    async function loadFiliais() {
+      try {
+        const data = await fetchAuth('/filiais');
+        filiais = data.filiais || [];
+        renderFiliais();
+      } catch (error) {
+        console.error('Erro ao carregar filiais:', error);
+        showNotification('Erro ao carregar filiais', 'error');
+      }
+    }
+
+    async function loadSeries() {
+      try {
+        const data = await fetchAuth('/series');
+        series = data.data || [];
+        renderSeries();
+      } catch (error) {
+        console.error('Erro ao carregar séries:', error);
+      }
+    }
+
+    function renderFiliais() {
+      const grid = document.getElementById('filiaisGrid');
+      
+      if (filiais.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--gray-600);">Nenhuma filial cadastrada</div>';
+        return;
+      }
+
+      const colors = [
+        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+        'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+      ];
+
+      grid.innerHTML = filiais.map((f, index) => {
+        const seriesCount = series.filter(s => s.idFilial === f.idFilial).length;
+        
+        return `
+          <div class="card" style="margin: 0;">
+            <div class="card-header" style="background: ${colors[index % colors.length]}; color: white; padding: 32px 24px;">
+              <div style="font-size: 48px; margin-bottom: 12px;">🏫</div>
+              <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">${f.filial}</h3>
+              <div style="font-size: 14px; opacity: 0.9; font-weight: 600; letter-spacing: 1px;">${f.abFilial}</div>
+            </div>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--gray-50); border-radius: var(--radius-md);">
+                  <span style="color: var(--gray-600); font-size: 14px;">Código:</span>
+                  <strong style="font-size: 16px; color: var(--primary-blue);">${f.codFilial}</strong>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--gray-50); border-radius: var(--radius-md);">
+                  <span style="color: var(--gray-600); font-size: 14px;">📚 Séries:</span>
+                  <strong style="font-size: 16px;">${seriesCount}</strong>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--gray-50); border-radius: var(--radius-md);">
+                  <span style="color: var(--gray-600); font-size: 14px;">👥 Alunos:</span>
+                  <strong style="font-size: 16px;">-</strong>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer" style="display: flex; gap: 8px;">
+              <button class="btn btn-sm btn-primary" onclick="window.location.href='filial-form.html?id=${f.idFilial}'" style="flex: 1;">
+                ✏️ Editar
+              </button>
+              <button class="btn btn-sm btn-danger" onclick='deletarFilial(${f.idFilial}, "${f.filial}")' style="flex: 1;">
+                🗑️ Deletar
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderSeries() {
+      const tbody = document.getElementById('seriesTable');
+      
+      if (series.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center">Nenhuma série cadastrada</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = series.map(s => `
+        <tr>
+          <td><strong>${s.filial || '-'}</strong></td>
+          <td>${s.codSerie || '-'}</td>
+          <td>${s.serie || '-'}</td>
+          <td><span class="badge badge-primary">${s.abSerie || '-'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function verDetalhes(idFilial) {
+      const filial = filiais.find(f => f.idFilial === idFilial);
+      if (!filial) return;
+      
+      const seriesDaFilial = series.filter(s => s.idFilial === idFilial);
+      
+      alert(`Filial: ${filial.filial}\nCódigo: ${filial.codFilial}\nAbreviação: ${filial.abFilial}\nSéries: ${seriesDaFilial.length}\n\nFuncionalidade de detalhes em desenvolvimento`);
+    }
+
+    async function deletarFilial(idFilial, nomeFilial) {
+      if (!confirm(`Tem certeza que deseja deletar a filial "${nomeFilial}"?\n\nEsta ação não pode ser desfeita!`)) {
+        return;
+      }
+
+      try {
+        await fetchAuth(`/filiais/${idFilial}`, {
+          method: 'DELETE'
+        });
+
+        showNotification('Filial deletada com sucesso!', 'success');
+        await loadFiliais();
+        await loadSeries();
+      } catch (error) {
+        console.error('Erro ao deletar filial:', error);
+        showNotification(error.message || 'Erro ao deletar filial', 'error');
+      }
+    }
+
+    // Carregar dados
+    loadFiliais();
+    loadSeries();
+  </script>
+</body>
+</html>

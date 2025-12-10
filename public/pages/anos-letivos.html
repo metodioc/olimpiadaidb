@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anos Letivos - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item active">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Relatórios</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title">Anos Letivos</h1>
+        </div>
+        <div class="topbar-right">
+          <span class="topbar-user" id="userName">Carregando...</span>
+          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <h2 style="font-size: 24px; font-weight: 600; color: var(--gray-900);">Gerenciar Anos Letivos</h2>
+            <p style="color: var(--gray-600); margin-top: 4px;">Cadastre e gerencie os anos letivos</p>
+          </div>
+          <button class="btn btn-primary" onclick="novoAnoLetivo()">
+            <span>+ Novo Ano Letivo</span>
+          </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid mb-4" style="grid-template-columns: repeat(3, 1fr);">
+          <div class="stat-card">
+            <div class="stat-icon blue">📅</div>
+            <div class="stat-info">
+              <div class="stat-label">Total de Anos</div>
+              <div class="stat-value" id="statTotal">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">✅</div>
+            <div class="stat-info">
+              <div class="stat-label">Ativos</div>
+              <div class="stat-value" id="statAtivos">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">⏸️</div>
+            <div class="stat-info">
+              <div class="stat-label">Inativos</div>
+              <div class="stat-value" id="statInativos">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Lista de Anos Letivos</h3>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Ano Letivo</th>
+                    <th>Status</th>
+                    <th>Data Criação</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="anosTable">
+                  <tr>
+                    <td colspan="4" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    checkAuth();
+    
+    const user = getUser();
+    if (user) {
+      document.getElementById('userName').textContent = user.nome || user.email;
+    }
+
+    let anos = [];
+
+    async function loadAnos() {
+      try {
+        const data = await fetchAuth('/anos-letivos');
+        anos = data.data || [];
+        renderAnos();
+        updateStats();
+      } catch (error) {
+        console.error('Erro ao carregar anos letivos:', error);
+        showNotification('Erro ao carregar anos letivos', 'error');
+        anos = [];
+      }
+    }
+
+    function renderAnos() {
+      const tbody = document.getElementById('anosTable');
+
+      if (anos.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center">Nenhum ano letivo encontrado</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = anos.map(a => `
+        <tr>
+          <td><strong>${a.anoLetivo}</strong></td>
+          <td><span class="badge badge-${a.status === 'ativo' ? 'success' : 'secondary'}">${a.status === 'ativo' ? 'Ativo' : 'Inativo'}</span></td>
+          <td>${formatDate(a.createdAt)}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" onclick="editarAnoLetivo(${a.idAnoLetivo})" title="Editar">✏️</button>
+            <button class="btn btn-sm btn-${a.status === 'ativo' ? 'warning' : 'success'}" onclick="toggleStatus(${a.idAnoLetivo}, '${a.status}')" title="${a.status === 'ativo' ? 'Desativar' : 'Ativar'}">
+              ${a.status === 'ativo' ? '⏸️' : '▶️'}
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="deletarAnoLetivo(${a.idAnoLetivo}, ${a.anoLetivo})" title="Deletar">🗑️</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateStats() {
+      document.getElementById('statTotal').textContent = anos.length;
+      document.getElementById('statAtivos').textContent = anos.filter(a => a.status === 'ativo').length;
+      document.getElementById('statInativos').textContent = anos.filter(a => a.status === 'inativo').length;
+    }
+
+    // Ações
+    function novoAnoLetivo() {
+      const anoLetivo = prompt('Digite o Ano Letivo (ex: 2025):');
+      if (!anoLetivo) return;
+
+      const ano = parseInt(anoLetivo);
+      if (isNaN(ano) || ano < 2000 || ano > 2100) {
+        showNotification('Ano inválido! Digite um ano entre 2000 e 2100', 'error');
+        return;
+      }
+
+      criarAnoLetivo({ anoLetivo: ano, status: 'ativo' });
+    }
+
+    function editarAnoLetivo(idAnoLetivo) {
+      const ano = anos.find(a => a.idAnoLetivo === idAnoLetivo);
+      if (!ano) return;
+
+      const novoAno = prompt('Digite o Ano Letivo:', ano.anoLetivo);
+      if (!novoAno) return;
+
+      const anoNum = parseInt(novoAno);
+      if (isNaN(anoNum) || anoNum < 2000 || anoNum > 2100) {
+        showNotification('Ano inválido! Digite um ano entre 2000 e 2100', 'error');
+        return;
+      }
+
+      atualizarAnoLetivo(idAnoLetivo, { anoLetivo: anoNum, status: ano.status });
+    }
+
+    async function toggleStatus(idAnoLetivo, statusAtual) {
+      const novoStatus = statusAtual === 'ativo' ? 'inativo' : 'ativo';
+      const ano = anos.find(a => a.idAnoLetivo === idAnoLetivo);
+      
+      if (!confirm(`${novoStatus === 'ativo' ? 'Ativar' : 'Desativar'} o ano letivo ${ano.anoLetivo}?`)) {
+        return;
+      }
+
+      await atualizarAnoLetivo(idAnoLetivo, { anoLetivo: ano.anoLetivo, status: novoStatus });
+    }
+
+    async function criarAnoLetivo(dados) {
+      try {
+        await fetchAuth('/anos-letivos', {
+          method: 'POST',
+          body: JSON.stringify(dados)
+        });
+
+        showNotification('Ano letivo criado com sucesso!', 'success');
+        await loadAnos();
+      } catch (error) {
+        console.error('Erro ao criar ano letivo:', error);
+        showNotification(error.message || 'Erro ao criar ano letivo', 'error');
+      }
+    }
+
+    async function atualizarAnoLetivo(idAnoLetivo, dados) {
+      try {
+        await fetchAuth(`/anos-letivos/${idAnoLetivo}`, {
+          method: 'PUT',
+          body: JSON.stringify(dados)
+        });
+
+        showNotification('Ano letivo atualizado com sucesso!', 'success');
+        await loadAnos();
+      } catch (error) {
+        console.error('Erro ao atualizar ano letivo:', error);
+        showNotification(error.message || 'Erro ao atualizar ano letivo', 'error');
+      }
+    }
+
+    async function deletarAnoLetivo(idAnoLetivo, anoLetivo) {
+      if (!confirm(`Tem certeza que deseja deletar o ano letivo ${anoLetivo}?\n\nEsta ação não pode ser desfeita!`)) {
+        return;
+      }
+
+      try {
+        await fetchAuth(`/anos-letivos/${idAnoLetivo}`, {
+          method: 'DELETE'
+        });
+
+        showNotification('Ano letivo deletado com sucesso!', 'success');
+        await loadAnos();
+      } catch (error) {
+        console.error('Erro ao deletar ano letivo:', error);
+        showNotification(error.message || 'Erro ao deletar ano letivo', 'error');
+      }
+    }
+
+    loadAnos();
+  </script>
+</body>
+</html>

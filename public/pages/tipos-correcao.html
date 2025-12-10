@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tipos de Correção - Olimpíada IDB</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item active">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Rankings</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title">Tipos de Correção</h1>
+          <div class="breadcrumb">
+            <span>Configurações</span>
+            <span class="breadcrumb-separator">/</span>
+            <span>Tipos de Correção</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="user-menu">
+            <div class="user-avatar" id="userAvatar">M</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Carregando...</div>
+              <div class="user-role" id="userRole">Administrador</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Header com botão -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <h2 style="font-size: 24px; font-weight: 600; color: var(--gray-900);">Tipos de Correção de Olimpíadas</h2>
+            <p style="color: var(--gray-600); margin-top: 4px;">Gerencie os tipos de correção disponíveis</p>
+          </div>
+          <button class="btn btn-primary" onclick="window.location.href='tipo-correcao-form.html'">
+            <span>+ Novo Tipo</span>
+          </button>
+        </div>
+
+        <!-- Card com tabela -->
+        <div class="card">
+          <div class="card-body">
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                    <th>Observação</th>
+                    <th style="width: 200px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tiposCorrecaoTable">
+                  <tr>
+                    <td colspan="5" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    const token = checkAuth();
+    const user = getUser();
+
+    if (user) {
+      document.getElementById('userName').textContent = user.nome || user.email;
+      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
+      const nivelMap = { 1: 'Administrador', 2: 'Professor', 3: 'Aluno', 4: 'Responsável' };
+      document.getElementById('userRole').textContent = nivelMap[user.nivelAcesso] || 'Usuário';
+    }
+
+    // Mostrar seção de administração apenas para administradores
+    if (user.nivel_acesso === 1) {
+      document.getElementById('adminSection').style.display = 'block';
+    }
+
+    let tiposCorrecao = [];
+
+    async function carregarTiposCorrecao() {
+      try {
+        const data = await fetchAuth('/tipos-correcao');
+        tiposCorrecao = data.data || [];
+        renderTiposCorrecao();
+      } catch (error) {
+        console.error('Erro ao carregar tipos de correção:', error);
+        showNotification('Erro ao carregar tipos de correção', 'error');
+      }
+    }
+
+    function renderTiposCorrecao() {
+      const tbody = document.getElementById('tiposCorrecaoTable');
+      
+      if (tiposCorrecao.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum tipo de correção cadastrado</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = tiposCorrecao.map(tc => `
+        <tr>
+          <td><strong>${tc.idTipoCorrecao}</strong></td>
+          <td>${tc.descricao}</td>
+          <td>
+            <button 
+              class="badge ${tc.ativo === 'S' ? 'badge-success' : 'badge-secondary'}" 
+              onclick="toggleStatus(${tc.idTipoCorrecao})"
+              style="cursor: pointer; border: none;"
+            >
+              ${tc.ativo === 'S' ? 'Ativo' : 'Inativo'}
+            </button>
+          </td>
+          <td>${tc.observacao || '-'}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" onclick="window.location.href='tipo-correcao-form.html?id=${tc.idTipoCorrecao}'" title="Editar">✏️</button>
+            <button class="btn btn-sm btn-danger" onclick="deletarTipoCorrecao(${tc.idTipoCorrecao}, '${tc.descricao}')" title="Deletar">🗑️</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function toggleStatus(id) {
+      try {
+        await fetchAuth(`/tipos-correcao/${id}/toggle-status`, {
+          method: 'PATCH'
+        });
+        showNotification('Status alterado com sucesso!', 'success');
+        carregarTiposCorrecao();
+      } catch (error) {
+        showNotification('Erro ao alterar status: ' + error.message, 'error');
+      }
+    }
+
+    async function deletarTipoCorrecao(id, descricao) {
+      if (!confirm(`Tem certeza que deseja deletar o tipo de correção "${descricao}"?\n\nEsta ação não pode ser desfeita!`)) {
+        return;
+      }
+
+      try {
+        await fetchAuth(`/tipos-correcao/${id}`, {
+          method: 'DELETE'
+        });
+        showNotification('Tipo de correção deletado com sucesso!', 'success');
+        carregarTiposCorrecao();
+      } catch (error) {
+        showNotification('Erro ao deletar: ' + error.message, 'error');
+      }
+    }
+
+    // Carregar dados
+    carregarTiposCorrecao();
+  </script>
+</body>
+</html>

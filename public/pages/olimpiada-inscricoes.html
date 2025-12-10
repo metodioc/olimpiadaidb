@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscrever Alunos - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="user-info">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <div class="user-details">
+          <div class="user-name" id="userName">Carregando...</div>
+          <div class="user-role" id="userRole">...</div>
+        </div>
+        <button class="btn-icon" onclick="logout()" title="Sair">🚪</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1>Inscrever Alunos na Olimpíada</h1>
+          <p class="subtitle" id="olimpiadaNome">Carregando...</p>
+        </div>
+        <button class="btn btn-secondary" onclick="window.location.href='olimpiadas.html'">
+          ← Voltar
+        </button>
+      </div>
+
+      <div class="content">
+        <!-- Estatísticas -->
+        <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-icon blue">👥</div>
+            <div class="stat-info">
+              <div class="stat-label">Total Inscritos</div>
+              <div class="stat-value" id="totalInscritos">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">🏫</div>
+            <div class="stat-info">
+              <div class="stat-label">Filiais Participantes</div>
+              <div class="stat-value" id="totalFiliais">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">📚</div>
+            <div class="stat-info">
+              <div class="stat-label">Séries Distintas</div>
+              <div class="stat-value" id="totalSeries">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">🎓</div>
+            <div class="stat-info">
+              <div class="stat-label">Turmas Distintas</div>
+              <div class="stat-value" id="totalTurmas">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab-btn active" onclick="changeTab('inscricao')">
+            ➕ Inscrever Alunos
+          </button>
+          <button class="tab-btn" onclick="changeTab('listagem')">
+            📋 Alunos Inscritos
+          </button>
+        </div>
+
+        <!-- Tab: Inscrição -->
+        <div id="tabInscricao" class="tab-content active">
+          <div class="card">
+            <div class="card-header">
+              <h3>Selecione a Forma de Inscrição</h3>
+            </div>
+            <div class="card-body">
+              <!-- Seleção de Filial -->
+              <div style="margin-bottom: 24px;">
+                <label class="form-label">Filial *</label>
+                <select id="selectFilial" class="form-select" onchange="carregarSeries()">
+                  <option value="">Selecione a filial</option>
+                </select>
+              </div>
+
+              <!-- Tipo de Inscrição -->
+              <div style="margin-bottom: 24px;">
+                <label class="form-label">Tipo de Inscrição *</label>
+                <select id="tipoInscricao" class="form-select" onchange="mudarTipoInscricao()">
+                  <option value="">Selecione</option>
+                  <option value="serie">📚 Todas as Turmas de uma Série</option>
+                  <option value="turma">🎓 Uma Turma Específica</option>
+                  <option value="individual">👤 Aluno Individual</option>
+                </select>
+              </div>
+
+              <!-- Opções por Série -->
+              <div id="opcoesSerie" style="display: none; margin-bottom: 24px;">
+                <label class="form-label">Série</label>
+                <select id="selectSerie" class="form-select" onchange="contarAlunosSerie()">
+                  <option value="">Selecione a série</option>
+                </select>
+                <p id="infoSerie" style="margin-top: 8px; color: var(--gray-600); font-size: 14px;"></p>
+                <button class="btn btn-primary" onclick="inscreverPorSerie()" style="margin-top: 12px;">
+                  ➕ Inscrever Toda a Série
+                </button>
+              </div>
+
+              <!-- Opções por Turma -->
+              <div id="opcoesTurma" style="display: none; margin-bottom: 24px;">
+                <label class="form-label">Série</label>
+                <select id="selectSerieTurma" class="form-select" onchange="carregarTurmas()">
+                  <option value="">Selecione a série</option>
+                </select>
+                
+                <label class="form-label" style="margin-top: 16px;">Turma</label>
+                <select id="selectTurma" class="form-select" onchange="contarAlunosTurma()">
+                  <option value="">Selecione a turma</option>
+                </select>
+                <p id="infoTurma" style="margin-top: 8px; color: var(--gray-600); font-size: 14px;"></p>
+                <button class="btn btn-primary" onclick="inscreverPorTurma()" style="margin-top: 12px;">
+                  ➕ Inscrever Toda a Turma
+                </button>
+              </div>
+
+              <!-- Opções Individual -->
+              <div id="opcoesIndividual" style="display: none; margin-bottom: 24px;">
+                <label class="form-label">Buscar Aluno</label>
+                <input 
+                  type="text" 
+                  id="buscaAluno" 
+                  class="form-input" 
+                  placeholder="Digite o nome ou matrícula do aluno..."
+                  oninput="buscarAlunos()"
+                >
+                <div id="resultadosBusca" style="margin-top: 12px; max-height: 400px; overflow-y: auto;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Listagem -->
+        <div id="tabListagem" class="tab-content" style="display: none;">
+          <div class="card">
+            <div class="card-header flex-between">
+              <h3>Alunos Inscritos</h3>
+              <div>
+                <input 
+                  type="text" 
+                  id="filtroListagem" 
+                  class="form-input" 
+                  placeholder="Filtrar alunos..."
+                  style="width: 300px; margin-right: 12px;"
+                  oninput="filtrarListagem()"
+                >
+                <button class="btn btn-danger" onclick="removerSelecionados()">
+                  🗑️ Remover Selecionados
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th><input type="checkbox" onchange="selecionarTodos(this)"></th>
+                    <th>Matrícula</th>
+                    <th>Nome</th>
+                    <th>Série</th>
+                    <th>Turma</th>
+                    <th>Filial</th>
+                    <th>Data Inscrição</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaInscritos">
+                  <tr>
+                    <td colspan="8" style="text-align: center; padding: 40px;">
+                      Carregando inscritos...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    const token = checkAuth();
+    const user = getUser();
+    
+    if (user) {
+      document.getElementById('userName').textContent = user.nome || user.email;
+      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
+      if (user.nivel_acesso === 1) {
+        document.getElementById('adminSection').style.display = 'block';
+      }
+    }
+
+    // Pegar ID da olimpíada da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const olimpiadaId = urlParams.get('id');
+
+    if (!olimpiadaId) {
+      showNotification('Olimpíada não especificada', 'error');
+      setTimeout(() => window.location.href = 'olimpiadas.html', 2000);
+    }
+
+    let olimpiada = null;
+    let inscritos = [];
+    let filiais = [];
+    let series = [];
+    let turmas = [];
+
+    // Carregar informações da olimpíada
+    async function carregarOlimpiada() {
+      try {
+        const response = await fetchAuth(`/olimpiadas/${olimpiadaId}`);
+        olimpiada = response.data || response.olimpiada;
+        document.getElementById('olimpiadaNome').textContent = 
+          `${olimpiada.nomeOlimpiada} (${olimpiada.ano})`;
+      } catch (error) {
+        console.error('Erro ao carregar olimpíada:', error);
+        showNotification('Erro ao carregar olimpíada', 'error');
+      }
+    }
+
+    // Carregar filiais
+    async function carregarFiliais() {
+      try {
+        const response = await fetchAuth('/filiais');
+        filiais = response.data || [];
+        
+        const select = document.getElementById('selectFilial');
+        select.innerHTML = '<option value="">Selecione a filial</option>';
+        filiais.forEach(filial => {
+          const option = document.createElement('option');
+          option.value = filial.idFilial;
+          option.textContent = filial.filial;
+          select.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Erro ao carregar filiais:', error);
+      }
+    }
+
+    // Carregar séries da filial
+    async function carregarSeries() {
+      const filialId = document.getElementById('selectFilial').value;
+      if (!filialId) {
+        series = [];
+        return;
+      }
+
+      try {
+        const response = await fetchAuth(`/series?idFilial=${filialId}`);
+        series = response.data || [];
+        
+        // Preencher selects de série
+        ['selectSerie', 'selectSerieTurma'].forEach(selectId => {
+          const select = document.getElementById(selectId);
+          select.innerHTML = '<option value="">Selecione a série</option>';
+          series.forEach(serie => {
+            const option = document.createElement('option');
+            option.value = serie.idSerie;
+            option.textContent = serie.serie;
+            select.appendChild(option);
+          });
+        });
+      } catch (error) {
+        console.error('Erro ao carregar séries:', error);
+      }
+    }
+
+    // Carregar turmas
+    async function carregarTurmas() {
+      const serieId = document.getElementById('selectSerieTurma').value;
+      const filialId = document.getElementById('selectFilial').value;
+      
+      if (!serieId || !filialId) {
+        turmas = [];
+        document.getElementById('selectTurma').innerHTML = '<option value="">Selecione a turma</option>';
+        return;
+      }
+
+      try {
+        const response = await fetchAuth(`/turmas?idSerie=${serieId}&idFilial=${filialId}`);
+        turmas = response.data || [];
+        
+        const select = document.getElementById('selectTurma');
+        select.innerHTML = '<option value="">Selecione a turma</option>';
+        turmas.forEach(turma => {
+          const option = document.createElement('option');
+          option.value = turma.idTurma;
+          option.textContent = turma.turma;
+          select.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Erro ao carregar turmas:', error);
+      }
+    }
+
+    // Mudar tipo de inscrição
+    function mudarTipoInscricao() {
+      const tipo = document.getElementById('tipoInscricao').value;
+      
+      document.getElementById('opcoesSerie').style.display = tipo === 'serie' ? 'block' : 'none';
+      document.getElementById('opcoesTurma').style.display = tipo === 'turma' ? 'block' : 'none';
+      document.getElementById('opcoesIndividual').style.display = tipo === 'individual' ? 'block' : 'none';
+    }
+
+    // Contar alunos da série
+    async function contarAlunosSerie() {
+      const serieId = document.getElementById('selectSerie').value;
+      const filialId = document.getElementById('selectFilial').value;
+      
+      if (!serieId || !filialId) return;
+
+      try {
+        const response = await fetchAuth(`/alunos?idSerie=${serieId}&idFilial=${filialId}`);
+        const alunos = response.data || [];
+        document.getElementById('infoSerie').textContent = 
+          `${alunos.length} aluno(s) encontrado(s) nesta série`;
+      } catch (error) {
+        console.error('Erro ao contar alunos:', error);
+      }
+    }
+
+    // Contar alunos da turma
+    async function contarAlunosTurma() {
+      const turmaId = document.getElementById('selectTurma').value;
+      
+      if (!turmaId) return;
+
+      try {
+        const response = await fetchAuth(`/alunos?idTurma=${turmaId}`);
+        const alunos = response.data || [];
+        document.getElementById('infoTurma').textContent = 
+          `${alunos.length} aluno(s) encontrado(s) nesta turma`;
+      } catch (error) {
+        console.error('Erro ao contar alunos:', error);
+      }
+    }
+
+    // Inscrever por série
+    async function inscreverPorSerie() {
+      const serieId = document.getElementById('selectSerie').value;
+      const filialId = document.getElementById('selectFilial').value;
+      
+      if (!serieId || !filialId) {
+        showNotification('Selecione a filial e a série', 'error');
+        return;
+      }
+
+      if (!confirm('Tem certeza que deseja inscrever todos os alunos desta série?')) {
+        return;
+      }
+
+      try {
+        const response = await fetchAuth(`/inscricoes/lote`, {
+          method: 'POST',
+          body: JSON.stringify({
+            idOlimpiada: olimpiadaId,
+            tipo: 'serie',
+            idSerie: parseInt(serieId),
+            idFilial: parseInt(filialId)
+          })
+        });
+
+        showNotification(`${response.inscritos} aluno(s) inscrito(s) com sucesso!`, 'success');
+        carregarInscritos();
+        atualizarEstatisticas();
+      } catch (error) {
+        console.error('Erro ao inscrever:', error);
+        showNotification(error.message || 'Erro ao inscrever alunos', 'error');
+      }
+    }
+
+    // Inscrever por turma
+    async function inscreverPorTurma() {
+      const turmaId = document.getElementById('selectTurma').value;
+      
+      if (!turmaId) {
+        showNotification('Selecione a turma', 'error');
+        return;
+      }
+
+      if (!confirm('Tem certeza que deseja inscrever todos os alunos desta turma?')) {
+        return;
+      }
+
+      try {
+        const response = await fetchAuth(`/inscricoes/lote`, {
+          method: 'POST',
+          body: JSON.stringify({
+            idOlimpiada: olimpiadaId,
+            tipo: 'turma',
+            idTurma: parseInt(turmaId)
+          })
+        });
+
+        showNotification(`${response.inscritos} aluno(s) inscrito(s) com sucesso!`, 'success');
+        carregarInscritos();
+        atualizarEstatisticas();
+      } catch (error) {
+        console.error('Erro ao inscrever:', error);
+        showNotification(error.message || 'Erro ao inscrever alunos', 'error');
+      }
+    }
+
+    // Buscar alunos individual
+    let timeoutBusca;
+    async function buscarAlunos() {
+      clearTimeout(timeoutBusca);
+      
+      const termo = document.getElementById('buscaAluno').value.trim();
+      const filialId = document.getElementById('selectFilial').value;
+      
+      if (termo.length < 2) {
+        document.getElementById('resultadosBusca').innerHTML = '';
+        return;
+      }
+
+      if (!filialId) {
+        document.getElementById('resultadosBusca').innerHTML = 
+          '<p style="color: var(--warning-color);">Selecione primeiro a filial</p>';
+        return;
+      }
+
+      timeoutBusca = setTimeout(async () => {
+        try {
+          const response = await fetchAuth(`/alunos?search=${encodeURIComponent(termo)}&idFilial=${filialId}`);
+          const alunos = response.data || [];
+          
+          const container = document.getElementById('resultadosBusca');
+          
+          if (alunos.length === 0) {
+            container.innerHTML = '<p style="color: var(--gray-600);">Nenhum aluno encontrado</p>';
+            return;
+          }
+
+          container.innerHTML = alunos.map(aluno => `
+            <div class="card" style="margin-bottom: 8px; padding: 12px; cursor: pointer;" 
+                 onclick="inscreverAluno(${aluno.idAluno})">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong>${aluno.nome_pessoa}</strong>
+                  <div style="font-size: 14px; color: var(--gray-600);">
+                    RA: ${aluno.ra} | ${aluno.serie_nome} - ${aluno.turma_nome}
+                  </div>
+                </div>
+                <button class="btn btn-primary btn-sm">➕ Inscrever</button>
+              </div>
+            </div>
+          `).join('');
+        } catch (error) {
+          console.error('Erro ao buscar alunos:', error);
+        }
+      }, 300);
+    }
+
+    // Inscrever aluno individual
+    async function inscreverAluno(alunoId) {
+      try {
+        const response = await fetchAuth('/inscricoes', {
+          method: 'POST',
+          body: JSON.stringify({
+            idOlimpiada: olimpiadaId,
+            idAluno: alunoId
+          })
+        });
+
+        showNotification('Aluno inscrito com sucesso!', 'success');
+        document.getElementById('buscaAluno').value = '';
+        document.getElementById('resultadosBusca').innerHTML = '';
+        carregarInscritos();
+        atualizarEstatisticas();
+      } catch (error) {
+        console.error('Erro ao inscrever aluno:', error);
+        showNotification(error.message || 'Erro ao inscrever aluno', 'error');
+      }
+    }
+
+    // Carregar inscritos
+    async function carregarInscritos() {
+      try {
+        const response = await fetchAuth(`/inscricoes?idOlimpiada=${olimpiadaId}`);
+        inscritos = response.data || [];
+        renderizarInscritos();
+      } catch (error) {
+        console.error('Erro ao carregar inscritos:', error);
+      }
+    }
+
+    // Renderizar inscritos
+    function renderizarInscritos() {
+      const tbody = document.getElementById('tabelaInscritos');
+      
+      if (inscritos.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 40px;">
+              Nenhum aluno inscrito ainda
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = inscritos.map(inscrito => `
+        <tr>
+          <td><input type="checkbox" class="checkbox-inscrito" value="${inscrito.idOlimpiadaInscricao}"></td>
+          <td>${inscrito.ra}</td>
+          <td><strong>${inscrito.aluno_nome}</strong></td>
+          <td>${inscrito.serie}</td>
+          <td>${inscrito.turma}</td>
+          <td>${inscrito.filial}</td>
+          <td>${new Date(inscrito.dataInscricao).toLocaleDateString('pt-BR')}</td>
+          <td>
+            <button class="btn-action btn-delete" onclick="removerInscricao(${inscrito.idOlimpiadaInscricao})" title="Remover">
+              🗑️
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Filtrar listagem
+    function filtrarListagem() {
+      const filtro = document.getElementById('filtroListagem').value.toLowerCase();
+      const linhas = document.querySelectorAll('#tabelaInscritos tr');
+      
+      linhas.forEach(linha => {
+        const texto = linha.textContent.toLowerCase();
+        linha.style.display = texto.includes(filtro) ? '' : 'none';
+      });
+    }
+
+    // Selecionar todos
+    function selecionarTodos(checkbox) {
+      const checkboxes = document.querySelectorAll('.checkbox-inscrito');
+      checkboxes.forEach(cb => cb.checked = checkbox.checked);
+    }
+
+    // Remover selecionados
+    async function removerSelecionados() {
+      const checkboxes = document.querySelectorAll('.checkbox-inscrito:checked');
+      const ids = Array.from(checkboxes).map(cb => cb.value);
+      
+      if (ids.length === 0) {
+        showNotification('Selecione pelo menos um aluno', 'warning');
+        return;
+      }
+
+      if (!confirm(`Remover ${ids.length} inscriçõ(es)?`)) {
+        return;
+      }
+
+      try {
+        await fetchAuth('/inscricoes/lote', {
+          method: 'DELETE',
+          body: JSON.stringify({ ids })
+        });
+
+        showNotification('Inscrições removidas com sucesso!', 'success');
+        carregarInscritos();
+        atualizarEstatisticas();
+      } catch (error) {
+        console.error('Erro ao remover inscrições:', error);
+        showNotification('Erro ao remover inscrições', 'error');
+      }
+    }
+
+    // Remover inscrição individual
+    async function removerInscricao(id) {
+      if (!confirm('Remover esta inscrição?')) {
+        return;
+      }
+
+      try {
+        await fetchAuth(`/inscricoes/${id}`, { method: 'DELETE' });
+        showNotification('Inscrição removida!', 'success');
+        carregarInscritos();
+        atualizarEstatisticas();
+      } catch (error) {
+        console.error('Erro ao remover inscrição:', error);
+        showNotification('Erro ao remover inscrição', 'error');
+      }
+    }
+
+    // Atualizar estatísticas
+    function atualizarEstatisticas() {
+      document.getElementById('totalInscritos').textContent = inscritos.length;
+      
+      // Criar conjuntos de valores únicos
+      const filiaisMap = {};
+      const seriesMap = {};
+      const turmasMap = {};
+      
+      inscritos.forEach(i => {
+        // Usar campo que identifica a filial unicamente
+        const filialKey = i.filial;
+        if (filialKey) filiaisMap[filialKey] = true;
+        
+        const serieKey = i.serie;
+        if (serieKey) seriesMap[serieKey] = true;
+        
+        const turmaKey = i.turma;
+        if (turmaKey) turmasMap[turmaKey] = true;
+      });
+      
+      document.getElementById('totalFiliais').textContent = Object.keys(filiaisMap).length;
+      document.getElementById('totalSeries').textContent = Object.keys(seriesMap).length;
+      document.getElementById('totalTurmas').textContent = Object.keys(turmasMap).length;
+    }
+
+    // Trocar tabs
+    function changeTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+      
+      if (tab === 'inscricao') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('tabInscricao').style.display = 'block';
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('tabListagem').style.display = 'block';
+      }
+    }
+
+    // Inicializar
+    carregarOlimpiada();
+    carregarFiliais();
+    carregarInscritos();
+  </script>
+</body>
+</html>

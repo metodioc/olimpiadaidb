@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filial - Olimpíada IDB</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Olimpíada IDB</h2>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Principal</div>
+        <a href="dashboard.html" class="nav-item">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Olimpíadas</div>
+        <a href="olimpiadas.html" class="nav-item">
+          <span class="nav-icon">🏅</span>
+          <span>Olimpíadas</span>
+        </a>
+        <a href="inscricoes.html" class="nav-item">
+          <span class="nav-icon">📝</span>
+          <span>Inscrições</span>
+        </a>
+        <a href="resultados.html" class="nav-item">
+          <span class="nav-icon">📈</span>
+          <span>Resultados</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Cadastros</div>
+        <a href="alunos.html" class="nav-item">
+          <span class="nav-icon">👥</span>
+          <span>Alunos</span>
+        </a>
+        <a href="turmas.html" class="nav-item">
+          <span class="nav-icon">🎓</span>
+          <span>Turmas</span>
+        </a>
+        <a href="series.html" class="nav-item">
+          <span class="nav-icon">📚</span>
+          <span>Séries</span>
+        </a>
+        <a href="anos-letivos.html" class="nav-item">
+          <span class="nav-icon">📅</span>
+          <span>Anos Letivos</span>
+        </a>
+        <a href="filiais.html" class="nav-item active">
+          <span class="nav-icon">🏫</span>
+          <span>Filiais</span>
+        </a>
+        <a href="tipos-correcao.html" class="nav-item">
+          <span class="nav-icon">✅</span>
+          <span>Tipos de Correção</span>
+        </a>
+        <a href="locais-aplicacao.html" class="nav-item">
+          <span class="nav-icon">📍</span>
+          <span>Locais de Aplicação</span>
+        </a>
+        <a href="tipos-pagamento.html" class="nav-item">
+          <span class="nav-icon">💰</span>
+          <span>Tipos de Pagamento</span>
+        </a>
+      </div>
+
+      <div class="nav-section" id="adminSection" style="display: none;">
+        <div class="nav-section-title">Administração</div>
+        <a href="usuarios.html" class="nav-item">
+          <span class="nav-icon">👤</span>
+          <span>Usuários</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Relatórios</div>
+        <a href="medalhistas.html" class="nav-item">
+          <span class="nav-icon">🥇</span>
+          <span>Medalhistas</span>
+        </a>
+        <a href="rankings.html" class="nav-item">
+          <span class="nav-icon">📊</span>
+          <span>Rankings</span>
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-wrapper">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 id="pageTitle">Nova Filial</h1>
+      </div>
+      <div class="topbar-right">
+        <span class="user-name" id="userName">Usuário</span>
+        <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="main-content">
+      <!-- Breadcrumb -->
+      <div style="margin-bottom: 24px;">
+        <nav style="display: flex; align-items: center; gap: 8px; color: rgba(0,0,0,0.6); font-size: 14px; font-family: Roboto, sans-serif;">
+          <a href="filiais.html" style="color: #1976D2; text-decoration: none;">Filiais</a>
+          <span class="material-icons" style="font-size: 18px;">chevron_right</span>
+          <span id="breadcrumbTitle">Nova Filial</span>
+        </nav>
+      </div>
+
+      <!-- Form Card -->
+      <div class="card" style="max-width: 800px; box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1);">
+        <div class="card-header">
+          <h2 style="margin: 0; font-size: 20px; font-weight: 500; font-family: Roboto, sans-serif; color: rgba(0,0,0,0.87);">
+            <span id="formTitle">Dados da Filial</span>
+          </h2>
+        </div>
+        <div class="card-body">
+          <form id="formFilial" onsubmit="salvarFilial(event)" style="max-width: 600px;">
+            <input type="hidden" id="idFilial">
+            
+            <!-- Campo Código -->
+            <div style="margin-bottom: 24px;">
+              <label for="codFilial" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
+                Código da Filial *
+              </label>
+              <input 
+                type="number" 
+                id="codFilial" 
+                class="mdc-text-field__input" 
+                required 
+                min="1"
+                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s;"
+                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
+                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
+              >
+              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
+                Código numérico único para identificar a filial
+              </div>
+            </div>
+
+            <!-- Campo Nome -->
+            <div style="margin-bottom: 24px;">
+              <label for="nomeFilial" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
+                Nome da Filial *
+              </label>
+              <input 
+                type="text" 
+                id="nomeFilial" 
+                class="mdc-text-field__input" 
+                required 
+                maxlength="100"
+                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s;"
+                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
+                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
+              >
+              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
+                Nome completo da unidade escolar
+              </div>
+            </div>
+
+            <!-- Campo Abreviação -->
+            <div style="margin-bottom: 32px;">
+              <label for="abFilial" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
+                Abreviação *
+              </label>
+              <input 
+                type="text" 
+                id="abFilial" 
+                class="mdc-text-field__input" 
+                required 
+                maxlength="10"
+                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s;"
+                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
+                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
+              >
+              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
+                Sigla ou nome reduzido (máximo 10 caracteres)
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 12px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.12);">
+              <button 
+                type="button" 
+                class="mdc-button mdc-button--outlined" 
+                onclick="window.location.href='filiais.html'"
+                style="padding: 10px 24px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; background: transparent; color: #1976D2; font-family: Roboto, sans-serif; font-weight: 500; text-transform: uppercase; cursor: pointer; font-size: 14px; transition: all 0.2s;"
+                onmouseover="this.style.backgroundColor='rgba(25, 118, 210, 0.04)'"
+                onmouseout="this.style.backgroundColor='transparent'"
+              >
+                <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">arrow_back</span>
+                Cancelar
+              </button>
+              <button 
+                type="submit" 
+                class="mdc-button mdc-button--raised" 
+                style="padding: 10px 32px; border: none; border-radius: 4px; background: #1976D2; color: white; font-family: Roboto, sans-serif; font-weight: 500; text-transform: uppercase; cursor: pointer; font-size: 14px; box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12); transition: all 0.2s;"
+                onmouseover="this.style.backgroundColor='#1565C0'; this.style.boxShadow='0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)'"
+                onmouseout="this.style.backgroundColor='#1976D2'; this.style.boxShadow='0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)'"
+              >
+                <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">save</span>
+                Salvar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Material Design JS -->
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  
+  <script src="../js/app.js"></script>
+  <script>
+    // Verificar autenticação
+    checkAuth();
+    const user = getUser();
+    if (user) {
+      document.getElementById('userName').textContent = user.nome;
+    }
+
+    // Verificar se está editando
+    const urlParams = new URLSearchParams(window.location.search);
+    const idFilial = urlParams.get('id');
+
+    if (idFilial) {
+      // Modo edição
+      document.getElementById('pageTitle').textContent = 'Editar Filial';
+      document.getElementById('breadcrumbTitle').textContent = 'Editar Filial';
+      document.getElementById('formTitle').textContent = 'Editar Dados da Filial';
+      carregarFilial(idFilial);
+    }
+
+    // Carregar dados da filial para edição
+    async function carregarFilial(id) {
+      try {
+        const response = await fetchAuth(`/filiais/${id}`);
+        const filial = response.filial;
+        
+        document.getElementById('idFilial').value = filial.idFilial;
+        document.getElementById('codFilial').value = filial.codFilial;
+        document.getElementById('nomeFilial').value = filial.filial;
+        document.getElementById('abFilial').value = filial.abFilial;
+      } catch (error) {
+        showNotification('Erro ao carregar filial: ' + error.message, 'error');
+        setTimeout(() => window.location.href = 'filiais.html', 2000);
+      }
+    }
+
+    // Salvar filial (criar ou atualizar)
+    async function salvarFilial(event) {
+      event.preventDefault();
+      
+      const idFilial = document.getElementById('idFilial').value;
+      const dados = {
+        codFilial: parseInt(document.getElementById('codFilial').value),
+        filial: document.getElementById('nomeFilial').value.trim(),
+        abFilial: document.getElementById('abFilial').value.trim()
+      };
+
+      try {
+        if (idFilial) {
+          // Atualizar
+          await fetchAuth(`/filiais/${idFilial}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+          });
+          showNotification('Filial atualizada com sucesso!', 'success');
+        } else {
+          // Criar
+          await fetchAuth(`/filiais`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+          });
+          showNotification('Filial criada com sucesso!', 'success');
+        }
+        
+        setTimeout(() => window.location.href = 'filiais.html', 1500);
+      } catch (error) {
+        showNotification('Erro ao salvar filial: ' + error.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>

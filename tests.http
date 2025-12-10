@@ -1,0 +1,584 @@
+# Teste da API OlimpiadaIDB
+# Use este arquivo com REST Client (extensão do VS Code)
+# Ou copie os exemplos para Postman/Insomnia
+
+@baseURL = http://localhost:3000
+# IMPORTANTE: Após fazer login, copie o token da resposta e cole aqui
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjo2LCJlbWFpbCI6Im1ldG9kaW9jQGdtYWlsLmNvbSIsIm5vbWUiOiJBZG1pbmlzdHJhZG9yIFNpc3RlbWEiLCJwZXJmaWwiOiJBZG1pbmlzdHJhZG9yIiwibml2ZWxfYWNlc3NvIjoxLCJwZXJtaXNzaW9ucyI6WyJhbHVub3MuY3JpYXIiLCJhbHVub3MuZWRpdGFyIiwiYWx1bm9zLmV4Y2x1aXIiLCJhbHVub3MudmlzdWFsaXphciIsImluc2NyaWNvZXMuY3JpYXIiLCJpbnNjcmljb2VzLmVkaXRhciIsImluc2NyaWNvZXMuZXhjbHVpciIsImluc2NyaWNvZXMudmlzdWFsaXphciIsIm9saW1waWFkYXMuY3JpYXIiLCJvbGltcGlhZGFzLmVkaXRhciIsIm9saW1waWFkYXMuZXhjbHVpciIsIm9saW1waWFkYXMudmlzdWFsaXphciIsInJlbGF0b3Jpb3MuZXhwb3J0YXIiLCJyZWxhdG9yaW9zLnZpc3VhbGl6YXIiLCJyZXN1bHRhZG9zLmVkaXRhciIsInJlc3VsdGFkb3MubGFuY2FyIiwicmVzdWx0YWRvcy52aXN1YWxpemFyIiwidXN1YXJpb3MuY3JpYXIiLCJ1c3Vhcmlvcy5lZGl0YXIiLCJ1c3Vhcmlvcy5leGNsdWlyIiwidXN1YXJpb3MudmlzdWFsaXphciJdLCJpYXQiOjE3NjQ3NjUzMzUsImV4cCI6MTc2NDc5NDEzNX0.dQw0sJK1ebvOJ9ycu3xgmmr7Ee634Me-doVOAf3t-2Q
+
+### ==============================================
+### 1. HEALTH CHECK
+### ==============================================
+
+GET {{baseURL}}/health
+
+### ==============================================
+### 2. AUTENTICAÇÃO - LOGIN
+### ==============================================
+
+# Login com usuário administrador
+# Email: admin@escola.com | Senha: Admin@123
+POST {{baseURL}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "metodioc@gmail.com",
+  "senha": "IDBc@mq1"
+}
+
+###
+
+# Login alternativo - Professor João Silva
+POST {{baseURL}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "metodioc@gmail.com",
+  "senha": "12345678"
+}
+
+### ==============================================
+### 3. REGISTRAR NOVO USUÁRIO
+### ==============================================
+
+# Criar usuário ADMINISTRADOR
+POST {{baseURL}}/api/auth/register
+Content-Type: application/json
+
+{
+  "id_perfil": 1,
+  "nome_completo": "Administrador Sistema",
+  "email": "metodioc@gmail.com",
+  "senha": "IDBc@mq1",
+  "cpf": "888.888.888-88",
+  "data_nascimento": "1980-01-01",
+  "telefone": "(11) 99999-9999"
+}
+
+###
+
+# Criar novo professor
+POST {{baseURL}}/api/auth/register
+Content-Type: application/json
+
+{
+  "id_perfil": 2,
+  "nome_completo": "João Silva Professor",
+  "email": "joao.silva@escola.com",
+  "senha": "Senha123",
+  "cpf": "123.456.789-00",
+  "telefone": "(11) 98765-4321"
+}
+
+### ==============================================
+### 4. OBTER DADOS DO USUÁRIO LOGADO
+### ==============================================
+
+GET {{baseURL}}/api/auth/me
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 5. VERIFICAR TOKEN
+### ==============================================
+
+POST {{baseURL}}/api/auth/verify-token
+Content-Type: application/json
+
+{
+  "token": "{{token}}"
+}
+
+### ==============================================
+### 6. CRIAR OLIMPÍADA
+### ==============================================
+
+# Criar olimpíada SEM vincular filiais (opcional)
+POST {{baseURL}}/api/olimpiadas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nomeOlimpiada": "Olimpíada Brasileira de Matemática",
+  "abreviacaoOlimpiada": "OBM",
+  "ano": 2025,
+  "tipoAplicacao": "escola",
+  "tipoCusto": "gratuito",
+  "tipoCorrecao": "portal",
+  "dataLimiteInscricao": "2025-03-15",
+  "dataAplicacao": "2025-05-20",
+  "dataCorrecao": "2025-06-15",
+  "observacoes": "Primeira fase da OBM 2025",
+  "disciplinas": [
+    {
+      "idDisciplina": 1,
+      "principal": true
+    }
+  ]
+}
+
+###
+
+# Criar olimpíada COM filiais (após executar migration 006)
+# IDs de Disciplinas disponíveis:
+# 1=Matemática, 2=Física, 3=Química, 4=História, 5=Geografia
+# 6=Filosofia, 7=Sociologia, 8=Português, 9=Inglês, 10=Espanhol
+# 11=Arte, 12=Ed.Física, 13=Biologia, 14=Ciências, 15=Informática
+# 16=Robótica, 17=Programação, 18=Conhecimentos Gerais, 19=Astronomia
+POST {{baseURL}}/api/olimpiadas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nomeOlimpiada": "Olimpíada Brasileira de Astronomia",
+  "abreviacaoOlimpiada": "OBA",
+  "ano": 2025,
+  "tipoAplicacao": "escola",
+  "tipoCusto": "gratuito",
+  "tipoCorrecao": "portal",
+  "dataLimiteInscricao": "2025-04-10",
+  "dataAplicacao": "2025-05-15",
+  "observacoes": "Olimpíada Brasileira de Astronomia 2025",
+  "disciplinas": [
+    {
+      "idDisciplina": 19,
+      "principal": true
+    }
+  ],
+  "filiais": [1, 2, 3]
+}
+
+### ==============================================
+### 7. LISTAR TODAS AS OLIMPÍADAS
+### ==============================================
+
+GET {{baseURL}}/api/olimpiadas
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 8. LISTAR OLIMPÍADAS POR ANO
+### ==============================================
+
+GET {{baseURL}}/api/olimpiadas?ano=2025
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 9. LISTAR OLIMPÍADAS POR STATUS
+### ==============================================
+
+GET {{baseURL}}/api/olimpiadas?status=inscricoes_abertas
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 10. OBTER DETALHES DE UMA OLIMPÍADA
+### ==============================================
+
+GET {{baseURL}}/api/olimpiadas/1
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 11. ATUALIZAR STATUS DA OLIMPÍADA
+### ==============================================
+
+PUT {{baseURL}}/api/olimpiadas/1/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "inscricoes_abertas"
+}
+
+### ==============================================
+### 12. LISTAR DISCIPLINAS DE UMA OLIMPÍADA
+### ==============================================
+
+GET {{baseURL}}/api/olimpiadas/1/disciplinas
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 13. LISTAR FILIAIS DE UMA OLIMPÍADA
+### ==============================================
+
+GET {{baseURL}}/api/olimpiadas/1/filiais
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 14. INSCRIÇÕES - CRIAR INSCRIÇÃO INDIVIDUAL
+### ==============================================
+
+POST {{baseURL}}/api/inscricoes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id_olimpiada": 1,
+  "id_aluno": 1,
+  "observacoes": "Primeira inscrição de teste"
+}
+
+### ==============================================
+### 15. INSCRIÇÕES - LISTAR TODAS
+### ==============================================
+
+GET {{baseURL}}/api/inscricoes
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 16. INSCRIÇÕES - LISTAR POR OLIMPÍADA
+### ==============================================
+
+GET {{baseURL}}/api/inscricoes?idOlimpiada=1
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 17. INSCRIÇÕES - BUSCAR POR ID
+### ==============================================
+
+GET {{baseURL}}/api/inscricoes/1
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 18. INSCRIÇÕES - INSCREVER EM LOTE
+### ==============================================
+
+POST {{baseURL}}/api/inscricoes/lote
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id_olimpiada": 1,
+  "alunos_ids": [1, 2, 3, 4, 5]
+}
+
+### ==============================================
+### 19. INSCRIÇÕES - INSCREVER TURMA INTEIRA
+### ==============================================
+
+POST {{baseURL}}/api/inscricoes/turma
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id_olimpiada": 1,
+  "id_turma": 1
+}
+
+### ==============================================
+### 20. INSCRIÇÕES - INSCREVER SÉRIE INTEIRA
+### ==============================================
+
+POST {{baseURL}}/api/inscricoes/serie
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id_olimpiada": 1,
+  "id_serie": 1,
+  "id_ano_letivo": 1
+}
+
+### ==============================================
+### 21. INSCRIÇÕES - ATUALIZAR STATUS
+### ==============================================
+
+PATCH {{baseURL}}/api/inscricoes/1/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status_inscricao": "confirmada"
+}
+
+### ==============================================
+### 22. INSCRIÇÕES - CANCELAR INSCRIÇÃO
+### ==============================================
+
+DELETE {{baseURL}}/api/inscricoes/1
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 23. INSCRIÇÕES - ESTATÍSTICAS DA OLIMPÍADA
+### ==============================================
+
+GET {{baseURL}}/api/inscricoes/olimpiada/1/estatisticas
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 24. RESULTADOS - LANÇAR RESULTADO INDIVIDUAL
+### ==============================================
+
+POST {{baseURL}}/api/resultados
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idOlimpiadaInscricao": 11,
+  "pontuacao": 85.5,
+  "idTipoMedalha": 3,
+  "observacoes": "Excelente desempenho"
+}
+
+### ==============================================
+### 25. RESULTADOS - LANÇAR EM LOTE
+### ==============================================
+
+POST {{baseURL}}/api/resultados/lote
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "resultados": [
+    {
+      "idOlimpiadaInscricao": 11,
+      "pontuacao": 95.0,
+      "idTipoMedalha": 1
+    },
+    {
+      "idOlimpiadaInscricao": 12,
+      "pontuacao": 87.5,
+      "idTipoMedalha": 3
+    },
+    {
+      "idOlimpiadaInscricao": 13,
+      "pontuacao": 92.0,
+      "idTipoMedalha": 2
+    }
+  ]
+}
+
+### ==============================================
+### 26. RESULTADOS - ATUALIZAR RESULTADO
+### ==============================================
+
+PUT {{baseURL}}/api/resultados/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "pontuacao": 88.0,
+  "idTipoMedalha": 2,
+  "observacoes": "Nota revisada após recurso"
+}
+
+### ==============================================
+### 27. RESULTADOS - CALCULAR CLASSIFICAÇÕES
+### ==============================================
+
+POST {{baseURL}}/api/resultados/calcular-classificacoes/1
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 28. RESULTADOS - RANKING GERAL
+### ==============================================
+
+GET {{baseURL}}/api/resultados/ranking/1?limit=10
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 29. RESULTADOS - RANKING POR SÉRIE
+### ==============================================
+
+GET {{baseURL}}/api/resultados/ranking/1/serie/3?limit=10
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 30. RESULTADOS - MEDALHISTAS
+### ==============================================
+
+GET {{baseURL}}/api/resultados/medalhistas/1
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 34. RESULTADOS - LISTAR TODOS
+### ==============================================
+
+GET {{baseURL}}/api/resultados
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 35. RESULTADOS - BUSCAR POR ID
+### ==============================================
+
+GET {{baseURL}}/api/resultados/1
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 36. RESULTADOS - REMOVER RESULTADO (APENAS ADMIN)
+### ==============================================
+
+DELETE {{baseURL}}/api/resultados/1
+Authorization: Bearer {{token}}
+
+### ==============================================
+### 37. LOGOUT
+### ==============================================
+
+POST {{baseURL}}/api/auth/logout
+Authorization: Bearer {{token}}
+
+### ==============================================
+### FILIAIS - GESTÃO DE UNIDADES ESCOLARES
+### ==============================================
+
+### 38. FILIAIS - LISTAR TODAS
+GET {{baseURL}}/api/filiais
+Authorization: Bearer {{token}}
+
+### 39. FILIAIS - BUSCAR POR ID
+GET {{baseURL}}/api/filiais/1
+Authorization: Bearer {{token}}
+
+### 40. FILIAIS - CRIAR NOVA (APENAS ADMIN)
+POST {{baseURL}}/api/filiais
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "codFilial": 1,
+  "filial": "Unidade Centro",
+  "abFilial": "CTR"
+}
+
+### 41. FILIAIS - ATUALIZAR (APENAS ADMIN)
+PUT {{baseURL}}/api/filiais/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "codFilial": 1,
+  "filial": "Unidade Centro - Atualizada",
+  "abFilial": "CTR"
+}
+
+### 42. FILIAIS - DELETAR (APENAS ADMIN)
+DELETE {{baseURL}}/api/filiais/1
+Authorization: Bearer {{token}}
+
+### ==============================================
+### SÉRIES - GESTÃO DE ANOS ESCOLARES
+### ==============================================
+
+### 43. SÉRIES - LISTAR TODAS
+GET {{baseURL}}/api/series
+Authorization: Bearer {{token}}
+
+### 44. SÉRIES - BUSCAR POR ID
+GET {{baseURL}}/api/series/1
+Authorization: Bearer {{token}}
+
+### 45. SÉRIES - CRIAR NOVA (APENAS ADMIN)
+POST {{baseURL}}/api/series
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "codSerie": 13,
+  "abSerie": "4EM",
+  "serie": "4º Ano EM",
+  "idFilial": 1
+}
+
+### 46. SÉRIES - ATUALIZAR (APENAS ADMIN)
+PUT {{baseURL}}/api/series/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "codSerie": 1,
+  "abSerie": "1EF",
+  "serie": "1º Ano Ensino Fundamental",
+  "idFilial": 1
+}
+
+### 47. SÉRIES - DELETAR (APENAS ADMIN)
+DELETE {{baseURL}}/api/series/1
+Authorization: Bearer {{token}}
+
+### ==============================================
+### TURMAS - GESTÃO DE TURMAS
+### ==============================================
+
+### 48. TURMAS - LISTAR TODAS
+GET {{baseURL}}/api/turmas
+Authorization: Bearer {{token}}
+
+### 49. TURMAS - FILTRAR POR FILIAL
+GET {{baseURL}}/api/turmas?idFilial=1
+Authorization: Bearer {{token}}
+
+### 50. TURMAS - BUSCAR POR ID
+GET {{baseURL}}/api/turmas/1
+Authorization: Bearer {{token}}
+
+### 51. TURMAS - CRIAR NOVA (ADMIN/PROFESSOR)
+POST {{baseURL}}/api/turmas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nomeTurma": "6º Ano A",
+  "idSerie": 6,
+  "idFilial": 1,
+  "idAnoLetivo": 2,
+  "turno": "matutino"
+}
+
+### 52. TURMAS - ATUALIZAR (ADMIN/PROFESSOR)
+PUT {{baseURL}}/api/turmas/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nomeTurma": "6º Ano A - Atualizada",
+  "idSerie": 6,
+  "idFilial": 1,
+  "idAnoLetivo": 2,
+  "turno": "matutino"
+}
+
+### 53. TURMAS - DELETAR (APENAS ADMIN)
+DELETE {{baseURL}}/api/turmas/1
+Authorization: Bearer {{token}}
+
+### ==============================================
+### ALUNOS - GESTÃO DE ALUNOS
+### ==============================================
+
+### 54. ALUNOS - LISTAR TODOS
+GET {{baseURL}}/api/alunos
+Authorization: Bearer {{token}}
+
+### 55. ALUNOS - FILTRAR POR TURMA
+GET {{baseURL}}/api/alunos?idTurma=1
+Authorization: Bearer {{token}}
+
+### 56. ALUNOS - BUSCAR POR ID
+GET {{baseURL}}/api/alunos/1
+Authorization: Bearer {{token}}
+
+### 57. ALUNOS - CRIAR NOVO (ADMIN/PROFESSOR)
+POST {{baseURL}}/api/alunos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idPessoa": 1,
+  "idTurma": 1,
+  "matricula": "2025001",
+  "anoIngresso": 2025
+}
+
+### 58. ALUNOS - ATUALIZAR (ADMIN/PROFESSOR)
+PUT {{baseURL}}/api/alunos/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idPessoa": 1,
+  "idTurma": 1,
+  "matricula": "2025001-UPD",
+  "anoIngresso": 2025
+}
+
+### 59. ALUNOS - DELETAR (APENAS ADMIN)
+DELETE {{baseURL}}/api/alunos/1
+Authorization: Bearer {{token}}

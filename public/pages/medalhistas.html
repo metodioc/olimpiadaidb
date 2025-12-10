@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medalhistas - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Rankings</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title">Medalhistas</h1>
+          <div class="breadcrumb">
+            <span>Rankings</span>
+            <span class="breadcrumb-separator">/</span>
+            <span>Medalhistas</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="user-menu">
+            <div class="user-avatar" id="userAvatar">M</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Carregando...</div>
+              <div class="user-role" id="userRole">Administrador</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Filtros -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="flex gap-2">
+              <select class="form-select" id="filterOlimpiada" style="width: 300px;">
+                <option value="">Carregando olimpíadas...</option>
+              </select>
+              <select class="form-select" id="filterMedalha" style="width: 200px;">
+                <option value="">Todas as medalhas</option>
+                <option value="1">🥇 Ouro</option>
+                <option value="2">🥈 Prata</option>
+                <option value="3">🥉 Bronze</option>
+              </select>
+              <button class="btn btn-primary" onclick="loadMedalhistas()">
+                🔍 Buscar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #FFD700, #FFA500);">🥇</div>
+            <div class="stat-info">
+              <div class="stat-label">Medalhas de Ouro</div>
+              <div class="stat-value" id="totalOuro">-</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #E8E8E8, #C0C0C0);">🥈</div>
+            <div class="stat-info">
+              <div class="stat-label">Medalhas de Prata</div>
+              <div class="stat-value" id="totalPrata">-</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #E8A87C, #CD7F32);">🥉</div>
+            <div class="stat-info">
+              <div class="stat-label">Medalhas de Bronze</div>
+              <div class="stat-value" id="totalBronze">-</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">🏆</div>
+            <div class="stat-info">
+              <div class="stat-label">Total de Medalhas</div>
+              <div class="stat-value" id="totalMedalhas">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista de Medalhistas -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Medalhistas</h2>
+            <button class="btn btn-sm btn-outline" onclick="exportarMedalhistas()">
+              📊 Exportar
+            </button>
+          </div>
+          <div class="card-body">
+            <div id="medalhastasContainer">
+              <p class="text-center" style="padding: 40px; color: var(--gray-600);">
+                Selecione uma olimpíada para visualizar os medalhistas
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    const token = checkAuth();
+    const user = getUser();
+
+    if (user) {
+      document.getElementById('userName').textContent = user.nome || user.email;
+      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
+      const nivelMap = { 1: 'Administrador', 2: 'Professor', 3: 'Aluno', 4: 'Responsável' };
+      document.getElementById('userRole').textContent = nivelMap[user.nivelAcesso] || 'Usuário';
+    }
+
+    // Mostrar seção de administração apenas para administradores
+    if (user.nivel_acesso === 1) {
+      document.getElementById('adminSection').style.display = 'block';
+    }
+
+    let olimpiadas = [];
+    let medalhistas = [];
+
+    async function loadOlimpiadas() {
+      try {
+        const data = await fetchAuth('/olimpiadas');
+        olimpiadas = data.data || [];
+        
+        const select = document.getElementById('filterOlimpiada');
+        select.innerHTML = '<option value="">Selecione uma olimpíada</option>' +
+          olimpiadas.map(o => `<option value="${o.idOlimpiada}">${o.nomeOlimpiada} ${o.ano}</option>`).join('');
+        
+        // Selecionar a primeira olimpíada automaticamente
+        if (olimpiadas.length > 0) {
+          select.value = olimpiadas[0].idOlimpiada;
+          loadMedalhistas();
+        }
+      } catch (error) {
+        console.error('Erro ao carregar olimpíadas:', error);
+      }
+    }
+
+    async function loadMedalhistas() {
+      const idOlimpiada = document.getElementById('filterOlimpiada').value;
+      const idMedalha = document.getElementById('filterMedalha').value;
+      
+      if (!idOlimpiada) {
+        showNotification('Selecione uma olimpíada', 'warning');
+        return;
+      }
+
+      try {
+        const data = await fetchAuth(`/resultados/medalhistas/${idOlimpiada}`);
+        medalhistas = data.data || [];
+        
+        // Filtrar por tipo de medalha se selecionado
+        let filtered = medalhistas;
+        if (idMedalha) {
+          filtered = medalhistas.filter(m => m.idTipoMedalha == idMedalha);
+        }
+        
+        renderMedalhistas(filtered);
+        updateStats();
+      } catch (error) {
+        console.error('Erro ao carregar medalhistas:', error);
+        showNotification('Erro ao carregar medalhistas', 'error');
+      }
+    }
+
+    function renderMedalhistas(data) {
+      const container = document.getElementById('medalhastasContainer');
+      
+      if (!data || data.length === 0) {
+        container.innerHTML = '<p class="text-center" style="padding: 40px; color: var(--gray-600);">Nenhum medalhista encontrado</p>';
+        return;
+      }
+
+      const medalIcons = {
+        'Ouro': '🥇',
+        'Prata': '🥈',
+        'Bronze': '🥉'
+      };
+
+      const medalColors = {
+        'Ouro': 'linear-gradient(135deg, #FFD700, #FFA500)',
+        'Prata': 'linear-gradient(135deg, #E8E8E8, #C0C0C0)',
+        'Bronze': 'linear-gradient(135deg, #E8A87C, #CD7F32)'
+      };
+
+      container.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+          ${data.map((m, index) => `
+            <div class="card" style="margin: 0;">
+              <div class="card-body" style="padding: 20px;">
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                  <div style="font-size: 48px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; background: ${medalColors[m.tipoMedalha]}; border-radius: 50%;">
+                    ${medalIcons[m.tipoMedalha] || '🏅'}
+                  </div>
+                  <div style="flex: 1;">
+                    <div style="font-size: 18px; font-weight: 600; color: var(--gray-900); margin-bottom: 4px;">
+                      ${index + 1}º Lugar
+                    </div>
+                    <div class="badge badge-${m.tipoMedalha === 'Ouro' ? 'gold' : m.tipoMedalha === 'Prata' ? 'silver' : 'bronze'}">
+                      ${m.tipoMedalha}
+                    </div>
+                  </div>
+                </div>
+                
+                <div style="border-top: 1px solid var(--gray-200); padding-top: 16px;">
+                  <div style="font-size: 16px; font-weight: 600; color: var(--gray-900); margin-bottom: 8px;">
+                    ${m.nome_aluno}
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--gray-600);">
+                    <div>📋 RA: ${m.ra}</div>
+                    <div>📊 Pontuação: <strong>${m.pontuacao} pts</strong></div>
+                    <div>📚 ${m.serie}</div>
+                    <div>🏫 ${m.filial}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function updateStats() {
+      const ouro = medalhistas.filter(m => m.tipoMedalha === 'Ouro').length;
+      const prata = medalhistas.filter(m => m.tipoMedalha === 'Prata').length;
+      const bronze = medalhistas.filter(m => m.tipoMedalha === 'Bronze').length;
+      
+      document.getElementById('totalOuro').textContent = ouro;
+      document.getElementById('totalPrata').textContent = prata;
+      document.getElementById('totalBronze').textContent = bronze;
+      document.getElementById('totalMedalhas').textContent = medalhistas.length;
+    }
+
+    function exportarMedalhistas() {
+      showNotification('Exportação em desenvolvimento', 'info');
+    }
+
+    // Carregar olimpíadas ao iniciar
+    loadOlimpiadas();
+  </script>
+</body>
+</html>

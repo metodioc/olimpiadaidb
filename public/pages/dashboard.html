@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item active">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Relatórios</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title">Dashboard</h1>
+        </div>
+        <div class="topbar-right">
+          <div class="user-menu">
+            <div class="user-avatar" id="userAvatar">M</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Carregando...</div>
+              <div class="user-role" id="userRole">Administrador</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Estatísticas -->
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card">
+            <div class="stat-icon blue">🏅</div>
+            <div class="stat-info">
+              <div class="stat-label">Olimpíadas Ativas</div>
+              <div class="stat-value" id="statOlimpiadas">-</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon green">📝</div>
+            <div class="stat-info">
+              <div class="stat-label">Inscrições 2025</div>
+              <div class="stat-value" id="statInscricoes">-</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon orange">👥</div>
+            <div class="stat-info">
+              <div class="stat-label">Alunos Cadastrados</div>
+              <div class="stat-value" id="statAlunos">-</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon purple">🥇</div>
+            <div class="stat-info">
+              <div class="stat-label">Medalhas 2025</div>
+              <div class="stat-value" id="statMedalhas">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 24px;">
+          <!-- Olimpíadas Recentes -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Olimpíadas Recentes</h2>
+              <a href="olimpiadas.html" class="btn btn-sm btn-primary">Ver Todas</a>
+            </div>
+            <div class="card-body">
+              <div class="table-container">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Olimpíada</th>
+                      <th>Ano</th>
+                      <th>Status</th>
+                      <th>Inscrições</th>
+                    </tr>
+                  </thead>
+                  <tbody id="olimpiadasTable">
+                    <tr>
+                      <td colspan="4" class="text-center">Carregando...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Medalhistas -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Top Medalhistas 2025</h2>
+            </div>
+            <div class="card-body">
+              <div id="topMedalhistas">
+                <p class="text-center" style="color: var(--gray-600);">Carregando...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Atividades Recentes -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Últimas Inscrições</h2>
+          </div>
+          <div class="card-body">
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Aluno</th>
+                    <th>RA</th>
+                    <th>Olimpíada</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="inscricoesTable">
+                  <tr>
+                    <td colspan="5" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    // Verificar autenticação
+    const token = checkAuth();
+    const user = getUser();
+
+    // Atualizar info do usuário
+    if (user) {
+      document.getElementById('userName').textContent = user.nome || user.email;
+      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
+      
+      const nivelMap = {
+        1: 'Administrador',
+        2: 'Professor',
+        3: 'Aluno',
+        4: 'Responsável'
+      };
+      document.getElementById('userRole').textContent = nivelMap[user.nivelAcesso] || 'Usuário';
+      
+      // Mostrar seção de administração apenas para administradores
+      if (user.nivel_acesso === 1) {
+        document.getElementById('adminSection').style.display = 'block';
+      }
+    }
+
+    // Carregar dados do dashboard
+    async function loadDashboard() {
+      try {
+        // Carregar estatísticas
+        await loadStats();
+        
+        // Carregar olimpíadas
+        await loadOlimpiadas();
+        
+        // Carregar inscrições
+        await loadInscricoes();
+        
+        // Carregar medalhistas (se houver dados)
+        loadMedalhistas();
+      } catch (error) {
+        console.error('Erro ao carregar dashboard:', error);
+      }
+    }
+
+    async function loadStats() {
+      try {
+        // Olimpíadas ativas
+        const olimpiadas = await fetchAuth('/olimpiadas?status=inscricoes_abertas');
+        document.getElementById('statOlimpiadas').textContent = olimpiadas.count || 0;
+
+        // Total de alunos
+        const alunos = await fetchAuth('/alunos');
+        document.getElementById('statAlunos').textContent = alunos.count || 0;
+
+        // Inscrições 2025
+        const inscricoes = await fetchAuth('/inscricoes');
+        document.getElementById('statInscricoes').textContent = inscricoes.count || 0;
+
+        // Medalhas (placeholder)
+        document.getElementById('statMedalhas').textContent = '3';
+      } catch (error) {
+        console.error('Erro ao carregar estatísticas:', error);
+      }
+    }
+
+    async function loadOlimpiadas() {
+      try {
+        const data = await fetchAuth('/olimpiadas?limit=5');
+        const tbody = document.getElementById('olimpiadasTable');
+        
+        if (!data.data || data.data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" class="text-center">Nenhuma olimpíada cadastrada</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = data.data.map(o => {
+          const statusMap = {
+            'inscricoes_abertas': '<span class="badge badge-success">Inscrições Abertas</span>',
+            'inscricoes_encerradas': '<span class="badge badge-warning">Inscrições Encerradas</span>',
+            'em_andamento': '<span class="badge badge-primary">Em Andamento</span>',
+            'finalizada': '<span class="badge badge-danger">Finalizada</span>'
+          };
+
+          return `
+            <tr>
+              <td><strong>${o.nomeOlimpiada}</strong></td>
+              <td>${o.ano}</td>
+              <td>${statusMap[o.status] || o.status}</td>
+              <td>-</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (error) {
+        console.error('Erro ao carregar olimpíadas:', error);
+      }
+    }
+
+    async function loadInscricoes() {
+      try {
+        const data = await fetchAuth('/inscricoes?limit=10');
+        const tbody = document.getElementById('inscricoesTable');
+        
+        if (!data.data || data.data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhuma inscrição encontrada</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = data.data.slice(0, 10).map(i => {
+          const statusMap = {
+            'pendente': '<span class="badge badge-warning">Pendente</span>',
+            'confirmada': '<span class="badge badge-success">Confirmada</span>',
+            'cancelada': '<span class="badge badge-danger">Cancelada</span>'
+          };
+
+          return `
+            <tr>
+              <td>${i.nome_aluno || '-'}</td>
+              <td>${i.ra || '-'}</td>
+              <td>${i.nomeOlimpiada || '-'}</td>
+              <td>${formatDate(i.dataInscricao)}</td>
+              <td>${statusMap[i.statusInscricao] || i.statusInscricao}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (error) {
+        console.error('Erro ao carregar inscrições:', error);
+      }
+    }
+
+    async function loadMedalhistas() {
+      try {
+        const data = await fetchAuth('/resultados/medalhistas/1');
+        const container = document.getElementById('topMedalhistas');
+        
+        if (!data.data || data.data.length === 0) {
+          container.innerHTML = '<p class="text-center" style="color: var(--gray-600);">Nenhum medalhista ainda</p>';
+          return;
+        }
+
+        const medalIcons = {
+          'Ouro': '🥇',
+          'Prata': '🥈',
+          'Bronze': '🥉'
+        };
+
+        container.innerHTML = data.data.slice(0, 5).map(m => `
+          <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid var(--gray-200);">
+            <div style="font-size: 24px;">${medalIcons[m.tipoMedalha] || '🏅'}</div>
+            <div style="flex: 1;">
+              <div style="font-weight: 600; color: var(--gray-900);">${m.nome_aluno}</div>
+              <div style="font-size: 12px; color: var(--gray-600);">${m.ra} • ${m.pontuacao} pts</div>
+            </div>
+            <div class="badge badge-${m.tipoMedalha === 'Ouro' ? 'gold' : m.tipoMedalha === 'Prata' ? 'silver' : 'bronze'}">
+              ${m.tipoMedalha}
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Erro ao carregar medalhistas:', error);
+        document.getElementById('topMedalhistas').innerHTML = '<p class="text-center" style="color: var(--gray-600);">Erro ao carregar medalhistas</p>';
+      }
+    }
+
+    // Carregar dashboard ao iniciar
+    loadDashboard();
+  </script>
+</body>
+</html>

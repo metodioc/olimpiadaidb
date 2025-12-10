@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Olimpíadas - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item active">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Rankings</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title">Olimpíadas</h1>
+          <div class="breadcrumb">
+            <span>Olimpíadas</span>
+            <span class="breadcrumb-separator">/</span>
+            <span>Gerenciar</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="user-menu">
+            <div class="user-avatar" id="userAvatar">M</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Carregando...</div>
+              <div class="user-role" id="userRole">Administrador</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Filtros -->
+        <div class="flex-between mb-3">
+          <div class="flex gap-2">
+            <input 
+              type="search" 
+              class="form-input" 
+              placeholder="Buscar olimpíada..." 
+              id="searchInput"
+              style="width: 300px;"
+            >
+            <select class="form-select" id="filterStatus" style="width: 200px;">
+              <option value="">Todos os status</option>
+              <option value="inscricoes_abertas">Inscrições Abertas</option>
+              <option value="inscricoes_encerradas">Inscrições Encerradas</option>
+              <option value="em_andamento">Em Andamento</option>
+              <option value="finalizada">Finalizada</option>
+            </select>
+            <select class="form-select" id="filterAno" style="width: 150px;">
+              <option value="">Todos os anos</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="window.location.href='olimpiada-form.html'">
+            ➕ Nova Olimpíada
+          </button>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-icon blue">🏅</div>
+            <div class="stat-info">
+              <div class="stat-label">Total de Olimpíadas</div>
+              <div class="stat-value" id="totalOlimpiadas">-</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">✓</div>
+            <div class="stat-info">
+              <div class="stat-label">Inscrições Abertas</div>
+              <div class="stat-value" id="inscricoesAbertas">-</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">▶</div>
+            <div class="stat-info">
+              <div class="stat-label">Em Andamento</div>
+              <div class="stat-value" id="emAndamento">-</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">✔</div>
+            <div class="stat-info">
+              <div class="stat-label">Finalizadas</div>
+              <div class="stat-value" id="finalizadas">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid de Olimpíadas -->
+        <div id="olimpiadasGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px;">
+          <!-- Cards serão inseridos aqui -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    const token = checkAuth();
+    const user = getUser();
+
+    if (user) {
+      document.getElementById('userName').textContent = user.nome || user.email;
+      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
+      const nivelMap = { 1: 'Administrador', 2: 'Professor', 3: 'Aluno', 4: 'Responsável' };
+      document.getElementById('userRole').textContent = nivelMap[user.nivelAcesso] || 'Usuário';
+    }
+
+    // Mostrar seção de administração apenas para administradores
+    if (user.nivel_acesso === 1) {
+      document.getElementById('adminSection').style.display = 'block';
+    }
+
+    let olimpiadas = [];
+
+    async function loadOlimpiadas() {
+      try {
+        console.log('Iniciando carregamento de olimpíadas...');
+        const data = await fetchAuth('/olimpiadas');
+        console.log('Dados recebidos:', data);
+        olimpiadas = data.data || [];
+        console.log('Olimpíadas carregadas:', olimpiadas.length);
+        
+        // Preencher anos
+        const anos = [...new Set(olimpiadas.map(o => o.ano))].sort((a, b) => b - a);
+        const filterAno = document.getElementById('filterAno');
+        filterAno.innerHTML = '<option value="">Todos os anos</option>' +
+          anos.map(ano => `<option value="${ano}">${ano}</option>`).join('');
+        
+        renderOlimpiadas();
+        updateStats();
+      } catch (error) {
+        console.error('Erro ao carregar olimpíadas:', error);
+        showNotification('Erro ao carregar olimpíadas', 'error');
+      }
+    }
+
+    function renderOlimpiadas() {
+      console.log('Renderizando olimpíadas...');
+      const grid = document.getElementById('olimpiadasGrid');
+      console.log('Grid element:', grid);
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const filterStatus = document.getElementById('filterStatus').value;
+      const filterAno = document.getElementById('filterAno').value;
+
+      let filtered = olimpiadas.filter(o => {
+        const matchSearch = !searchTerm || 
+          (o.nomeOlimpiada?.toLowerCase().includes(searchTerm)) ||
+          (o.abreviacaoOlimpiada?.toLowerCase().includes(searchTerm));
+        const matchStatus = !filterStatus || o.status === filterStatus;
+        const matchAno = !filterAno || o.ano == filterAno;
+        return matchSearch && matchStatus && matchAno;
+      });
+
+      console.log('Olimpíadas filtradas:', filtered.length);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--gray-600);">Nenhuma olimpíada encontrada</div>';
+        return;
+      }
+
+      const statusConfig = {
+        'inscricoes_abertas': { badge: 'success', icon: '🟢', text: 'Inscrições Abertas' },
+        'inscricoes_encerradas': { badge: 'warning', icon: '🟡', text: 'Inscrições Encerradas' },
+        'em_andamento': { badge: 'primary', icon: '🔵', text: 'Em Andamento' },
+        'finalizada': { badge: 'danger', icon: '⚫', text: 'Finalizada' }
+      };
+
+      grid.innerHTML = filtered.map(o => {
+        const status = statusConfig[o.status] || { badge: 'primary', icon: '🔵', text: o.status };
+        
+        return `
+          <div class="card" style="margin: 0;">
+            <div class="card-header" style="background: linear-gradient(135deg, var(--primary-blue-light), var(--primary-blue)); color: white;">
+              <div>
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">${o.nomeOlimpiada}</h3>
+                <div style="font-size: 14px; opacity: 0.9;">${o.abreviacaoOlimpiada || ''} • ${o.ano}</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="color: var(--gray-600); font-size: 14px;">Status:</span>
+                  <span class="badge badge-${status.badge}">${status.icon} ${status.text}</span>
+                </div>
+                
+                ${o.dataLimiteInscricao ? `
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--gray-600); font-size: 14px;">Limite Inscrição:</span>
+                    <strong>${formatDate(o.dataLimiteInscricao)}</strong>
+                  </div>
+                ` : ''}
+                
+                ${o.dataAplicacao ? `
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--gray-600); font-size: 14px;">Data Aplicação:</span>
+                    <strong>${formatDate(o.dataAplicacao)}</strong>
+                  </div>
+                ` : ''}
+                
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="color: var(--gray-600); font-size: 14px;">Tipo:</span>
+                  <span>${o.tipoAplicacao || '-'}</span>
+                </div>
+                
+                ${o.observacoes ? `
+                  <div style="padding-top: 12px; border-top: 1px solid var(--gray-200);">
+                    <p style="font-size: 13px; color: var(--gray-600); margin: 0;">${o.observacoes}</p>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="flex gap-2">
+                <button class="btn btn-sm btn-primary" onclick="verDetalhes(${o.idOlimpiada})" style="flex: 1;">
+                  👁️ Detalhes
+                </button>
+                <button class="btn btn-sm btn-success" onclick="verInscricoes(${o.idOlimpiada})" title="Gerenciar Inscrições">
+                  📝 Inscrições
+                </button>
+                <button class="btn btn-sm btn-secondary" onclick="window.location.href='olimpiada-form.html?id=${o.idOlimpiada}'" title="Editar">
+                  ✏️
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateStats() {
+      document.getElementById('totalOlimpiadas').textContent = olimpiadas.length;
+      document.getElementById('inscricoesAbertas').textContent = olimpiadas.filter(o => o.status === 'inscricoes_abertas').length;
+      document.getElementById('emAndamento').textContent = olimpiadas.filter(o => o.status === 'em_andamento').length;
+      document.getElementById('finalizadas').textContent = olimpiadas.filter(o => o.status === 'finalizada').length;
+    }
+
+    function verDetalhes(id) {
+      const olimpiada = olimpiadas.find(o => o.idOlimpiada === id);
+      if (!olimpiada) return;
+      
+      alert(`Olimpíada: ${olimpiada.nomeOlimpiada}\nAno: ${olimpiada.ano}\nStatus: ${olimpiada.status}\n\nFuncionalidade de detalhes em desenvolvimento`);
+    }
+
+    function editarOlimpiada(id) {
+      window.location.href = `olimpiada-form.html?id=${id}`;
+    }
+
+    function verInscricoes(id) {
+      window.location.href = `olimpiada-inscricoes.html?id=${id}`;
+    }
+
+    function showNovaOlimpiadaModal() {
+      showNotification('Modal de nova olimpíada em desenvolvimento', 'info');
+    }
+
+    // Event listeners
+    document.getElementById('searchInput').addEventListener('input', debounce(renderOlimpiadas, 300));
+    document.getElementById('filterStatus').addEventListener('change', renderOlimpiadas);
+    document.getElementById('filterAno').addEventListener('change', renderOlimpiadas);
+
+    // Carregar olimpíadas
+    loadOlimpiadas();
+  </script>
+</body>
+</html>
