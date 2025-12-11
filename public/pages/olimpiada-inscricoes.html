@@ -334,8 +334,17 @@
     // Carregar séries da filial
     async function carregarSeries() {
       const filialId = document.getElementById('selectFilial').value;
+      
+      // Limpar séries e turmas ao trocar de filial
+      series = [];
+      turmas = [];
+      document.getElementById('selectSerie').innerHTML = '<option value="">Selecione a série</option>';
+      document.getElementById('selectSerieTurma').innerHTML = '<option value="">Selecione a série</option>';
+      document.getElementById('selectTurma').innerHTML = '<option value="">Selecione a turma</option>';
+      document.getElementById('infoSerie').textContent = '';
+      document.getElementById('infoTurma').textContent = '';
+      
       if (!filialId) {
-        series = [];
         return;
       }
 
@@ -364,9 +373,12 @@
       const serieId = document.getElementById('selectSerieTurma').value;
       const filialId = document.getElementById('selectFilial').value;
       
+      // Limpar turmas e info ao trocar de série
+      turmas = [];
+      document.getElementById('selectTurma').innerHTML = '<option value="">Selecione a turma</option>';
+      document.getElementById('infoTurma').textContent = '';
+      
       if (!serieId || !filialId) {
-        turmas = [];
-        document.getElementById('selectTurma').innerHTML = '<option value="">Selecione a turma</option>';
         return;
       }
 
