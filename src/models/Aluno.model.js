@@ -9,7 +9,7 @@ class AlunoModel {
    * Contar total de alunos com filtros
    */
   static async countAll(filters = {}) {
-    const { idTurma, idFilial, search, situacao } = filters;
+    const { idTurma, idFilial, idSerie, search, situacao } = filters;
     
     let query = `
       SELECT COUNT(*) as total
@@ -27,6 +27,11 @@ class AlunoModel {
     if (idTurma) {
       query += ' AND a.idTurma = ?';
       params.push(idTurma);
+    }
+    
+    if (idSerie) {
+      query += ' AND s.idSerie = ?';
+      params.push(idSerie);
     }
     
     if (idFilial) {
@@ -52,7 +57,7 @@ class AlunoModel {
    * Listar todos os alunos com paginação e filtro por ano letivo ativo
    */
   static async findAll(filters = {}) {
-    const { idTurma, idFilial, search, situacao, page = 1, limit = 50 } = filters;
+    const { idTurma, idFilial, idSerie, search, situacao, page = 1, limit = 50 } = filters;
     const offset = (page - 1) * limit;
     
     // Primeiro, contar o total
@@ -84,6 +89,11 @@ class AlunoModel {
     if (idTurma) {
       query += ' AND a.idTurma = ?';
       params.push(idTurma);
+    }
+    
+    if (idSerie) {
+      query += ' AND s.idSerie = ?';
+      params.push(idSerie);
     }
     
     if (idFilial) {

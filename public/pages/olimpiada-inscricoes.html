@@ -404,7 +404,7 @@
       if (!serieId || !filialId) return;
 
       try {
-        const response = await fetchAuth(`/alunos?idSerie=${serieId}&idFilial=${filialId}&limit=99999`);
+        const response = await fetchAuth(`/alunos?idSerie=${serieId}&idFilial=${filialId}&situacao=Matriculado&limit=99999`);
         const alunos = response.data || [];
         document.getElementById('infoSerie').textContent = 
           `${alunos.length} aluno(s) encontrado(s) nesta série`;
@@ -420,7 +420,7 @@
       if (!turmaId) return;
 
       try {
-        const response = await fetchAuth(`/alunos?idTurma=${turmaId}&limit=99999`);
+        const response = await fetchAuth(`/alunos?idTurma=${turmaId}&situacao=Matriculado&limit=99999`);
         const alunos = response.data || [];
         document.getElementById('infoTurma').textContent = 
           `${alunos.length} aluno(s) encontrado(s) nesta turma`;
