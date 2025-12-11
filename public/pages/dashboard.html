@@ -283,15 +283,15 @@
       try {
         // Olimpíadas ativas
         const olimpiadas = await fetchAuth('/olimpiadas?status=inscricoes_abertas');
-        document.getElementById('statOlimpiadas').textContent = olimpiadas.count || 0;
+        document.getElementById('statOlimpiadas').textContent = olimpiadas.total || 0;
 
         // Total de alunos
         const alunos = await fetchAuth('/alunos');
-        document.getElementById('statAlunos').textContent = alunos.count || 0;
+        document.getElementById('statAlunos').textContent = alunos.count || alunos.total || 0;
 
         // Inscrições 2025
         const inscricoes = await fetchAuth('/inscricoes');
-        document.getElementById('statInscricoes').textContent = inscricoes.count || 0;
+        document.getElementById('statInscricoes').textContent = inscricoes.count || inscricoes.total || 0;
 
         // Medalhas (placeholder)
         document.getElementById('statMedalhas').textContent = '3';
