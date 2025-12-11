@@ -126,6 +126,7 @@ const tipoCorrecaoRoutes = require('./routes/tipoCorrecao.routes');
 const usuarioRoutes = require('./routes/usuario.routes');
 const localAplicacaoRoutes = require('./routes/localAplicacao.routes');
 const tipoPagamentoRoutes = require('./routes/tipoPagamento.routes');
+const sincronizacaoRoutes = require('./routes/sincronizacao.routes');
 
 // Usar rotas
 app.use('/api/auth', authRoutes);
@@ -141,6 +142,7 @@ app.use('/api/tipos-correcao', tipoCorrecaoRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/locais-aplicacao', localAplicacaoRoutes);
 app.use('/api/tipos-pagamento', tipoPagamentoRoutes);
+app.use('/api/sincronizacao', sincronizacaoRoutes);
 
 // ===================================
 // TRATAMENTO DE ERROS
