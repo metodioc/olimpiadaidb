@@ -166,7 +166,7 @@ class InscricaoModel {
       FROM tb_aluno a
       INNER JOIN tb_turma t ON a.idTurma = t.idTurma
       INNER JOIN tb_ano_letivo al ON t.idAnoLetivo = al.idAnoLetivo
-      WHERE a.idTurma = ? AND a.situacao = "ativo" AND al.status = "ativo"`,
+      WHERE a.idTurma = ? AND a.situacao = "Matriculado" AND al.status = "ativo"`,
       [idTurma]
     );
     
@@ -184,7 +184,7 @@ class InscricaoModel {
       INNER JOIN tb_turma t ON a.idTurma = t.idTurma
       INNER JOIN tb_serie s ON t.idSerie = s.idSerie
       INNER JOIN tb_ano_letivo al ON t.idAnoLetivo = al.idAnoLetivo
-      WHERE s.idSerie = ? AND s.idFilial = ? AND a.situacao = "ativo" AND al.status = "ativo"`,
+      WHERE s.idSerie = ? AND s.idFilial = ? AND a.situacao = "Matriculado" AND al.status = "ativo"`,
       [idSerie, idFilial]
     );
     
