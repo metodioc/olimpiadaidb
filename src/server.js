@@ -127,6 +127,11 @@ const usuarioRoutes = require('./routes/usuario.routes');
 const localAplicacaoRoutes = require('./routes/localAplicacao.routes');
 const tipoPagamentoRoutes = require('./routes/tipoPagamento.routes');
 const sincronizacaoRoutes = require('./routes/sincronizacao.routes');
+const sincronizacaoPessoaRoutes = require('./routes/sincronizacaoPessoa.routes');
+const sincronizacaoFilialRoutes = require('./routes/sincronizacaoFilial.routes');
+const sincronizacaoSerieRoutes = require('./routes/sincronizacaoSerie.routes');
+const sincronizacaoTurmaRoutes = require('./routes/sincronizacaoTurma.routes');
+const sincronizacaoAnoLetivoRoutes = require('./routes/sincronizacaoAnoLetivo.routes');
 
 // Usar rotas
 app.use('/api/auth', authRoutes);
@@ -143,6 +148,11 @@ app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/locais-aplicacao', localAplicacaoRoutes);
 app.use('/api/tipos-pagamento', tipoPagamentoRoutes);
 app.use('/api/sincronizacao', sincronizacaoRoutes);
+app.use('/api/sincronizacao', sincronizacaoPessoaRoutes);
+app.use('/api/sincronizacao', sincronizacaoFilialRoutes);
+app.use('/api/sincronizacao', sincronizacaoSerieRoutes);
+app.use('/api/sincronizacao/turmas', sincronizacaoTurmaRoutes);
+app.use('/api/sincronizacao', sincronizacaoAnoLetivoRoutes);
 
 // ===================================
 // TRATAMENTO DE ERROS
@@ -182,6 +192,12 @@ const startServer = async () => {
       console.warn('⚠️  Servidor iniciado sem conexão com o banco de dados');
     }
     
+    // Iniciar cron job de sincronização TOTVS (não executar em testes)
+    if (process.env.NODE_ENV !== 'test') {
+      const SincronizacaoJob = require('./jobs/sincronizacao.job');
+      SincronizacaoJob.iniciar();
+    }
+    
     // Iniciar servidor
     app.listen(PORT, () => {
       console.log('='.repeat(50));
@@ -198,6 +214,9 @@ const startServer = async () => {
   }
 };
 
-startServer();
+// Só iniciar servidor se não estiver em ambiente de teste
+if (process.env.NODE_ENV !== 'test') {
+  startServer();
+}
 
 module.exports = app;
