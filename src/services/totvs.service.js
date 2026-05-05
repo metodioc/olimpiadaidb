@@ -192,7 +192,7 @@ class TotvsService {
     const status = statusRaw === 'inativo' ? 'inativo' : 'ativo';
 
     return {
-      anoLetivo: parseInt(totvsAnoLetivo.anoLetivo),
+      anoLetivo: parseInt(totvsAnoLetivo.ANOLETIVO || totvsAnoLetivo.anoLetivo),
       status
     };
   }

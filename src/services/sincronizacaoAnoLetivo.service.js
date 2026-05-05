@@ -74,9 +74,9 @@ class SincronizacaoAnoLetivoService {
           }
 
         } catch (error) {
-          console.error(`Erro ao processar ano letivo ${totvsAnoLetivo.anoLetivo || 'desconhecido'}:`, error.message);
+          console.error(`Erro ao processar ano letivo ${totvsAnoLetivo.ANOLETIVO || totvsAnoLetivo.anoLetivo || 'desconhecido'}:`, error.message);
           resultado.erros.push({
-            anoLetivo: totvsAnoLetivo.anoLetivo,
+            anoLetivo: totvsAnoLetivo.ANOLETIVO || totvsAnoLetivo.anoLetivo,
             erro: error.message
           });
         }
