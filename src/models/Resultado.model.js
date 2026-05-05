@@ -9,6 +9,7 @@ class Resultado {
   static async findAll(filters = {}) {
     let query = `
       SELECT 
+        DISTINCT
         r.idOlimpiadaResultado,
         r.idOlimpiadaInscricao,
         r.idTipoMedalha,
@@ -30,9 +31,20 @@ class Resultado {
       INNER JOIN tb_olimpiada_inscricao i ON r.idOlimpiadaInscricao = i.idOlimpiadaInscricao
       INNER JOIN tb_olimpiada o ON i.idOlimpiada = o.idOlimpiada
       INNER JOIN tb_aluno a ON i.idAluno = a.idAluno
-      INNER JOIN tb_pessoa p ON a.idPessoa = p.idPessoa
+      LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
+      LEFT JOIN (
+        SELECT codPessoa, MAX(nome) as nome
+        FROM tb_pessoa
+        WHERE codPessoa IS NOT NULL
+        GROUP BY codPessoa
+      ) p ON a.codPessoa = p.codPessoa
       LEFT JOIN tb_tipo_medalha tm ON r.idTipoMedalha = tm.idTipoMedalha
-      LEFT JOIN tb_turma t ON a.idTurma = t.idTurma
+      LEFT JOIN (
+        SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
+        FROM tb_turma
+        GROUP BY codTurma, idAnoLetivo
+      ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
+      LEFT JOIN tb_turma t ON t.idTurma = t_map.idTurma
       LEFT JOIN tb_serie s ON t.idSerie = s.idSerie
       LEFT JOIN tb_filial f ON s.idFilial = f.idFilial
       WHERE 1=1
@@ -69,6 +81,7 @@ class Resultado {
   static async findById(id) {
     const query = `
       SELECT 
+        DISTINCT
         r.idOlimpiadaResultado,
         r.idOlimpiadaInscricao,
         r.idTipoMedalha,
@@ -90,9 +103,20 @@ class Resultado {
       INNER JOIN tb_olimpiada_inscricao i ON r.idOlimpiadaInscricao = i.idOlimpiadaInscricao
       INNER JOIN tb_olimpiada o ON i.idOlimpiada = o.idOlimpiada
       INNER JOIN tb_aluno a ON i.idAluno = a.idAluno
-      INNER JOIN tb_pessoa p ON a.idPessoa = p.idPessoa
+      LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
+      LEFT JOIN (
+        SELECT codPessoa, MAX(nome) as nome
+        FROM tb_pessoa
+        WHERE codPessoa IS NOT NULL
+        GROUP BY codPessoa
+      ) p ON a.codPessoa = p.codPessoa
       LEFT JOIN tb_tipo_medalha tm ON r.idTipoMedalha = tm.idTipoMedalha
-      LEFT JOIN tb_turma t ON a.idTurma = t.idTurma
+      LEFT JOIN (
+        SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
+        FROM tb_turma
+        GROUP BY codTurma, idAnoLetivo
+      ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
+      LEFT JOIN tb_turma t ON t.idTurma = t_map.idTurma
       LEFT JOIN tb_serie s ON t.idSerie = s.idSerie
       LEFT JOIN tb_filial f ON s.idFilial = f.idFilial
       WHERE r.idOlimpiadaResultado = ?
@@ -228,8 +252,19 @@ class Resultado {
       FROM tb_olimpiada_resultado r
       INNER JOIN tb_olimpiada_inscricao i ON r.idOlimpiadaInscricao = i.idOlimpiadaInscricao
       INNER JOIN tb_aluno a ON i.idAluno = a.idAluno
-      INNER JOIN tb_pessoa p ON a.idPessoa = p.idPessoa
-      LEFT JOIN tb_turma t ON a.idTurma = t.idTurma
+      LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
+      LEFT JOIN (
+        SELECT codPessoa, MAX(nome) as nome
+        FROM tb_pessoa
+        WHERE codPessoa IS NOT NULL
+        GROUP BY codPessoa
+      ) p ON a.codPessoa = p.codPessoa
+      LEFT JOIN (
+        SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
+        FROM tb_turma
+        GROUP BY codTurma, idAnoLetivo
+      ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
+      LEFT JOIN tb_turma t ON t.idTurma = t_map.idTurma
       LEFT JOIN tb_serie s ON t.idSerie = s.idSerie
       LEFT JOIN tb_filial f ON s.idFilial = f.idFilial
       LEFT JOIN tb_tipo_medalha tm ON r.idTipoMedalha = tm.idTipoMedalha,
@@ -263,8 +298,19 @@ class Resultado {
       FROM tb_olimpiada_resultado r
       INNER JOIN tb_olimpiada_inscricao i ON r.idOlimpiadaInscricao = i.idOlimpiadaInscricao
       INNER JOIN tb_aluno a ON i.idAluno = a.idAluno
-      INNER JOIN tb_pessoa p ON a.idPessoa = p.idPessoa
-      LEFT JOIN tb_turma t ON a.idTurma = t.idTurma
+      LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
+      LEFT JOIN (
+        SELECT codPessoa, MAX(nome) as nome
+        FROM tb_pessoa
+        WHERE codPessoa IS NOT NULL
+        GROUP BY codPessoa
+      ) p ON a.codPessoa = p.codPessoa
+      LEFT JOIN (
+        SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
+        FROM tb_turma
+        GROUP BY codTurma, idAnoLetivo
+      ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
+      LEFT JOIN tb_turma t ON t.idTurma = t_map.idTurma
       LEFT JOIN tb_serie s ON t.idSerie = s.idSerie
       LEFT JOIN tb_filial f ON s.idFilial = f.idFilial
       LEFT JOIN tb_tipo_medalha tm ON r.idTipoMedalha = tm.idTipoMedalha,
@@ -285,6 +331,7 @@ class Resultado {
   static async getMedalhistas(idOlimpiada) {
     const query = `
       SELECT 
+        DISTINCT
         p.nome AS nome_aluno,
         a.ra,
         r.pontuacao,
@@ -295,9 +342,20 @@ class Resultado {
       FROM tb_olimpiada_resultado r
       INNER JOIN tb_olimpiada_inscricao i ON r.idOlimpiadaInscricao = i.idOlimpiadaInscricao
       INNER JOIN tb_aluno a ON i.idAluno = a.idAluno
-      INNER JOIN tb_pessoa p ON a.idPessoa = p.idPessoa
+      LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
+      LEFT JOIN (
+        SELECT codPessoa, MAX(nome) as nome
+        FROM tb_pessoa
+        WHERE codPessoa IS NOT NULL
+        GROUP BY codPessoa
+      ) p ON a.codPessoa = p.codPessoa
       INNER JOIN tb_tipo_medalha tm ON r.idTipoMedalha = tm.idTipoMedalha
-      LEFT JOIN tb_turma t ON a.idTurma = t.idTurma
+      LEFT JOIN (
+        SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
+        FROM tb_turma
+        GROUP BY codTurma, idAnoLetivo
+      ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
+      LEFT JOIN tb_turma t ON t.idTurma = t_map.idTurma
       LEFT JOIN tb_serie s ON t.idSerie = s.idSerie
       LEFT JOIN tb_filial f ON s.idFilial = f.idFilial
       WHERE i.idOlimpiada = ? AND r.idTipoMedalha IS NOT NULL

@@ -9,23 +9,41 @@ class AlunoModel {
    * Contar total de alunos com filtros
    */
   static async countAll(filters = {}) {
-    const { idTurma, idFilial, idSerie, search, situacao } = filters;
+    const { idTurma, idFilial, idSerie, search, situacao, anoLetivo } = filters;
     
     let query = `
-      SELECT COUNT(*) as total
+      SELECT COUNT(DISTINCT a.idAluno) as total
       FROM tb_aluno a
-      INNER JOIN tb_pessoa p ON a.idPessoa = p.idPessoa
-      LEFT JOIN tb_turma t ON a.idTurma = t.idTurma
+      LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
+      LEFT JOIN (
+        SELECT codPessoa, MAX(nome) as nome
+        FROM tb_pessoa
+        WHERE codPessoa IS NOT NULL
+        GROUP BY codPessoa
+      ) p ON a.codPessoa = p.codPessoa
+      LEFT JOIN (
+        SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
+        FROM tb_turma
+        GROUP BY codTurma, idAnoLetivo
+      ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
+      LEFT JOIN tb_turma t ON t.idTurma = t_map.idTurma
       LEFT JOIN tb_serie s ON t.idSerie = s.idSerie
       LEFT JOIN tb_filial f ON s.idFilial = f.idFilial
-      LEFT JOIN tb_ano_letivo al ON t.idAnoLetivo = al.idAnoLetivo
-      WHERE (al.status = 'ativo' OR al.status IS NULL)
+      WHERE 1=1
     `;
     
     const params = [];
+
+    if (anoLetivo) {
+      query += ' AND a.anoLetivo = ?';
+      params.push(parseInt(anoLetivo));
+    } else {
+      // fallback: ano letivo ativo
+      query += ' AND (al.status = \'ativo\' OR al.anoLetivo = YEAR(CURDATE()))';
+    }
     
     if (idTurma) {
-      query += ' AND a.idTurma = ?';
+      query += ' AND t.idTurma = ?';
       params.push(idTurma);
     }
     
@@ -35,7 +53,7 @@ class AlunoModel {
     }
     
     if (idFilial) {
-      query += ' AND s.idFilial = ?';
+      query += ' AND f.idFilial = ?';
       params.push(idFilial);
     }
     
@@ -54,10 +72,10 @@ class AlunoModel {
   }
 
   /**
-   * Listar todos os alunos com paginação e filtro por ano letivo ativo
+   * Listar todos os alunos com paginação filtrado por ano letivo
    */
   static async findAll(filters = {}) {
-    const { idTurma, idFilial, idSerie, search, situacao, page = 1, limit = 50 } = filters;
+    const { idTurma, idFilial, idSerie, search, situacao, anoLetivo, page = 1, limit = 50 } = filters;
     const offset = (page - 1) * limit;
     
     // Primeiro, contar o total
@@ -76,18 +94,35 @@ class AlunoModel {
         f.filial as filial_nome,
         al.anoLetivo
       FROM tb_aluno a
-      INNER JOIN tb_pessoa p ON a.idPessoa = p.idPessoa
-      LEFT JOIN tb_turma t ON a.idTurma = t.idTurma
+      LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
+      LEFT JOIN (
+        SELECT codPessoa, MAX(nome) as nome, MAX(email) as email, MAX(dtnasc) as dtnasc
+        FROM tb_pessoa
+        WHERE codPessoa IS NOT NULL
+        GROUP BY codPessoa
+      ) p ON a.codPessoa = p.codPessoa
+      LEFT JOIN (
+        SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
+        FROM tb_turma
+        GROUP BY codTurma, idAnoLetivo
+      ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
+      LEFT JOIN tb_turma t ON t.idTurma = t_map.idTurma
       LEFT JOIN tb_serie s ON t.idSerie = s.idSerie
       LEFT JOIN tb_filial f ON s.idFilial = f.idFilial
-      LEFT JOIN tb_ano_letivo al ON t.idAnoLetivo = al.idAnoLetivo
-      WHERE (al.status = 'ativo' OR al.status IS NULL)
+      WHERE 1=1
     `;
     
     const params = [];
+
+    if (anoLetivo) {
+      query += ' AND a.anoLetivo = ?';
+      params.push(parseInt(anoLetivo));
+    } else {
+      query += ' AND (al.status = \'ativo\' OR al.anoLetivo = YEAR(CURDATE()))';
+    }
     
     if (idTurma) {
-      query += ' AND a.idTurma = ?';
+      query += ' AND t.idTurma = ?';
       params.push(idTurma);
     }
     
@@ -97,7 +132,7 @@ class AlunoModel {
     }
     
     if (idFilial) {
-      query += ' AND s.idFilial = ?';
+      query += ' AND f.idFilial = ?';
       params.push(idFilial);
     }
     
@@ -112,7 +147,7 @@ class AlunoModel {
     }
     
     query += ' ORDER BY p.nome ASC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), parseInt(offset));
+    params.push(Number(limit), Number(offset));
     
     const [rows] = await pool.query(query, params);
     
@@ -142,8 +177,19 @@ class AlunoModel {
         s.serie as serie_nome,
         f.filial as filial_nome
       FROM tb_aluno a
-      INNER JOIN tb_pessoa p ON a.idPessoa = p.idPessoa
-      LEFT JOIN tb_turma t ON a.idTurma = t.idTurma
+      LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
+      LEFT JOIN (
+        SELECT codPessoa, MAX(nome) as nome, MAX(email) as email, MAX(dtnasc) as dtnasc
+        FROM tb_pessoa
+        WHERE codPessoa IS NOT NULL
+        GROUP BY codPessoa
+      ) p ON a.codPessoa = p.codPessoa
+      LEFT JOIN (
+        SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
+        FROM tb_turma
+        GROUP BY codTurma, idAnoLetivo
+      ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
+      LEFT JOIN tb_turma t ON t.idTurma = t_map.idTurma
       LEFT JOIN tb_serie s ON t.idSerie = s.idSerie
       LEFT JOIN tb_filial f ON s.idFilial = f.idFilial
       WHERE a.idAluno = ?`,
@@ -156,13 +202,35 @@ class AlunoModel {
    * Criar novo aluno
    */
   static async create(alunoData) {
-    const { ra, situacao, tipo, sistema, idGrupoEscola, idPessoa, idTurma } = alunoData;
+    const {
+      ra,
+      situacao,
+      tipo,
+      sistema,
+      idGrupoEscola,
+      codPessoa,
+      codTurma,
+      codFilial,
+      codSerie,
+      anoLetivo
+    } = alunoData;
     
     const [result] = await pool.query(
       `INSERT INTO tb_aluno 
-        (ra, situacao, tipo, sistema, idGrupoEscola, idPessoa, idTurma) 
-      VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [ra, situacao || 'ativo', tipo || 'regular', sistema || 'SIEEESP', idGrupoEscola || null, idPessoa, idTurma]
+        (ra, situacao, tipo, sistema, idGrupoEscola, codPessoa, codTurma, codFilial, codSerie, anoLetivo) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        ra,
+        situacao || 'ativo',
+        tipo || 'regular',
+        sistema || 'SIEEESP',
+        idGrupoEscola || null,
+        codPessoa || null,
+        codTurma || null,
+        codFilial || null,
+        codSerie || null,
+        anoLetivo || new Date().getFullYear()
+      ]
     );
     
     return this.findById(result.insertId);
@@ -172,13 +240,36 @@ class AlunoModel {
    * Atualizar aluno
    */
   static async update(id, alunoData) {
-    const { ra, situacao, tipo, sistema, idGrupoEscola, idTurma } = alunoData;
+    const {
+      ra,
+      situacao,
+      tipo,
+      sistema,
+      idGrupoEscola,
+      codPessoa,
+      codTurma,
+      codFilial,
+      codSerie,
+      anoLetivo
+    } = alunoData;
     
     await pool.query(
       `UPDATE tb_aluno 
-      SET ra = ?, situacao = ?, tipo = ?, sistema = ?, idGrupoEscola = ?, idTurma = ?
+      SET ra = ?, situacao = ?, tipo = ?, sistema = ?, idGrupoEscola = ?, codPessoa = ?, codTurma = ?, codFilial = ?, codSerie = ?, anoLetivo = ?
       WHERE idAluno = ?`,
-      [ra, situacao, tipo, sistema, idGrupoEscola || null, idTurma, id]
+      [
+        ra,
+        situacao,
+        tipo,
+        sistema,
+        idGrupoEscola || null,
+        codPessoa || null,
+        codTurma || null,
+        codFilial || null,
+        codSerie || null,
+        anoLetivo || null,
+        id
+      ]
     );
     
     return this.findById(id);

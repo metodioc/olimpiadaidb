@@ -11,8 +11,11 @@ const validateCreateAluno = [
   body('tipo').optional().isIn(['regular', 'bolsista', 'especial']),
   body('sistema').optional().trim(),
   body('idGrupoEscola').optional().isInt(),
-  body('idPessoa').isInt().withMessage('ID da pessoa deve ser um número'),
-  body('idTurma').isInt().withMessage('ID da turma deve ser um número')
+  body('codPessoa').optional().isString().withMessage('Código da pessoa inválido'),
+  body('codTurma').optional().isString().withMessage('Código da turma inválido'),
+  body('codFilial').optional().isString().withMessage('Código da filial inválido'),
+  body('codSerie').optional().isString().withMessage('Código da série inválido'),
+  body('anoLetivo').optional().isInt({ min: 2000, max: 2100 }).withMessage('Ano letivo inválido')
 ];
 
 const validateId = [

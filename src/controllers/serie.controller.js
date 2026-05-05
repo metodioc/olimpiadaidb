@@ -5,7 +5,8 @@ class SerieController {
   
   static async list(req, res) {
     try {
-      const series = await SerieModel.findAll();
+      const { idFilial } = req.query;
+      const series = await SerieModel.findAll({ idFilial });
       res.status(200).json({
         success: true,
         count: series.length,

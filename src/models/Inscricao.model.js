@@ -22,10 +22,21 @@ class InscricaoModel {
       FROM tb_olimpiada_inscricao i
       INNER JOIN tb_olimpiada o ON i.idOlimpiada = o.idOlimpiada
       INNER JOIN tb_aluno a ON i.idAluno = a.idAluno
-      INNER JOIN tb_pessoa p ON a.idPessoa = p.idPessoa
-      INNER JOIN tb_turma t ON a.idTurma = t.idTurma
-      INNER JOIN tb_serie s ON t.idSerie = s.idSerie
-      INNER JOIN tb_filial f ON s.idFilial = f.idFilial
+      LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
+      LEFT JOIN (
+        SELECT codPessoa, MAX(nome) as nome
+        FROM tb_pessoa
+        WHERE codPessoa IS NOT NULL
+        GROUP BY codPessoa
+      ) p ON a.codPessoa = p.codPessoa
+      LEFT JOIN (
+        SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
+        FROM tb_turma
+        GROUP BY codTurma, idAnoLetivo
+      ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
+      LEFT JOIN tb_turma t ON t.idTurma = t_map.idTurma
+      LEFT JOIN tb_serie s ON t.idSerie = s.idSerie
+      LEFT JOIN tb_filial f ON s.idFilial = f.idFilial
       WHERE 1=1
     `;
     
@@ -44,6 +55,11 @@ class InscricaoModel {
     if (filters.statusInscricao) {
       query += ' AND i.statusInscricao = ?';
       params.push(filters.statusInscricao);
+    }
+
+    if (filters.anoLetivo) {
+      query += ' AND o.ano = ?';
+      params.push(parseInt(filters.anoLetivo));
     }
     
     query += ' ORDER BY i.dataInscricao DESC';
@@ -65,7 +81,12 @@ class InscricaoModel {
       FROM tb_olimpiada_inscricao i
       INNER JOIN tb_olimpiada o ON i.idOlimpiada = o.idOlimpiada
       INNER JOIN tb_aluno a ON i.idAluno = a.idAluno
-      INNER JOIN tb_pessoa p ON a.idPessoa = p.idPessoa
+      LEFT JOIN (
+        SELECT codPessoa, MAX(nome) as nome
+        FROM tb_pessoa
+        WHERE codPessoa IS NOT NULL
+        GROUP BY codPessoa
+      ) p ON a.codPessoa = p.codPessoa
       WHERE i.idOlimpiadaInscricao = ?`,
       [id]
     );
@@ -162,11 +183,16 @@ class InscricaoModel {
    */
   static async enrollByTurma(idOlimpiada, idTurma) {
     const [alunos] = await pool.query(
-      `SELECT a.idAluno 
+      `SELECT DISTINCT a.idAluno 
       FROM tb_aluno a
-      INNER JOIN tb_turma t ON a.idTurma = t.idTurma
-      INNER JOIN tb_ano_letivo al ON t.idAnoLetivo = al.idAnoLetivo
-      WHERE a.idTurma = ? AND a.situacao = "Matriculado" AND al.status = "ativo"`,
+      INNER JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
+      INNER JOIN (
+        SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
+        FROM tb_turma
+        GROUP BY codTurma, idAnoLetivo
+      ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
+      INNER JOIN tb_turma t ON t.idTurma = t_map.idTurma
+      WHERE t.idTurma = ? AND a.situacao = "Matriculado" AND al.status = "ativo"`,
       [idTurma]
     );
     
@@ -179,11 +205,16 @@ class InscricaoModel {
    */
   static async enrollBySerie(idOlimpiada, idSerie, idFilial) {
     const [alunos] = await pool.query(
-      `SELECT a.idAluno 
+      `SELECT DISTINCT a.idAluno 
       FROM tb_aluno a
-      INNER JOIN tb_turma t ON a.idTurma = t.idTurma
+      INNER JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
+      INNER JOIN (
+        SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
+        FROM tb_turma
+        GROUP BY codTurma, idAnoLetivo
+      ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
+      INNER JOIN tb_turma t ON t.idTurma = t_map.idTurma
       INNER JOIN tb_serie s ON t.idSerie = s.idSerie
-      INNER JOIN tb_ano_letivo al ON t.idAnoLetivo = al.idAnoLetivo
       WHERE s.idSerie = ? AND s.idFilial = ? AND a.situacao = "Matriculado" AND al.status = "ativo"`,
       [idSerie, idFilial]
     );

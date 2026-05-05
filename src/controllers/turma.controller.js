@@ -5,8 +5,8 @@ class TurmaController {
   
   static async list(req, res) {
     try {
-      const { idFilial, idSerie, idAnoLetivo } = req.query;
-      const turmas = await TurmaModel.findAll({ idFilial, idSerie, idAnoLetivo });
+      const { idFilial, idSerie, idAnoLetivo, anoLetivo } = req.query;
+      const turmas = await TurmaModel.findAll({ idFilial, idSerie, idAnoLetivo, anoLetivo });
       
       res.status(200).json({
         success: true,

@@ -8,12 +8,13 @@ const InscricaoModel = require('../models/Inscricao.model');
  */
 exports.list = async (req, res) => {
   try {
-    const { idOlimpiada, idAluno, statusInscricao } = req.query;
+    const { idOlimpiada, idAluno, statusInscricao, anoLetivo } = req.query;
     
     const inscricoes = await InscricaoModel.findAll({
       idOlimpiada,
       idAluno,
-      statusInscricao
+      statusInscricao,
+      anoLetivo
     });
     
     return res.status(200).json({

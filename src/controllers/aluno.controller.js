@@ -5,12 +5,13 @@ class AlunoController {
   
   static async list(req, res) {
     try {
-      const { idTurma, idFilial, search, situacao, page, limit } = req.query;
+      const { idTurma, idFilial, search, situacao, anoLetivo, page, limit } = req.query;
       const result = await AlunoModel.findAll({ 
         idTurma, 
         idFilial, 
         search,
         situacao,
+        anoLetivo,
         page: page || 1,
         limit: limit || 50
       });
