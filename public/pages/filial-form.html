@@ -4,16 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Filial - Olimpíada IDB</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+  <div class="app-container">
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <h2>Olimpíada IDB</h2>
+      <a href="dashboard.html" class="sidebar-logo">
+        <div class="sidebar-logo-icon">🏆</div>
+        <span>Olimpíada IDB</span>
+      </a>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section">
@@ -99,158 +100,77 @@
   </aside>
 
   <!-- Main Content -->
-  <div class="main-wrapper">
-    <!-- Topbar -->
-    <header class="topbar">
-      <div class="topbar-left">
-        <h1 id="pageTitle">Nova Filial</h1>
-      </div>
-      <div class="topbar-right">
-        <span class="user-name" id="userName">Usuário</span>
-        <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
-      </div>
-    </header>
-
-    <!-- Content -->
     <main class="main-content">
-      <!-- Breadcrumb -->
-      <div style="margin-bottom: 24px;">
-        <nav style="display: flex; align-items: center; gap: 8px; color: rgba(0,0,0,0.6); font-size: 14px; font-family: Roboto, sans-serif;">
-          <a href="filiais.html" style="color: #1976D2; text-decoration: none;">Filiais</a>
-          <span class="material-icons" style="font-size: 18px;">chevron_right</span>
+      <!-- Topbar injetado pelo topbar.js -->
+
+      <div class="content">
+        <!-- Breadcrumb -->
+        <nav style="display: flex; align-items: center; gap: 8px; margin-bottom: 24px; font-size: 14px; color: var(--gray-600);">
+          <a href="filiais.html" style="color: var(--primary-blue); text-decoration: none;">Filiais</a>
+          <span>›</span>
           <span id="breadcrumbTitle">Nova Filial</span>
         </nav>
-      </div>
 
-      <!-- Form Card -->
-      <div class="card" style="max-width: 800px; box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1);">
-        <div class="card-header">
-          <h2 style="margin: 0; font-size: 20px; font-weight: 500; font-family: Roboto, sans-serif; color: rgba(0,0,0,0.87);">
-            <span id="formTitle">Dados da Filial</span>
-          </h2>
-        </div>
-        <div class="card-body">
-          <form id="formFilial" onsubmit="salvarFilial(event)" style="max-width: 600px;">
-            <input type="hidden" id="idFilial">
-            
-            <!-- Campo Código -->
-            <div style="margin-bottom: 24px;">
-              <label for="codFilial" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
-                Código da Filial *
-              </label>
-              <input 
-                type="number" 
-                id="codFilial" 
-                class="mdc-text-field__input" 
-                required 
-                min="1"
-                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s;"
-                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
-                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
-              >
-              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
-                Código numérico único para identificar a filial
+        <!-- Form Card -->
+        <div class="card" style="max-width: 720px;">
+          <div class="card-header">
+            <h2 class="card-title"><span id="formTitle">Dados da Filial</span></h2>
+          </div>
+          <div class="card-body">
+            <form id="formFilial" onsubmit="salvarFilial(event)">
+              <input type="hidden" id="idFilial">
+
+              <div class="form-group">
+                <label for="codFilial" class="form-label required">Código da Filial</label>
+                <input type="number" id="codFilial" class="form-input" required min="1"
+                  placeholder="Ex: 1, 2, 3...">
+                <div class="form-help">Código numérico único para identificar a filial</div>
               </div>
-            </div>
 
-            <!-- Campo Nome -->
-            <div style="margin-bottom: 24px;">
-              <label for="nomeFilial" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
-                Nome da Filial *
-              </label>
-              <input 
-                type="text" 
-                id="nomeFilial" 
-                class="mdc-text-field__input" 
-                required 
-                maxlength="100"
-                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s;"
-                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
-                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
-              >
-              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
-                Nome completo da unidade escolar
+              <div class="form-group">
+                <label for="nomeFilial" class="form-label required">Nome da Filial</label>
+                <input type="text" id="nomeFilial" class="form-input" required maxlength="100"
+                  placeholder="Ex: Escola Madre Maria Villac">
+                <div class="form-help">Nome completo da unidade escolar</div>
               </div>
-            </div>
 
-            <!-- Campo Abreviação -->
-            <div style="margin-bottom: 32px;">
-              <label for="abFilial" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
-                Abreviação *
-              </label>
-              <input 
-                type="text" 
-                id="abFilial" 
-                class="mdc-text-field__input" 
-                required 
-                maxlength="10"
-                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s;"
-                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
-                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
-              >
-              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
-                Sigla ou nome reduzido (máximo 10 caracteres)
+              <div class="form-group">
+                <label for="abFilial" class="form-label required">Abreviação</label>
+                <input type="text" id="abFilial" class="form-input" required maxlength="10"
+                  placeholder="Ex: MMV">
+                <div class="form-help">Sigla ou nome reduzido (máximo 10 caracteres)</div>
               </div>
-            </div>
 
-            <!-- Action Buttons -->
-            <div style="display: flex; gap: 12px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.12);">
-              <button 
-                type="button" 
-                class="mdc-button mdc-button--outlined" 
-                onclick="window.location.href='filiais.html'"
-                style="padding: 10px 24px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; background: transparent; color: #1976D2; font-family: Roboto, sans-serif; font-weight: 500; text-transform: uppercase; cursor: pointer; font-size: 14px; transition: all 0.2s;"
-                onmouseover="this.style.backgroundColor='rgba(25, 118, 210, 0.04)'"
-                onmouseout="this.style.backgroundColor='transparent'"
-              >
-                <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">arrow_back</span>
-                Cancelar
-              </button>
-              <button 
-                type="submit" 
-                class="mdc-button mdc-button--raised" 
-                style="padding: 10px 32px; border: none; border-radius: 4px; background: #1976D2; color: white; font-family: Roboto, sans-serif; font-weight: 500; text-transform: uppercase; cursor: pointer; font-size: 14px; box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12); transition: all 0.2s;"
-                onmouseover="this.style.backgroundColor='#1565C0'; this.style.boxShadow='0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)'"
-                onmouseout="this.style.backgroundColor='#1976D2'; this.style.boxShadow='0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)'"
-              >
-                <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">save</span>
-                Salvar
-              </button>
-            </div>
-          </form>
+              <div style="display: flex; gap: 12px; padding-top: 16px; border-top: 1px solid var(--gray-200); margin-top: 8px;">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='filiais.html'">← Cancelar</button>
+                <button type="submit" class="btn btn-primary">💾 Salvar</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- Material Design JS -->
-  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-  
   <script src="../js/app.js"></script>
+  <script src="../js/topbar.js"></script>
   <script>
-    // Verificar autenticação
     checkAuth();
-    const user = getUser();
-    if (user) {
-      document.getElementById('userName').textContent = user.nome;
-    }
+    initTopbar('Filiais');
 
-    // Verificar se está editando
     const urlParams = new URLSearchParams(window.location.search);
     const idFilial = urlParams.get('id');
 
     if (idFilial) {
-      // Modo edição
-      document.getElementById('pageTitle').textContent = 'Editar Filial';
       document.getElementById('breadcrumbTitle').textContent = 'Editar Filial';
       document.getElementById('formTitle').textContent = 'Editar Dados da Filial';
       carregarFilial(idFilial);
     }
 
-    // Carregar dados da filial para edição
     async function carregarFilial(id) {
       try {
         const response = await fetchAuth(`/filiais/${id}`);
+        if (!response || !response.filial) throw new Error('Filial não encontrada');
         const filial = response.filial;
         
         document.getElementById('idFilial').value = filial.idFilial;
@@ -263,7 +183,6 @@
       }
     }
 
-    // Salvar filial (criar ou atualizar)
     async function salvarFilial(event) {
       event.preventDefault();
       

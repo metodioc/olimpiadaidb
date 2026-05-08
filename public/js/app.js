@@ -13,14 +13,23 @@ function checkAuth() {
 
 // Obter dados do usuário
 function getUser() {
-  const userStr = localStorage.getItem('usuario');
-  return userStr ? JSON.parse(userStr) : null;
+  try {
+    const userStr = localStorage.getItem('user');
+    if (!userStr || userStr === 'undefined' || userStr === 'null') {
+      console.warn('Usuário não encontrado no localStorage');
+      return null;
+    }
+    return JSON.parse(userStr);
+  } catch (error) {
+    console.error('Erro ao parsear dados do usuário:', error);
+    return null;
+  }
 }
 
 // Fazer logout
 function logout() {
   localStorage.removeItem('token');
-  localStorage.removeItem('usuario');
+  localStorage.removeItem('user');
   window.location.href = '/index.html';
 }
 

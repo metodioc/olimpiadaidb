@@ -4,9 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tipo de Correção - Olimpíada IDB</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -81,14 +78,6 @@
           </a>
         </div>
 
-        <div class="nav-section" id="adminSection" style="display: none;">
-          <div class="nav-section-title">Administração</div>
-          <a href="usuarios.html" class="nav-item">
-            <span class="nav-icon">👤</span>
-            <span>Usuários</span>
-          </a>
-        </div>
-
         <div class="nav-section">
           <div class="nav-section-title">Rankings</div>
           <a href="medalhistas.html" class="nav-item">
@@ -114,19 +103,7 @@
     <!-- Main Content -->
     <main class="main-content">
       <!-- Topbar -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <button class="btn btn-secondary btn-sm" onclick="window.location.href='tipos-correcao.html'">
-            <span class="material-icons">arrow_back</span>
-            Voltar
-          </button>
-          <h1 class="page-title" id="pageTitle">Novo Tipo de Correção</h1>
-        </div>
-        <div class="topbar-right">
-          <span class="topbar-user" id="userName">Carregando...</span>
-          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
-        </div>
-      </header>
+      <!-- Topbar will be injected by topbar.js -->
 
       <!-- Content -->
       <div class="content">
@@ -134,104 +111,54 @@
       <div style="margin-bottom: 24px;">
         <nav style="display: flex; align-items: center; gap: 8px; color: rgba(0,0,0,0.6); font-size: 14px; font-family: Roboto, sans-serif;">
           <a href="tipos-correcao.html" style="color: #1976D2; text-decoration: none;">Tipos de Correção</a>
-          <span class="material-icons" style="font-size: 18px;">chevron_right</span>
+          <span style="font-size: 18px;">›</span>
           <span id="breadcrumbTitle">Novo Tipo</span>
         </nav>
       </div>
 
       <!-- Form Card -->
-      <div class="card" style="max-width: 800px; box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1);">
+      <div class="card" style="max-width: 720px;">
         <div class="card-header">
-          <h2 style="margin: 0; font-size: 20px; font-weight: 500; font-family: Roboto, sans-serif; color: rgba(0,0,0,0.87);">
+          <h2 class="card-title">
             <span id="formTitle">Dados do Tipo de Correção</span>
           </h2>
         </div>
         <div class="card-body">
-          <form id="formTipoCorrecao" onsubmit="salvarTipoCorrecao(event)" style="max-width: 600px;">
+          <form id="formTipoCorrecao" onsubmit="salvarTipoCorrecao(event)">
             <input type="hidden" id="idTipoCorrecao">
-            
+
             <!-- Campo Descrição -->
-            <div style="margin-bottom: 24px;">
-              <label for="descricao" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
-                Descrição *
-              </label>
-              <input 
-                type="text" 
-                id="descricao" 
-                class="mdc-text-field__input" 
-                required 
-                maxlength="50"
-                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s;"
-                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
-                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
-              >
-              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
-                Nome do tipo de correção (ex: Automática, Manual, Mista)
-              </div>
+            <div class="form-group">
+              <label for="descricao" class="form-label required">Descrição</label>
+              <input type="text" id="descricao" class="form-input" required maxlength="50"
+                placeholder="Ex: Automática, Manual, Mista">
+              <div class="form-help">Nome do tipo de correção</div>
             </div>
 
             <!-- Campo Status -->
-            <div style="margin-bottom: 24px;">
-              <label for="ativo" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
-                Status *
-              </label>
-              <select 
-                id="ativo" 
-                class="mdc-text-field__input" 
-                required
-                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s; background: white;"
-                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
-                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
-              >
+            <div class="form-group">
+              <label for="ativo" class="form-label required">Status</label>
+              <select id="ativo" class="form-select" required>
                 <option value="S">Ativo</option>
                 <option value="N">Inativo</option>
               </select>
-              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
-                Se ativo, estará disponível para seleção nas olimpíadas
-              </div>
+              <div class="form-help">Se ativo, estará disponível para seleção nas olimpíadas</div>
             </div>
 
             <!-- Campo Observação -->
-            <div style="margin-bottom: 32px;">
-              <label for="observacao" style="display: block; margin-bottom: 8px; font-size: 14px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif; font-weight: 500;">
-                Observação
-              </label>
-              <textarea 
-                id="observacao" 
-                class="mdc-text-field__input" 
-                rows="4"
-                maxlength="500"
-                style="width: 100%; padding: 16px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; font-size: 16px; font-family: Roboto, sans-serif; transition: border-color 0.2s; resize: vertical;"
-                onfocus="this.style.borderColor='#1976D2'; this.style.borderWidth='2px'; this.style.padding='15px'"
-                onblur="this.style.borderColor='rgba(0,0,0,0.38)'; this.style.borderWidth='1px'; this.style.padding='16px'"
-              ></textarea>
-              <div style="margin-top: 4px; font-size: 12px; color: rgba(0,0,0,0.6); font-family: Roboto, sans-serif;">
-                Informações adicionais sobre este tipo de correção
-              </div>
+            <div class="form-group">
+              <label for="observacao" class="form-label">Observação</label>
+              <textarea id="observacao" class="form-textarea" rows="6" maxlength="500"
+                placeholder="Informações adicionais sobre este tipo de correção"></textarea>
             </div>
 
-            <!-- Action Buttons -->
-            <div style="display: flex; gap: 12px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.12);">
-              <button 
-                type="button" 
-                class="mdc-button mdc-button--outlined" 
-                onclick="window.location.href='tipos-correcao.html'"
-                style="padding: 10px 24px; border: 1px solid rgba(0,0,0,0.38); border-radius: 4px; background: transparent; color: #1976D2; font-family: Roboto, sans-serif; font-weight: 500; text-transform: uppercase; cursor: pointer; font-size: 14px; transition: all 0.2s;"
-                onmouseover="this.style.backgroundColor='rgba(25, 118, 210, 0.04)'"
-                onmouseout="this.style.backgroundColor='transparent'"
-              >
-                <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">arrow_back</span>
-                Cancelar
+            <!-- Botões -->
+            <div style="display: flex; gap: 12px; padding-top: 16px; border-top: 1px solid var(--gray-200); margin-top: 8px;">
+              <button type="button" class="btn btn-secondary" onclick="window.location.href='tipos-correcao.html'">
+                ← Cancelar
               </button>
-              <button 
-                type="submit" 
-                class="mdc-button mdc-button--raised" 
-                style="padding: 10px 32px; border: none; border-radius: 4px; background: #1976D2; color: white; font-family: Roboto, sans-serif; font-weight: 500; text-transform: uppercase; cursor: pointer; font-size: 14px; box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12); transition: all 0.2s;"
-                onmouseover="this.style.backgroundColor='#1565C0'; this.style.boxShadow='0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)'"
-                onmouseout="this.style.backgroundColor='#1976D2'; this.style.boxShadow='0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)'"
-              >
-                <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">save</span>
-                Salvar
+              <button type="submit" class="btn btn-primary">
+                💾 Salvar
               </button>
             </div>
           </form>
@@ -240,22 +167,12 @@
   </main>
   </div>
 
-  <!-- Material Design JS -->
-  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-  
   <script src="../js/app.js"></script>
+  <script src="../js/topbar.js"></script>
   <script>
     // Verificar autenticação
     checkAuth();
-    const user = getUser();
-    if (user) {
-      document.getElementById('userName').textContent = user.nome || user.email;
-      
-      // Mostrar seção de administração apenas para administradores
-      if (user.nivel_acesso === 1) {
-        document.getElementById('adminSection').style.display = 'block';
-      }
-    }
+    initTopbar('Tipos de Correção');
 
     // Verificar se está editando
     const urlParams = new URLSearchParams(window.location.search);
@@ -263,7 +180,6 @@
 
     if (idTipoCorrecao) {
       // Modo edição
-      document.getElementById('pageTitle').textContent = 'Editar Tipo de Correção';
       document.getElementById('breadcrumbTitle').textContent = 'Editar Tipo';
       document.getElementById('formTitle').textContent = 'Editar Dados do Tipo de Correção';
       carregarTipoCorrecao(idTipoCorrecao);
@@ -273,13 +189,24 @@
     async function carregarTipoCorrecao(id) {
       try {
         const response = await fetchAuth(`/tipos-correcao/${id}`);
+        if (!response || !response.tipoCorrecao) throw new Error('Dados não encontrados');
         const tipoCorrecao = response.tipoCorrecao;
-        
+
+        console.log('Tipo de correção carregado:', tipoCorrecao);
+
         document.getElementById('idTipoCorrecao').value = tipoCorrecao.idTipoCorrecao;
         document.getElementById('descricao').value = tipoCorrecao.descricao;
-        document.getElementById('ativo').value = tipoCorrecao.ativo;
+
+        // Selecionar explicitamente a opção correta pelo valor
+        const ativoVal = String(tipoCorrecao.ativo).trim();
+        const selectAtivo = document.getElementById('ativo');
+        Array.from(selectAtivo.options).forEach(opt => {
+          opt.selected = opt.value === ativoVal;
+        });
+
         document.getElementById('observacao').value = tipoCorrecao.observacao || '';
       } catch (error) {
+        console.error('Erro ao carregar tipo de correção:', error);
         showNotification('Erro ao carregar tipo de correção: ' + error.message, 'error');
         setTimeout(() => window.location.href = 'tipos-correcao.html', 2000);
       }

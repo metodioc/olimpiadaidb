@@ -111,41 +111,33 @@
     <!-- Main Content -->
     <main class="main-content">
       <!-- Topbar -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <h1 class="page-title">Alunos</h1>
-          <div class="breadcrumb">
-            <span>Cadastros</span>
-            <span class="breadcrumb-separator">/</span>
-            <span>Alunos</span>
-          </div>
-        </div>
-        <div class="topbar-right">
-          <div class="user-menu">
-            <div class="user-avatar" id="userAvatar">M</div>
-            <div class="user-info">
-              <div class="user-name" id="userName">Carregando...</div>
-              <div class="user-role" id="userRole">Administrador</div>
-            </div>
-          </div>
-          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
-        </div>
-      </header>
+      <!-- Topbar will be injected by topbar.js -->
 
       <!-- Content -->
       <div class="content">
         <!-- Barra de ações -->
         <div class="flex-between mb-3">
-          <div class="flex gap-2">
+          <div class="flex gap-2" style="flex-wrap: wrap;">
             <input 
               type="search" 
               class="form-input" 
               placeholder="Buscar aluno por nome ou RA..." 
               id="searchInput"
-              style="width: 300px;"
+              style="width: 280px;"
             >
-            <select class="form-select" id="filterTurma" style="width: 200px;">
+            <select class="form-select" id="filterFilial" style="width: 180px;">
+              <option value="">Todas as filiais</option>
+            </select>
+            <select class="form-select" id="filterSerie" style="width: 170px;">
+              <option value="">Todas as séries</option>
+            </select>
+            <select class="form-select" id="filterTurma" style="width: 180px;">
               <option value="">Todas as turmas</option>
+            </select>
+            <select class="form-select" id="filterTurno" style="width: 150px;">
+              <option value="">Todos os turnos</option>
+              <option value="M">Manhã</option>
+              <option value="T">Tarde</option>
             </select>
             <select class="form-select" id="filterSituacao" style="width: 150px;">
               <option value="">Todas as situações</option>
@@ -210,10 +202,11 @@
                   <tr>
                     <th>RA</th>
                     <th>Nome</th>
+                    <th>Série</th>
                     <th>Turma</th>
+                    <th>Turno</th>
                     <th>Filial</th>
                     <th>Situação</th>
-                    <th>Tipo</th>
                     <th style="width: 120px;">Ações</th>
                   </tr>
                 </thead>
@@ -236,55 +229,85 @@
     </main>
   </div>
 
+  <script src="../js/topbar.js"></script>
   <script src="../js/app.js"></script>
   <script>
-    const token = checkAuth();
+    checkAuth();
+    initTopbar('Alunos');
     const user = getUser();
 
-    if (user) {
-      document.getElementById('userName').textContent = user.nome || user.email;
-      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
-      const nivelMap = { 1: 'Administrador', 2: 'Professor', 3: 'Aluno', 4: 'Responsável' };
-      document.getElementById('userRole').textContent = nivelMap[user.nivelAcesso] || 'Usuário';
-    }
-
     // Mostrar seção de administração apenas para administradores
-    if (user.nivel_acesso === 1) {
+    if (user && user.nivel_acesso === 1) {
       document.getElementById('adminSection').style.display = 'block';
     }
 
     let alunos = [];
+    let filiais = [];
+    let series = [];
     let turmas = [];
     let currentPage = 1;
     let totalPages = 1;
     let totalAlunos = 0;
 
+    async function loadFiliais() {
+      try {
+        const response = await fetchAuth('/filiais');
+        filiais = response.data || response || [];
+
+        const select = document.getElementById('filterFilial');
+        select.innerHTML = '<option value="">Todas as filiais</option>' +
+          filiais.map(f => `<option value="${f.idFilial}">${f.filial}</option>`).join('');
+      } catch (error) {
+        console.error('Erro ao carregar filiais:', error);
+      }
+    }
+
+    async function loadSeries(idFilial = '') {
+      try {
+        let url = '/series';
+        if (idFilial) url += `?idFilial=${idFilial}`;
+
+        const response = await fetchAuth(url);
+        series = response.data || response || [];
+
+        const select = document.getElementById('filterSerie');
+        const valorAtual = select.value;
+
+        select.innerHTML = '<option value="">Todas as séries</option>' +
+          series.map(s => `<option value="${s.idSerie}">${s.serie || s.abSerie}</option>`).join('');
+
+        if (valorAtual && series.some(s => String(s.idSerie) === valorAtual)) {
+          select.value = valorAtual;
+        }
+      } catch (error) {
+        console.error('Erro ao carregar séries:', error);
+      }
+    }
+
     async function loadAlunos(page = 1) {
       try {
-        const searchTerm = document.getElementById('searchInput').value;
-        const filterTurma = document.getElementById('filterTurma').value;
+        const searchTerm     = document.getElementById('searchInput').value;
+        const filterFilial   = document.getElementById('filterFilial').value;
+        const filterSerie    = document.getElementById('filterSerie').value;
+        const filterTurma    = document.getElementById('filterTurma').value;
+        const filterTurno    = document.getElementById('filterTurno').value;
         const filterSituacao = document.getElementById('filterSituacao').value;
         
-        let url = `/alunos?page=${page}&limit=50`;
-        if (searchTerm) url += `&search=${encodeURIComponent(searchTerm)}`;
-        if (filterTurma) url += `&idTurma=${filterTurma}`;
+        const anoLetivo = getAnoLetivoSelecionado();
+        let url = `/alunos?page=${page}&limit=50&anoLetivo=${anoLetivo}`;
+        if (searchTerm)     url += `&search=${encodeURIComponent(searchTerm)}`;
+        if (filterFilial)   url += `&idFilial=${filterFilial}`;
+        if (filterSerie)    url += `&idSerie=${filterSerie}`;
+        if (filterTurma)    url += `&idTurma=${filterTurma}`;
+        if (filterTurno)    url += `&turno=${encodeURIComponent(filterTurno)}`;
         if (filterSituacao) url += `&situacao=${filterSituacao}`;
         
         const response = await fetchAuth(url);
-        // console.log('Response alunos:', response);
-        // console.log('Data array:', response.data);
-        // console.log('Total:', response.total);
-        // console.log('Pagination:', response.pagination);
         
         alunos = response.data || [];
         totalAlunos = response.total || 0;
         currentPage = response.pagination?.page || 1;
         totalPages = response.pagination?.totalPages || 1;
-        
-        // console.log('Após atribuição - alunos.length:', alunos.length);
-        // console.log('Após atribuição - totalAlunos:', totalAlunos);
-        // console.log('Após atribuição - currentPage:', currentPage);
-        // console.log('Após atribuição - totalPages:', totalPages);
         
         renderAlunos();
         renderPagination();
@@ -295,15 +318,25 @@
       }
     }
 
-    async function loadTurmas() {
+    async function loadTurmas(idFilial = '', idSerie = '') {
       try {
-        const response = await fetchAuth('/turmas');
-        const { data } = response;
-        turmas = data || [];
-        
+        const anoLetivo = getAnoLetivoSelecionado();
+        let url = `/turmas?anoLetivo=${anoLetivo}`;
+        if (idFilial) url += `&idFilial=${idFilial}`;
+        if (idSerie)  url += `&idSerie=${idSerie}`;
+
+        const response = await fetchAuth(url);
+        turmas = response.data || response || [];
+
         const select = document.getElementById('filterTurma');
+        const valorAtual = select.value;
+
         select.innerHTML = '<option value="">Todas as turmas</option>' +
-          turmas.map(t => `<option value="${t.idTurma}">${t.turma} - ${t.serie}</option>`).join('');
+          turmas.map(t => `<option value="${t.idTurma}">${t.turma} - ${t.serie_nome || t.serie}</option>`).join('');
+
+        if (valorAtual && turmas.some(t => String(t.idTurma) === valorAtual)) {
+          select.value = valorAtual;
+        }
       } catch (error) {
         console.error('Erro ao carregar turmas:', error);
       }
@@ -313,7 +346,7 @@
       const tbody = document.getElementById('alunosTable');
 
       if (alunos.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center">Nenhum aluno encontrado</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center">Nenhum aluno encontrado</td></tr>';
         document.getElementById('paginationInfo').textContent = 'Nenhum aluno encontrado';
         return;
       }
@@ -327,15 +360,19 @@
           'transferido': '<span class="badge badge-warning">Transferido</span>',
           'Transferido': '<span class="badge badge-warning">Transferido</span>'
         };
-
+        const turnoMap = { 'M': 'Manhã', 'T': 'Tarde' };
+        const nomeSemCadastro = a.nome_pessoa && a.nome_pessoa.startsWith('(Sem');
         return `
-          <tr>
+          <tr${nomeSemCadastro ? ' style="opacity:0.75;"' : ''}>
             <td><strong>${a.ra || '-'}</strong></td>
-            <td>${a.nome_pessoa || '-'}</td>
-            <td>${a.turma_nome ? `${a.turma_nome} (${a.serie_nome})` : '-'}</td>
+            <td>${nomeSemCadastro
+              ? `<span style="color:var(--gray-500);font-style:italic;" title="${a.nome_pessoa}">⚠️ Nome não disponível</span>`
+              : (a.nome_pessoa || '-')}</td>
+            <td>${a.serie_nome || '-'}</td>
+            <td>${a.turma_nome || '-'}</td>
+            <td>${turnoMap[a.turno] || (a.turno || '-')}</td>
             <td>${a.filial_nome || '-'}</td>
             <td>${situacaoMap[a.situacao] || a.situacao}</td>
-            <td>${a.tipo || '-'}</td>
             <td>
               <div class="flex gap-1">
                 <button class="btn btn-sm btn-primary" onclick="verAluno(${a.idAluno})" title="Ver detalhes">👁️</button>
@@ -420,12 +457,54 @@
 
     // Event listeners
     document.getElementById('searchInput').addEventListener('input', debounce(() => loadAlunos(1), 500));
-    document.getElementById('filterTurma').addEventListener('change', () => loadAlunos(1));
     document.getElementById('filterSituacao').addEventListener('change', () => loadAlunos(1));
 
-    // Carregar dados
-    loadAlunos();
-    loadTurmas();
+    // Filial → reseta série e turma, recarrega séries e turmas
+    document.getElementById('filterFilial').addEventListener('change', () => {
+      const idFilial = document.getElementById('filterFilial').value;
+      document.getElementById('filterSerie').value = '';
+      document.getElementById('filterTurma').value = '';
+      loadSeries(idFilial);
+      loadTurmas(idFilial, '');
+      loadAlunos(1);
+    });
+
+    // Série → reseta turma, recarrega turmas filtradas por filial + série
+    document.getElementById('filterSerie').addEventListener('change', () => {
+      const idFilial = document.getElementById('filterFilial').value;
+      const idSerie  = document.getElementById('filterSerie').value;
+      document.getElementById('filterTurma').value = '';
+      loadTurmas(idFilial, idSerie);
+      loadAlunos(1);
+    });
+
+    document.getElementById('filterTurma').addEventListener('change', () => loadAlunos(1));
+    document.getElementById('filterTurno').addEventListener('change', () => loadAlunos(1));
+
+    // Recarregar quando o ano letivo mudar
+    window.addEventListener('anoLetivoChanged', () => {
+      document.getElementById('filterSerie').value = '';
+      document.getElementById('filterTurma').value = '';
+      loadFiliais();
+      loadSeries();
+      loadTurmas();
+      loadAlunos(1);
+    });
+
+    // Carregar dados iniciais
+    const _urlParams = new URLSearchParams(window.location.search);
+    const _idTurmaParam = _urlParams.get('idTurma');
+
+    async function init() {
+      await loadFiliais();
+      await loadSeries();
+      await loadTurmas();
+      if (_idTurmaParam) {
+        document.getElementById('filterTurma').value = _idTurmaParam;
+      }
+      loadAlunos(1);
+    }
+    init();
   </script>
 </body>
 </html>

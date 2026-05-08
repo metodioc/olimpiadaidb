@@ -271,9 +271,13 @@
     </main>
   </div>
 
+  <script src="../js/topbar.js"></script>
   <script src="../js/app.js"></script>
   <script>
-    const token = checkAuth();
+    checkAuth();
+    
+    // Note: This page doesn't use standard topbar - it has custom header
+    // But we still update user info in sidebar
     const user = getUser();
     
     if (user) {
@@ -372,6 +376,7 @@
     async function carregarTurmas() {
       const serieId = document.getElementById('selectSerieTurma').value;
       const filialId = document.getElementById('selectFilial').value;
+      const anoLetivo = getAnoLetivoSelecionado();
       
       // Limpar turmas e info ao trocar de série
       turmas = [];
@@ -383,7 +388,7 @@
       }
 
       try {
-        const response = await fetchAuth(`/turmas?idSerie=${serieId}&idFilial=${filialId}`);
+        const response = await fetchAuth(`/turmas?idSerie=${serieId}&idFilial=${filialId}&anoLetivo=${anoLetivo}`);
         turmas = response.data || [];
         
         const select = document.getElementById('selectTurma');
@@ -412,11 +417,12 @@
     async function contarAlunosSerie() {
       const serieId = document.getElementById('selectSerie').value;
       const filialId = document.getElementById('selectFilial').value;
+      const anoLetivo = getAnoLetivoSelecionado();
       
       if (!serieId || !filialId) return;
 
       try {
-        const response = await fetchAuth(`/alunos?idSerie=${serieId}&idFilial=${filialId}&situacao=Matriculado&limit=99999`);
+        const response = await fetchAuth(`/alunos?idSerie=${serieId}&idFilial=${filialId}&situacao=Matriculado&limit=99999&anoLetivo=${anoLetivo}`);
         const alunos = response.data || [];
         document.getElementById('infoSerie').textContent = 
           `${alunos.length} aluno(s) encontrado(s) nesta série`;
@@ -428,11 +434,12 @@
     // Contar alunos da turma
     async function contarAlunosTurma() {
       const turmaId = document.getElementById('selectTurma').value;
+      const anoLetivo = getAnoLetivoSelecionado();
       
       if (!turmaId) return;
 
       try {
-        const response = await fetchAuth(`/alunos?idTurma=${turmaId}&situacao=Matriculado&limit=99999`);
+        const response = await fetchAuth(`/alunos?idTurma=${turmaId}&situacao=Matriculado&limit=99999&anoLetivo=${anoLetivo}`);
         const alunos = response.data || [];
         document.getElementById('infoTurma').textContent = 
           `${alunos.length} aluno(s) encontrado(s) nesta turma`;
@@ -528,7 +535,8 @@
 
       timeoutBusca = setTimeout(async () => {
         try {
-          const response = await fetchAuth(`/alunos?search=${encodeURIComponent(termo)}&idFilial=${filialId}`);
+          const anoLetivo = getAnoLetivoSelecionado();
+          const response = await fetchAuth(`/alunos?search=${encodeURIComponent(termo)}&idFilial=${filialId}&anoLetivo=${anoLetivo}`);
           const alunos = response.data || [];
           
           const container = document.getElementById('resultadosBusca');
@@ -731,6 +739,13 @@
     carregarOlimpiada();
     carregarFiliais();
     carregarInscritos();
+
+    window.addEventListener('anoLetivoChanged', () => {
+      contarAlunosSerie();
+      contarAlunosTurma();
+      buscarAlunos();
+      carregarTurmas();
+    });
   </script>
 </body>
 </html>

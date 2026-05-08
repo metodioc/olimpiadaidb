@@ -78,14 +78,6 @@
           </a>
         </div>
 
-        <div class="nav-section" id="adminSection" style="display: none;">
-          <div class="nav-section-title">Administração</div>
-          <a href="usuarios.html" class="nav-item">
-            <span class="nav-icon">👤</span>
-            <span>Usuários</span>
-          </a>
-        </div>
-
         <div class="nav-section">
           <div class="nav-section-title">Relatórios</div>
           <a href="medalhistas.html" class="nav-item">
@@ -110,22 +102,7 @@
 
     <!-- Main Content -->
     <main class="main-content">
-      <!-- Topbar -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <h1 class="page-title">Dashboard</h1>
-        </div>
-        <div class="topbar-right">
-          <div class="user-menu">
-            <div class="user-avatar" id="userAvatar">M</div>
-            <div class="user-info">
-              <div class="user-name" id="userName">Carregando...</div>
-              <div class="user-role" id="userRole">Administrador</div>
-            </div>
-          </div>
-          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
-        </div>
-      </header>
+      <!-- Topbar injetado pelo topbar.js -->
 
       <!-- Content -->
       <div class="content">
@@ -236,27 +213,21 @@
   </div>
 
   <script src="../js/app.js"></script>
+  <script src="../js/topbar.js"></script>
   <script>
     // Verificar autenticação
-    const token = checkAuth();
-    const user = getUser();
+    checkAuth();
+    
+    // Inicializar topbar
+    initTopbar('Dashboard');
 
-    // Atualizar info do usuário
-    if (user) {
-      document.getElementById('userName').textContent = user.nome || user.email;
-      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
-      
-      const nivelMap = {
-        1: 'Administrador',
-        2: 'Professor',
-        3: 'Aluno',
-        4: 'Responsável'
-      };
-      document.getElementById('userRole').textContent = nivelMap[user.nivelAcesso] || 'Usuário';
-      
-      // Mostrar seção de administração apenas para administradores
-      if (user.nivel_acesso === 1) {
-        document.getElementById('adminSection').style.display = 'block';
+    const user = getUser();
+    
+    // Mostrar seção de administração apenas para administradores
+    if (user && user.nivel_acesso === 1) {
+      const adminSection = document.getElementById('adminSection');
+      if (adminSection) {
+        adminSection.style.display = 'block';
       }
     }
 
@@ -281,16 +252,18 @@
 
     async function loadStats() {
       try {
+        const anoLetivo = getAnoLetivoSelecionado();
+
         // Olimpíadas ativas
-        const olimpiadas = await fetchAuth('/olimpiadas?status=inscricoes_abertas');
+        const olimpiadas = await fetchAuth(`/olimpiadas?status=inscricoes_abertas&ano=${anoLetivo}`);
         document.getElementById('statOlimpiadas').textContent = olimpiadas.total || 0;
 
         // Total de alunos
-        const alunos = await fetchAuth('/alunos');
+        const alunos = await fetchAuth(`/alunos?anoLetivo=${anoLetivo}`);
         document.getElementById('statAlunos').textContent = alunos.count || alunos.total || 0;
 
-        // Inscrições 2025
-        const inscricoes = await fetchAuth('/inscricoes');
+        // Inscrições do ano letivo selecionado
+        const inscricoes = await fetchAuth(`/inscricoes?anoLetivo=${anoLetivo}`);
         document.getElementById('statInscricoes').textContent = inscricoes.count || inscricoes.total || 0;
 
         // Medalhas (placeholder)
@@ -302,7 +275,8 @@
 
     async function loadOlimpiadas() {
       try {
-        const data = await fetchAuth('/olimpiadas?limit=5');
+        const anoLetivo = getAnoLetivoSelecionado();
+        const data = await fetchAuth(`/olimpiadas?limit=5&ano=${anoLetivo}`);
         const tbody = document.getElementById('olimpiadasTable');
         
         if (!data.data || data.data.length === 0) {
@@ -334,7 +308,8 @@
 
     async function loadInscricoes() {
       try {
-        const data = await fetchAuth('/inscricoes?limit=10');
+        const anoLetivo = getAnoLetivoSelecionado();
+        const data = await fetchAuth(`/inscricoes?limit=10&anoLetivo=${anoLetivo}`);
         const tbody = document.getElementById('inscricoesTable');
         
         if (!data.data || data.data.length === 0) {
@@ -397,6 +372,10 @@
         document.getElementById('topMedalhistas').innerHTML = '<p class="text-center" style="color: var(--gray-600);">Erro ao carregar medalhistas</p>';
       }
     }
+
+    window.addEventListener('anoLetivoChanged', () => {
+      loadDashboard();
+    });
 
     // Carregar dashboard ao iniciar
     loadDashboard();

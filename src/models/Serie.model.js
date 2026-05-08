@@ -8,13 +8,43 @@ class SerieModel {
   /**
    * Listar todas as séries
    */
-  static async findAll() {
-    const [rows] = await pool.query(
-      `SELECT s.*, f.filial, f.abFilial 
-       FROM tb_serie s 
-       LEFT JOIN tb_filial f ON s.idFilial = f.idFilial
-       ORDER BY s.idSerie ASC`
-    );
+  static async findAll(filters = {}) {
+    const { idFilial, anoLetivo } = filters;
+
+    const anoLetivoFiltro = anoLetivo || new Date().getFullYear();
+
+    let query = `
+      SELECT s.*,
+        f.filial, f.abFilial,
+        (
+          SELECT COUNT(*)
+          FROM tb_turma t
+          INNER JOIN tb_ano_letivo al ON t.idAnoLetivo = al.idAnoLetivo
+          WHERE t.idSerie = s.idSerie
+            AND al.anoLetivo = ?
+        ) as totalTurmas,
+        (
+          SELECT COUNT(*)
+          FROM tb_aluno a
+          WHERE a.codSerie = s.codSerie
+            AND CAST(a.codFilial AS UNSIGNED) = f.codFilial
+            AND a.anoLetivo = ?
+            AND a.situacao = 'Matriculado'
+        ) as totalAlunos
+      FROM tb_serie s
+      LEFT JOIN tb_filial f ON s.idFilial = f.idFilial
+      WHERE 1=1
+    `;
+    const params = [anoLetivoFiltro, anoLetivoFiltro];
+
+    if (idFilial) {
+      query += ' AND s.idFilial = ?';
+      params.push(idFilial);
+    }
+
+    query += ' ORDER BY f.filial ASC, s.codSerie ASC';
+
+    const [rows] = await pool.query(query, params);
     return rows;
   }
   

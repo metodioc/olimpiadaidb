@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -68,13 +68,25 @@
             <span class="nav-icon">✅</span>
             <span>Tipos de Correção</span>
           </a>
-          <a href="locais-aplicacao.html" class="nav-item">
+          <a href="locais-aplicacao.html" class="nav-item active">
             <span class="nav-icon">📍</span>
             <span>Locais de Aplicação</span>
           </a>
           <a href="tipos-pagamento.html" class="nav-item">
             <span class="nav-icon">💰</span>
             <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Rankings</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
           </a>
         </div>
 
@@ -85,92 +97,53 @@
             <span>Usuários</span>
           </a>
         </div>
-
-        <div class="nav-section">
-          <div class="nav-section-title">Relatórios</div>
-          <a href="medalhistas.html" class="nav-item">
-            <span class="nav-icon">🥇</span>
-            <span>Medalhistas</span>
-          </a>
-          <a href="rankings.html" class="nav-item">
-            <span class="nav-icon">📊</span>
-            <span>Rankings</span>
-          </a>
-        </div>
       </nav>
     </aside>
 
     <!-- Main Content -->
     <main class="main-content">
-      <!-- Topbar -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <h1 class="page-title">Locais de Aplicação</h1>
-        </div>
-        <div class="topbar-right">
-          <span class="topbar-user" id="userName">Carregando...</span>
-          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
-        </div>
-      </header>
+      <!-- Topbar will be injected by topbar.js -->
 
       <!-- Content -->
       <div class="content">
-        <!-- Header Actions -->
-        <div class="page-header">
-          <div class="page-header-left">
-            <input type="search" class="form-input" id="searchInput" placeholder="Buscar local..." style="max-width: 300px;">
+        <!-- Header com botão -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <h2 style="font-size: 24px; font-weight: 600; color: var(--gray-900);">Locais de Aplicação</h2>
+            <p style="color: var(--gray-600); margin-top: 4px;">Gerencie os locais de aplicação das olimpíadas</p>
           </div>
-          <div class="page-header-right">
-            <button class="btn btn-primary" onclick="novoLocal()">
-              <span class="material-icons">add</span>
-              Novo Local
-            </button>
+          <button class="btn btn-primary" onclick="novoLocal()">
+            <span>+ Novo Local</span>
+          </button>
+        </div>
+
+        <!-- Filtro de busca -->
+        <div class="card" style="margin-bottom: 16px;">
+          <div class="card-body" style="padding: 16px 20px;">
+            <input type="search" class="form-input" id="searchInput" placeholder="Buscar local..." style="max-width: 320px;">
           </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon">📍</div>
-            <div class="stat-content">
-              <div class="stat-label">Total de Locais</div>
-              <div class="stat-value" id="statTotal">0</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">✅</div>
-            <div class="stat-content">
-              <div class="stat-label">Ativos</div>
-              <div class="stat-value" id="statAtivos">0</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">⏸️</div>
-            <div class="stat-content">
-              <div class="stat-label">Inativos</div>
-              <div class="stat-value" id="statInativos">0</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Table -->
+        <!-- Card com tabela -->
         <div class="card">
           <div class="card-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nome do Local</th>
-                  <th>Status</th>
-                  <th class="text-center">Ações</th>
-                </tr>
-              </thead>
-              <tbody id="locaisTableBody">
-                <tr>
-                  <td colspan="4" class="text-center">Carregando...</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nome do Local</th>
+                    <th>Status</th>
+                    <th style="width: 160px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="locaisTableBody">
+                  <tr>
+                    <td colspan="4" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -178,85 +151,68 @@
   </div>
 
   <script src="../js/app.js"></script>
+  <script src="../js/topbar.js"></script>
   <script>
     checkAuth();
+    initTopbar('Locais de Aplicação');
     const user = getUser();
-    if (user) {
-      document.getElementById('userName').textContent = user.nome || user.email;
-      const adminSection = document.getElementById('adminSection');
-      if (adminSection && user.nivel_acesso === 1) {
-        adminSection.style.display = 'block';
-      }
+    if (user && user.nivel_acesso === 1) {
+      document.getElementById('adminSection').style.display = 'block';
     }
 
     let locais = [];
 
-    // Carregar locais
     async function carregarLocais() {
       try {
         const search = document.getElementById('searchInput').value;
-        const response = await fetchAuth(`/locais-aplicacao?search=${search}`);
+        const queryParams = search ? `?search=${encodeURIComponent(search)}` : '';
+        const response = await fetchAuth(`/locais-aplicacao${queryParams}`);
         locais = response.data || [];
-        
         renderTable();
-        updateStats();
       } catch (error) {
         showNotification('Erro ao carregar locais: ' + error.message, 'error');
       }
     }
 
-    // Renderizar tabela
     function renderTable() {
       const tbody = document.getElementById('locaisTableBody');
-      
+
       if (locais.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" class="text-center">Nenhum local encontrado</td></tr>';
         return;
       }
 
-      tbody.innerHTML = locais.map(local => `
-        <tr>
-          <td>${local.idLocalAplicacao}</td>
-          <td>${local.nomeLocal}</td>
-          <td><span class="badge badge-${local.status === 'ativo' ? 'success' : 'secondary'}">${local.status === 'ativo' ? 'Ativo' : 'Inativo'}</span></td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-primary" onclick="editarLocal(${local.idLocalAplicacao})" title="Editar">
-              ✏️
-            </button>
-            <button class="btn btn-sm btn-${local.status === 'ativo' ? 'warning' : 'success'}" onclick="toggleStatus(${local.idLocalAplicacao}, '${local.status}')" title="${local.status === 'ativo' ? 'Desativar' : 'Ativar'}">
-              ${local.status === 'ativo' ? '⏸️' : '▶️'}
-            </button>
-            <button class="btn btn-sm btn-danger" onclick="deletarLocal(${local.idLocalAplicacao})" title="Excluir">
-              🗑️
-            </button>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = locais.map(local => {
+        const nome = local.nomeLocal.replace(/'/g, "\\'");
+        return `
+          <tr>
+            <td><strong>${local.idLocalAplicacao}</strong></td>
+            <td>${local.nomeLocal}</td>
+            <td>
+              <button
+                class="badge ${local.status === 'ativo' ? 'badge-success' : 'badge-secondary'}"
+                onclick="toggleStatus(${local.idLocalAplicacao}, '${local.status}', '${nome}')"
+                style="cursor: pointer; border: none;"
+                title="Clique para alternar status"
+              >${local.status === 'ativo' ? 'Ativo' : 'Inativo'}</button>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" onclick="editarLocal(${local.idLocalAplicacao})" title="Editar">✏️</button>
+              <button class="btn btn-sm btn-danger" onclick="deletarLocal(${local.idLocalAplicacao})" title="Excluir">🗑️</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
-    // Atualizar estatísticas
-    function updateStats() {
-      document.getElementById('statTotal').textContent = locais.length;
-      document.getElementById('statAtivos').textContent = locais.filter(l => l.status === 'ativo').length;
-      document.getElementById('statInativos').textContent = locais.filter(l => l.status === 'inativo').length;
-    }
-
-    // Novo local
-    function novoLocal() {
-      const nome = prompt('Nome do Local:');
-      if (!nome) return;
-      
-      criarLocal({ nomeLocal: nome, status: 'ativo' });
-    }
-
-    // Criar local
-    async function criarLocal(dados) {
+    async function novoLocal() {
+      const nome = prompt('Nome do Local de Aplicação:');
+      if (!nome || !nome.trim()) return;
       try {
         await fetchAuth('/locais-aplicacao', {
           method: 'POST',
-          body: JSON.stringify(dados)
+          body: JSON.stringify({ nomeLocal: nome.trim(), status: 'ativo' })
         });
-        
         showNotification('Local criado com sucesso!', 'success');
         carregarLocais();
       } catch (error) {
@@ -264,25 +220,16 @@
       }
     }
 
-    // Editar local
-    function editarLocal(id) {
+    async function editarLocal(id) {
       const local = locais.find(l => l.idLocalAplicacao === id);
       if (!local) return;
-      
       const nome = prompt('Nome do Local:', local.nomeLocal);
-      if (!nome) return;
-      
-      atualizarLocal(id, { nomeLocal: nome, status: local.status });
-    }
-
-    // Atualizar local
-    async function atualizarLocal(id, dados) {
+      if (!nome || !nome.trim()) return;
       try {
         await fetchAuth(`/locais-aplicacao/${id}`, {
           method: 'PUT',
-          body: JSON.stringify(dados)
+          body: JSON.stringify({ nomeLocal: nome.trim(), status: local.status })
         });
-        
         showNotification('Local atualizado com sucesso!', 'success');
         carregarLocais();
       } catch (error) {
@@ -290,31 +237,28 @@
       }
     }
 
-    // Toggle status
-    async function toggleStatus(id, statusAtual) {
+    async function toggleStatus(id, statusAtual, nome) {
       const novoStatus = statusAtual === 'ativo' ? 'inativo' : 'ativo';
+      if (!confirm(`${novoStatus === 'ativo' ? 'Ativar' : 'Desativar'} o local "${nome}"?`)) return;
       const local = locais.find(l => l.idLocalAplicacao === id);
-      
-      if (!confirm(`${novoStatus === 'ativo' ? 'Ativar' : 'Desativar'} o local ${local.nomeLocal}?`)) {
-        return;
-      }
-      
-      await atualizarLocal(id, { nomeLocal: local.nomeLocal, status: novoStatus });
-    }
-
-    // Deletar local
-    async function deletarLocal(id) {
-      const local = locais.find(l => l.idLocalAplicacao === id);
-      
-      if (!confirm(`Deseja realmente excluir o local "${local.nomeLocal}"?`)) {
-        return;
-      }
-      
       try {
         await fetchAuth(`/locais-aplicacao/${id}`, {
-          method: 'DELETE'
+          method: 'PUT',
+          body: JSON.stringify({ nomeLocal: local.nomeLocal, status: novoStatus })
         });
-        
+        showNotification('Status alterado com sucesso!', 'success');
+        carregarLocais();
+      } catch (error) {
+        showNotification('Erro ao alterar status: ' + error.message, 'error');
+      }
+    }
+
+    async function deletarLocal(id) {
+      const local = locais.find(l => l.idLocalAplicacao === id);
+      if (!local) return;
+      if (!confirm(`Deseja realmente excluir o local "${local.nomeLocal}"?\n\nEsta ação não pode ser desfeita!`)) return;
+      try {
+        await fetchAuth(`/locais-aplicacao/${id}`, { method: 'DELETE' });
         showNotification('Local excluído com sucesso!', 'success');
         carregarLocais();
       } catch (error) {
@@ -322,10 +266,7 @@
       }
     }
 
-    // Event listeners
-    document.getElementById('searchInput').addEventListener('input', carregarLocais);
-
-    // Carregar ao iniciar
+    document.getElementById('searchInput').addEventListener('input', debounce(() => carregarLocais(), 400));
     carregarLocais();
   </script>
 </body>

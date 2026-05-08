@@ -111,26 +111,7 @@
     <!-- Main Content -->
     <main class="main-content">
       <!-- Topbar -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <h1 class="page-title">Olimpíadas</h1>
-          <div class="breadcrumb">
-            <span>Olimpíadas</span>
-            <span class="breadcrumb-separator">/</span>
-            <span>Gerenciar</span>
-          </div>
-        </div>
-        <div class="topbar-right">
-          <div class="user-menu">
-            <div class="user-avatar" id="userAvatar">M</div>
-            <div class="user-info">
-              <div class="user-name" id="userName">Carregando...</div>
-              <div class="user-role" id="userRole">Administrador</div>
-            </div>
-          </div>
-          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
-        </div>
-      </header>
+      <!-- Topbar will be injected by topbar.js -->
 
       <!-- Content -->
       <div class="content">
@@ -200,20 +181,15 @@
     </main>
   </div>
 
+  <script src="../js/topbar.js"></script>
   <script src="../js/app.js"></script>
   <script>
-    const token = checkAuth();
+    checkAuth();
+    initTopbar('Olimpíadas');
     const user = getUser();
 
-    if (user) {
-      document.getElementById('userName').textContent = user.nome || user.email;
-      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
-      const nivelMap = { 1: 'Administrador', 2: 'Professor', 3: 'Aluno', 4: 'Responsável' };
-      document.getElementById('userRole').textContent = nivelMap[user.nivelAcesso] || 'Usuário';
-    }
-
     // Mostrar seção de administração apenas para administradores
-    if (user.nivel_acesso === 1) {
+    if (user && user.nivel_acesso === 1) {
       document.getElementById('adminSection').style.display = 'block';
     }
 
@@ -221,8 +197,9 @@
 
     async function loadOlimpiadas() {
       try {
+        const anoLetivo = getAnoLetivoSelecionado();
         console.log('Iniciando carregamento de olimpíadas...');
-        const data = await fetchAuth('/olimpiadas');
+        const data = await fetchAuth(`/olimpiadas?ano=${anoLetivo}`);
         console.log('Dados recebidos:', data);
         olimpiadas = data.data || [];
         console.log('Olimpíadas carregadas:', olimpiadas.length);
@@ -232,6 +209,7 @@
         const filterAno = document.getElementById('filterAno');
         filterAno.innerHTML = '<option value="">Todos os anos</option>' +
           anos.map(ano => `<option value="${ano}">${ano}</option>`).join('');
+        filterAno.value = String(anoLetivo);
         
         renderOlimpiadas();
         updateStats();
@@ -363,7 +341,18 @@
     // Event listeners
     document.getElementById('searchInput').addEventListener('input', debounce(renderOlimpiadas, 300));
     document.getElementById('filterStatus').addEventListener('change', renderOlimpiadas);
-    document.getElementById('filterAno').addEventListener('change', renderOlimpiadas);
+    document.getElementById('filterAno').addEventListener('change', () => {
+      const anoLocal = document.getElementById('filterAno').value;
+      if (anoLocal) {
+        setAnoLetivoSelecionado(anoLocal);
+      } else {
+        renderOlimpiadas();
+      }
+    });
+
+    window.addEventListener('anoLetivoChanged', () => {
+      loadOlimpiadas();
+    });
 
     // Carregar olimpíadas
     loadOlimpiadas();

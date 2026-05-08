@@ -4,9 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tipos de Correção - Olimpíada IDB</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -81,14 +78,6 @@
           </a>
         </div>
 
-        <div class="nav-section" id="adminSection" style="display: none;">
-          <div class="nav-section-title">Administração</div>
-          <a href="usuarios.html" class="nav-item">
-            <span class="nav-icon">👤</span>
-            <span>Usuários</span>
-          </a>
-        </div>
-
         <div class="nav-section">
           <div class="nav-section-title">Rankings</div>
           <a href="medalhistas.html" class="nav-item">
@@ -114,26 +103,7 @@
     <!-- Main Content -->
     <main class="main-content">
       <!-- Topbar -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <h1 class="page-title">Tipos de Correção</h1>
-          <div class="breadcrumb">
-            <span>Configurações</span>
-            <span class="breadcrumb-separator">/</span>
-            <span>Tipos de Correção</span>
-          </div>
-        </div>
-        <div class="topbar-right">
-          <div class="user-menu">
-            <div class="user-avatar" id="userAvatar">M</div>
-            <div class="user-info">
-              <div class="user-name" id="userName">Carregando...</div>
-              <div class="user-role" id="userRole">Administrador</div>
-            </div>
-          </div>
-          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
-        </div>
-      </header>
+      <!-- Topbar will be injected by topbar.js -->
 
       <!-- Content -->
       <div class="content">
@@ -176,19 +146,14 @@
   </div>
 
   <script src="../js/app.js"></script>
+  <script src="../js/topbar.js"></script>
   <script>
-    const token = checkAuth();
+    checkAuth();
+    initTopbar('Tipos de Correção');
     const user = getUser();
 
-    if (user) {
-      document.getElementById('userName').textContent = user.nome || user.email;
-      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
-      const nivelMap = { 1: 'Administrador', 2: 'Professor', 3: 'Aluno', 4: 'Responsável' };
-      document.getElementById('userRole').textContent = nivelMap[user.nivelAcesso] || 'Usuário';
-    }
-
     // Mostrar seção de administração apenas para administradores
-    if (user.nivel_acesso === 1) {
+    if (user && user.nivel_acesso === 1) {
       document.getElementById('adminSection').style.display = 'block';
     }
 

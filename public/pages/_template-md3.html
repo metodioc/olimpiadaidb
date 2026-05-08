@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Olimpíada IDB</title>
+  
+  <!-- Material Design Styles -->
+  <link rel="stylesheet" href="../css/material-theme.css">
+  <link rel="stylesheet" href="../css/material-components.css">
+  <link rel="stylesheet" href="../css/material-layout.css">
+</head>
+<body>
+  <div class="md-layout">
+    <!-- Navigation Drawer -->
+    <aside class="md-navigation-drawer">
+      <div class="md-drawer-header">
+        <a href="dashboard.html" class="md-drawer-logo">
+          <div class="md-drawer-logo-icon">🏆</div>
+          <span class="md-drawer-logo-text">Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="md-drawer-content">
+        <!-- Principal -->
+        <div class="md-nav-section">
+          <div class="md-nav-section-title">Principal</div>
+          <a href="dashboard.html" class="md-nav-item active">
+            <span class="md-nav-icon"><span class="material-icons">dashboard</span></span>
+            <span class="md-nav-label">Dashboard</span>
+          </a>
+        </div>
+
+        <!-- Olimpíadas -->
+        <div class="md-nav-section">
+          <div class="md-nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">emoji_events</span></span>
+            <span class="md-nav-label">Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">assignment</span></span>
+            <span class="md-nav-label">Inscrições</span>
+          </a>
+          <a href="medalhistas.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">military_tech</span></span>
+            <span class="md-nav-label">Medalhistas</span>
+          </a>
+        </div>
+
+        <!-- Cadastros -->
+        <div class="md-nav-section">
+          <div class="md-nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">school</span></span>
+            <span class="md-nav-label">Alunos</span>
+          </a>
+          <a href="turmas.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">group</span></span>
+            <span class="md-nav-label">Turmas</span>
+          </a>
+          <a href="series.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">format_list_numbered</span></span>
+            <span class="md-nav-label">Séries</span>
+          </a>
+          <a href="filiais.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">business</span></span>
+            <span class="md-nav-label">Filiais</span>
+          </a>
+          <a href="anos-letivos.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">event</span></span>
+            <span class="md-nav-label">Anos Letivos</span>
+          </a>
+        </div>
+
+        <!-- Configurações -->
+        <div class="md-nav-section">
+          <div class="md-nav-section-title">Configurações</div>
+          <a href="locais-aplicacao.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">place</span></span>
+            <span class="md-nav-label">Locais</span>
+          </a>
+          <a href="tipos-pagamento.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">payment</span></span>
+            <span class="md-nav-label">Tipos Pagamento</span>
+          </a>
+          <a href="tipos-correcao.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">fact_check</span></span>
+            <span class="md-nav-label">Tipos Correção</span>
+          </a>
+          <a href="usuarios.html" class="md-nav-item">
+            <span class="md-nav-icon"><span class="material-icons">manage_accounts</span></span>
+            <span class="md-nav-label">Usuários</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="md-drawer-footer">
+        <button class="md-button md-button-text md-w-full" onclick="logout()">
+          <span class="material-icons">logout</span>
+          Sair
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="md-main-content">
+      <!-- Top App Bar -->
+      <header class="md-top-app-bar">
+        <div class="md-top-app-bar-left">
+          <h1 class="md-top-app-bar-title">Dashboard</h1>
+        </div>
+        <div class="md-top-app-bar-right">
+          <span class="md-body-medium" id="userName" style="margin-right: var(--md-spacing-md); color: var(--md-on-surface);">Carregando...</span>
+          <button class="md-icon-button" title="Notificações">
+            <span class="material-icons">notifications</span>
+          </button>
+          <button class="md-icon-button md-icon-button-tonal" title="Perfil" id="userMenuBtn">
+            <span class="material-icons">account_circle</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="md-content-wrapper">
+        <!-- Breadcrumb -->
+        <nav class="md-breadcrumb">
+          <a href="dashboard.html" class="md-breadcrumb-item active">Dashboard</a>
+        </nav>
+
+        <!-- Stats Cards -->
+        <div class="md-grid md-grid-cols-4 md-mb-lg">
+          <div class="md-card md-card-elevated">
+            <div class="md-card-content">
+              <div class="md-flex md-items-center md-gap-md">
+                <div style="width: 48px; height: 48px; background-color: var(--md-primary-container); color: var(--md-on-primary-container); border-radius: var(--md-shape-corner-medium); display: flex; align-items: center; justify-content: center;">
+                  <span class="material-icons">emoji_events</span>
+                </div>
+                <div>
+                  <div class="md-body-small" style="color: var(--md-on-surface-variant);">Olimpíadas</div>
+                  <div class="md-headline-small" style="color: var(--md-on-surface);" id="totalOlimpiadas">0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="md-card md-card-elevated">
+            <div class="md-card-content">
+              <div class="md-flex md-items-center md-gap-md">
+                <div style="width: 48px; height: 48px; background-color: var(--md-secondary-container); color: var(--md-on-secondary-container); border-radius: var(--md-shape-corner-medium); display: flex; align-items: center; justify-content: center;">
+                  <span class="material-icons">assignment</span>
+                </div>
+                <div>
+                  <div class="md-body-small" style="color: var(--md-on-surface-variant);">Inscrições</div>
+                  <div class="md-headline-small" style="color: var(--md-on-surface);" id="totalInscricoes">0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="md-card md-card-elevated">
+            <div class="md-card-content">
+              <div class="md-flex md-items-center md-gap-md">
+                <div style="width: 48px; height: 48px; background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container); border-radius: var(--md-shape-corner-medium); display: flex; align-items: center; justify-content: center;">
+                  <span class="material-icons">school</span>
+                </div>
+                <div>
+                  <div class="md-body-small" style="color: var(--md-on-surface-variant);">Alunos</div>
+                  <div class="md-headline-small" style="color: var(--md-on-surface);" id="totalAlunos">0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="md-card md-card-elevated">
+            <div class="md-card-content">
+              <div class="md-flex md-items-center md-gap-md">
+                <div style="width: 48px; height: 48px; background-color: var(--md-success-container); color: var(--md-on-success-container); border-radius: var(--md-shape-corner-medium); display: flex; align-items: center; justify-content: center;">
+                  <span class="material-icons">military_tech</span>
+                </div>
+                <div>
+                  <div class="md-body-small" style="color: var(--md-on-surface-variant);">Medalhas</div>
+                  <div class="md-headline-small" style="color: var(--md-on-surface);" id="totalMedalhas">0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="md-grid md-grid-cols-2">
+          <!-- Olimpíadas Recentes -->
+          <div class="md-card md-card-elevated">
+            <div class="md-card-header">
+              <h2 class="md-card-title">Olimpíadas Recentes</h2>
+            </div>
+            <div class="md-card-content" id="olimpiadasRecentes">
+              <div class="md-flex md-items-center md-justify-center" style="padding: var(--md-spacing-xl);">
+                <div class="md-progress-circular"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ranking Geral -->
+          <div class="md-card md-card-elevated">
+            <div class="md-card-header">
+              <h2 class="md-card-title">Top Medalhistas</h2>
+            </div>
+            <div class="md-card-content" id="topMedalhistas">
+              <div class="md-flex md-items-center md-justify-center" style="padding: var(--md-spacing-xl);">
+                <div class="md-progress-circular"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script>
+    // Verificar autenticação
+    checkAuth();
+
+    // Carregar dados do dashboard
+    async function loadDashboard() {
+      try {
+        const [olimpiadas, inscricoes, alunos, medalhas] = await Promise.all([
+          fetchAuth('/olimpiadas'),
+          fetchAuth('/inscricoes'),
+          fetchAuth('/alunos'),
+          fetchAuth('/resultados/medalhas')
+        ]);
+
+        document.getElementById('totalOlimpiadas').textContent = olimpiadas.data?.length || 0;
+        document.getElementById('totalInscricoes').textContent = inscricoes.data?.length || 0;
+        document.getElementById('totalAlunos').textContent = alunos.data?.length || 0;
+        document.getElementById('totalMedalhas').textContent = medalhas.data?.length || 0;
+
+        // Renderizar olimpíadas recentes
+        renderOlimpiadasRecentes(olimpiadas.data?.slice(0, 5) || []);
+        
+      } catch (error) {
+        console.error('Erro ao carregar dashboard:', error);
+      }
+    }
+
+    function renderOlimpiadasRecentes(olimpiadas) {
+      const container = document.getElementById('olimpiadasRecentes');
+      
+      if (olimpiadas.length === 0) {
+        container.innerHTML = '<div class="md-body-medium" style="text-align: center; color: var(--md-on-surface-variant); padding: var(--md-spacing-lg);">Nenhuma olimpíada encontrada</div>';
+        return;
+      }
+
+      container.innerHTML = '<div class="md-list">' + olimpiadas.map(olimpiada => `
+        <div class="md-list-item">
+          <div class="md-list-item-leading">
+            <span class="material-icons">emoji_events</span>
+          </div>
+          <div class="md-list-item-content">
+            <div class="md-list-item-title">${olimpiada.nomeOlimpiada}</div>
+            <div class="md-list-item-subtitle">Ano ${olimpiada.ano}</div>
+          </div>
+          <div class="md-list-item-trailing">
+            <span class="md-chip md-chip-filled">
+              <span class="material-icons" style="font-size: 16px; margin-right: 4px;">person</span>
+              ${olimpiada.totalInscritos || 0}
+            </span>
+          </div>
+        </div>
+      `).join('') + '</div>';
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '../index.html';
+    }
+
+    // Carregar dashboard
+    loadDashboard();
+  </script>
+</body>
+</html>

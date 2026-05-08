@@ -17,7 +17,15 @@ class TurmaModel {
         f.filial as filial_nome,
         f.abFilial as filial_abreviacao,
         a.anoLetivo as ano_letivo,
-        CONCAT(s.abSerie, ' - ', t.turma) as nome_turma
+        CONCAT(s.abSerie, ' - ', t.turma) as nome_turma,
+        (
+          SELECT COUNT(*)
+          FROM tb_aluno al
+          WHERE al.codTurma = t.codTurma
+            AND al.anoLetivo = a.anoLetivo
+            AND CAST(al.codFilial AS UNSIGNED) = f.codFilial
+            AND al.situacao = 'Matriculado'
+        ) as totalAlunos
       FROM tb_turma t
       INNER JOIN tb_serie s ON t.idSerie = s.idSerie
       INNER JOIN tb_filial f ON s.idFilial = f.idFilial
@@ -41,8 +49,18 @@ class TurmaModel {
       query += ' AND t.idAnoLetivo = ?';
       params.push(filters.idAnoLetivo);
     }
+
+    if (filters.anoLetivo) {
+      query += ' AND a.anoLetivo = ?';
+      params.push(filters.anoLetivo);
+    }
+
+    if (filters.turno) {
+      query += ' AND t.turno = ?';
+      params.push(filters.turno);
+    }
     
-    query += ' ORDER BY f.filial, s.serie, t.turma ASC';
+    query += ' ORDER BY t.codTurma ASC';
     
     const [rows] = await pool.query(query, params);
     return rows;
@@ -118,8 +136,17 @@ class TurmaModel {
    */
   static async countAlunos(id) {
     const [rows] = await pool.query(
-      'SELECT COUNT(*) as total FROM tb_aluno WHERE idTurma = ?',
-      [id]
+      `SELECT COUNT(*) as total
+       FROM tb_aluno a
+       WHERE a.codTurma = (SELECT tt.codTurma FROM tb_turma tt WHERE tt.idTurma = ?)
+         AND CAST(a.codFilial AS UNSIGNED) = (SELECT f.codFilial FROM tb_turma tt2
+           INNER JOIN tb_serie s ON tt2.idSerie = s.idSerie
+           INNER JOIN tb_filial f ON s.idFilial = f.idFilial
+           WHERE tt2.idTurma = ?)
+         AND a.anoLetivo = (SELECT al.anoLetivo FROM tb_turma tt3
+           INNER JOIN tb_ano_letivo al ON tt3.idAnoLetivo = al.idAnoLetivo
+           WHERE tt3.idTurma = ?)`,
+      [id, id, id]
     );
     return rows[0].total;
   }

@@ -27,6 +27,40 @@ O **OlimpiadaIDB** é um sistema de gestão escolar focado em olimpíadas acadê
 
 ---
 
+## 🎨 Design System
+
+O sistema utiliza **Material Design 3 (MD3)** da Google como base para toda interface:
+
+### Componentes Disponíveis
+
+- **Botões**: Filled, Outlined, Text, Elevated, Toned
+- **Cards**: Elevated, Filled, Outlined
+- **Forms**: Text Fields (Outlined/Filled), Select, Checkbox, Radio, Switch
+- **Navigation**: Navigation Drawer, Top App Bar, Breadcrumb, Tabs
+- **Data Display**: Tables, Lists, Chips, Badges
+- **Feedback**: Dialogs, Snackbars, Progress Indicators
+- **Layout**: Grid System (12 colunas), Flexbox utilities
+
+### Arquivos CSS
+
+```
+public/css/
+├── material-theme.css       # Variáveis de tema (cores, tipografia, espaçamentos)
+├── material-components.css  # Componentes MD3 (botões, cards, forms, etc)
+└── material-layout.css      # Layout e navegação (drawer, app bar, grid)
+```
+
+### Paleta de Cores
+
+- **Primary**: `#1976D2` (Azul)
+- **Secondary**: `#535E71` (Cinza Azulado)
+- **Tertiary**: `#6B5778` (Roxo)
+- **Success**: `#4CAF50` (Verde)
+- **Error**: `#BA1A1A` (Vermelho)
+- **Warning**: `#FF9800` (Laranja)
+
+---
+
 ## 📦 Pré-requisitos
 
 Antes de começar, certifique-se de ter instalado:

@@ -1,0 +1,209 @@
+/* ============================================
+   MATERIAL DESIGN 3 - TEMA CUSTOMIZADO
+   Sistema de Design OlimpiadaIDB
+   ============================================ */
+
+/* Importar fontes do Material Design */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+:root {
+  /* === CORES PRIMÁRIAS (Material Design 3) === */
+  --md-primary: #1976D2;
+  --md-on-primary: #FFFFFF;
+  --md-primary-container: #D3E4FD;
+  --md-on-primary-container: #001B3E;
+  
+  --md-secondary: #535E71;
+  --md-on-secondary: #FFFFFF;
+  --md-secondary-container: #D7E3F8;
+  --md-on-secondary-container: #101C2B;
+  
+  --md-tertiary: #6B5778;
+  --md-on-tertiary: #FFFFFF;
+  --md-tertiary-container: #F3DAFF;
+  --md-on-tertiary-container: #251431;
+  
+  /* === CORES DE ERRO === */
+  --md-error: #BA1A1A;
+  --md-on-error: #FFFFFF;
+  --md-error-container: #FFDAD6;
+  --md-on-error-container: #410002;
+  
+  /* === CORES DE SUCESSO === */
+  --md-success: #4CAF50;
+  --md-on-success: #FFFFFF;
+  --md-success-container: #C8E6C9;
+  --md-on-success-container: #1B5E20;
+  
+  /* === CORES DE AVISO === */
+  --md-warning: #FF9800;
+  --md-on-warning: #000000;
+  --md-warning-container: #FFE0B2;
+  --md-on-warning-container: #E65100;
+  
+  /* === CORES DE INFO === */
+  --md-info: #2196F3;
+  --md-on-info: #FFFFFF;
+  --md-info-container: #BBDEFB;
+  --md-on-info-container: #0D47A1;
+  
+  /* === SUPERFÍCIES === */
+  --md-surface: #FEFBFF;
+  --md-on-surface: #1A1C1E;
+  --md-surface-variant: #E1E2EC;
+  --md-on-surface-variant: #44474E;
+  
+  --md-surface-dim: #DAD9DD;
+  --md-surface-bright: #FEFBFF;
+  
+  --md-surface-container-lowest: #FFFFFF;
+  --md-surface-container-low: #F4F3F7;
+  --md-surface-container: #EEECF1;
+  --md-surface-container-high: #E8E7EB;
+  --md-surface-container-highest: #E2E1E5;
+  
+  /* === CONTORNOS === */
+  --md-outline: #75777F;
+  --md-outline-variant: #C5C6D0;
+  
+  /* === SOMBRAS (Material Design) === */
+  --md-shadow: rgba(0, 0, 0, 0.2);
+  
+  /* Níveis de elevação */
+  --md-elevation-0: none;
+  --md-elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-elevation-2: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  --md-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px 0 rgba(0, 0, 0, 0.3);
+  --md-elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px 0 rgba(0, 0, 0, 0.3);
+  
+  /* === FORMAS (Shape) === */
+  --md-shape-corner-none: 0;
+  --md-shape-corner-extra-small: 4px;
+  --md-shape-corner-small: 8px;
+  --md-shape-corner-medium: 12px;
+  --md-shape-corner-large: 16px;
+  --md-shape-corner-extra-large: 28px;
+  --md-shape-corner-full: 9999px;
+  
+  /* === TIPOGRAFIA === */
+  --md-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  
+  /* Display */
+  --md-display-large-font: 400 57px/64px var(--md-font-family);
+  --md-display-medium-font: 400 45px/52px var(--md-font-family);
+  --md-display-small-font: 400 36px/44px var(--md-font-family);
+  
+  /* Headline */
+  --md-headline-large-font: 400 32px/40px var(--md-font-family);
+  --md-headline-medium-font: 400 28px/36px var(--md-font-family);
+  --md-headline-small-font: 400 24px/32px var(--md-font-family);
+  
+  /* Title */
+  --md-title-large-font: 500 22px/28px var(--md-font-family);
+  --md-title-medium-font: 500 16px/24px var(--md-font-family);
+  --md-title-small-font: 500 14px/20px var(--md-font-family);
+  
+  /* Body */
+  --md-body-large-font: 400 16px/24px var(--md-font-family);
+  --md-body-medium-font: 400 14px/20px var(--md-font-family);
+  --md-body-small-font: 400 12px/16px var(--md-font-family);
+  
+  /* Label */
+  --md-label-large-font: 500 14px/20px var(--md-font-family);
+  --md-label-medium-font: 500 12px/16px var(--md-font-family);
+  --md-label-small-font: 500 11px/16px var(--md-font-family);
+  
+  /* === ESPAÇAMENTO === */
+  --md-spacing-xs: 4px;
+  --md-spacing-sm: 8px;
+  --md-spacing-md: 16px;
+  --md-spacing-lg: 24px;
+  --md-spacing-xl: 32px;
+  --md-spacing-2xl: 48px;
+  --md-spacing-3xl: 64px;
+  
+  /* === TRANSIÇÕES === */
+  --md-transition-duration-short1: 50ms;
+  --md-transition-duration-short2: 100ms;
+  --md-transition-duration-short3: 150ms;
+  --md-transition-duration-short4: 200ms;
+  --md-transition-duration-medium1: 250ms;
+  --md-transition-duration-medium2: 300ms;
+  --md-transition-duration-medium3: 350ms;
+  --md-transition-duration-medium4: 400ms;
+  --md-transition-duration-long1: 450ms;
+  --md-transition-duration-long2: 500ms;
+  --md-transition-duration-long3: 550ms;
+  --md-transition-duration-long4: 600ms;
+  
+  --md-transition-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --md-transition-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --md-transition-easing-decelerated: cubic-bezier(0, 0, 0, 1);
+  --md-transition-easing-accelerated: cubic-bezier(0.3, 0, 1, 1);
+  
+  /* === Z-INDEX === */
+  --md-z-drawer: 10;
+  --md-z-app-bar: 100;
+  --md-z-modal-backdrop: 1000;
+  --md-z-modal: 1100;
+  --md-z-snackbar: 1200;
+  --md-z-tooltip: 1300;
+}
+
+/* === RESET BÁSICO === */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font: var(--md-body-large-font);
+  color: var(--md-on-surface);
+  background-color: var(--md-surface);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === CLASSES UTILITÁRIAS DE TIPOGRAFIA === */
+.md-display-large { font: var(--md-display-large-font); }
+.md-display-medium { font: var(--md-display-medium-font); }
+.md-display-small { font: var(--md-display-small-font); }
+
+.md-headline-large { font: var(--md-headline-large-font); }
+.md-headline-medium { font: var(--md-headline-medium-font); }
+.md-headline-small { font: var(--md-headline-small-font); }
+
+.md-title-large { font: var(--md-title-large-font); }
+.md-title-medium { font: var(--md-title-medium-font); }
+.md-title-small { font: var(--md-title-small-font); }
+
+.md-body-large { font: var(--md-body-large-font); }
+.md-body-medium { font: var(--md-body-medium-font); }
+.md-body-small { font: var(--md-body-small-font); }
+
+.md-label-large { font: var(--md-label-large-font); }
+.md-label-medium { font: var(--md-label-medium-font); }
+.md-label-small { font: var(--md-label-small-font); }
+
+/* === CLASSES UTILITÁRIAS DE COR === */
+.md-primary-text { color: var(--md-primary); }
+.md-secondary-text { color: var(--md-secondary); }
+.md-error-text { color: var(--md-error); }
+.md-success-text { color: var(--md-success); }
+.md-warning-text { color: var(--md-warning); }
+
+/* === CLASSES UTILITÁRIAS DE SUPERFÍCIE === */
+.md-surface { background-color: var(--md-surface); }
+.md-surface-variant { background-color: var(--md-surface-variant); }
+.md-surface-container { background-color: var(--md-surface-container); }
+
+/* === CLASSES UTILITÁRIAS DE ELEVAÇÃO === */
+.md-elevation-0 { box-shadow: var(--md-elevation-0); }
+.md-elevation-1 { box-shadow: var(--md-elevation-1); }
+.md-elevation-2 { box-shadow: var(--md-elevation-2); }
+.md-elevation-3 { box-shadow: var(--md-elevation-3); }
+.md-elevation-4 { box-shadow: var(--md-elevation-4); }
+.md-elevation-5 { box-shadow: var(--md-elevation-5); }

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste Debug - Nome Usuário</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .topbar {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .user-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+    .console-output {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 20px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    .success { color: #4ec9b0; }
+    .error { color: #f48771; }
+    .warning { color: #dcdcaa; }
+    .info { color: #9cdcfe; }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 10px 5px 10px 0;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🔍 Debug - Carregamento do Nome do Usuário</h2>
+    <p>Esta página testa o carregamento do nome do usuário logado</p>
+  </div>
+
+  <!-- Simula o topbar real -->
+  <div class="topbar">
+    <h3 style="margin: 0 0 10px 0;">Topbar Simulado:</h3>
+    <div class="user-name" id="userName">Carregando...</div>
+  </div>
+
+  <div class="card">
+    <h2>Ações</h2>
+    <button onclick="testLogin()">🔐 Fazer Login (metodioc@gmail.com)</button>
+    <button onclick="loadUserName()">🔄 Carregar Nome do Usuário</button>
+    <button onclick="clearAll()">🗑️ Limpar localStorage</button>
+    <button onclick="showLocalStorage()">📦 Mostrar localStorage</button>
+  </div>
+
+  <div class="card">
+    <h2>Console de Debug</h2>
+    <div class="console-output" id="console"></div>
+  </div>
+
+  <!-- Carrega o mesmo app.js que o dashboard usa -->
+  <script src="js/app.js"></script>
+
+  <script>
+    const consoleDiv = document.getElementById('console');
+    
+    function log(message, type = 'info') {
+      const timestamp = new Date().toLocaleTimeString();
+      const className = type;
+      consoleDiv.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+      consoleDiv.scrollTop = consoleDiv.scrollHeight;
+      console.log(message);
+    }
+
+    function clearConsole() {
+      consoleDiv.innerHTML = '';
+    }
+
+    async function testLogin() {
+      clearConsole();
+      log('='.repeat(60), 'info');
+      log('TESTE DE LOGIN', 'info');
+      log('='.repeat(60), 'info');
+      log('Email: metodioc@gmail.com', 'info');
+      log('Senha: IDBc@mq1', 'info');
+      log('', 'info');
+
+      try {
+        const response = await fetch('http://localhost:5101/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: 'metodioc@gmail.com',
+            senha: 'IDBc@mq1'
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          log('✅ Login bem-sucedido!', 'success');
+          log('', 'info');
+          log('Resposta do servidor:', 'info');
+          log(JSON.stringify(data, null, 2), 'info');
+          log('', 'info');
+
+          // Salvar exatamente como o index.html faz
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.usuario || data.user));
+
+          log('✅ Dados salvos no localStorage', 'success');
+          log('', 'info');
+
+          // Tentar carregar o nome
+          loadUserName();
+
+        } else {
+          log('❌ Erro no login: ' + (data.error || data.message), 'error');
+        }
+
+      } catch (error) {
+        log('❌ Erro ao conectar: ' + error.message, 'error');
+      }
+    }
+
+    function loadUserName() {
+      log('='.repeat(60), 'info');
+      log('CARREGANDO NOME DO USUÁRIO', 'info');
+      log('='.repeat(60), 'info');
+
+      // Testar a função getUser() do app.js
+      log('Chamando getUser()...', 'info');
+      const user = getUser();
+
+      log('Resultado de getUser():', 'info');
+      log(JSON.stringify(user, null, 2), user ? 'success' : 'error');
+      log('', 'info');
+
+      const userNameElement = document.getElementById('userName');
+      log('Elemento #userName encontrado: ' + (userNameElement ? 'SIM' : 'NÃO'), userNameElement ? 'success' : 'error');
+      
+      if (user) {
+        // Testar diferentes formas de pegar o nome
+        log('user.nome: ' + (user.nome || 'undefined'), user.nome ? 'success' : 'warning');
+        log('user.email: ' + (user.email || 'undefined'), user.email ? 'success' : 'warning');
+        
+        const displayName = user.nome || user.email || 'Usuário';
+        log('Nome a exibir: ' + displayName, 'success');
+        log('', 'info');
+        
+        if (userNameElement) {
+          userNameElement.textContent = displayName;
+          log('✅ Nome atualizado no elemento!', 'success');
+          log('Texto no elemento: ' + userNameElement.textContent, 'success');
+        } else {
+          log('❌ Elemento #userName não encontrado', 'error');
+        }
+      } else {
+        log('❌ getUser() retornou null/undefined', 'error');
+        log('localStorage.getItem("user"): ' + localStorage.getItem('user'), 'warning');
+        
+        if (userNameElement) {
+          userNameElement.textContent = 'Erro: Faça login';
+          userNameElement.style.color = 'red';
+        }
+      }
+    }
+
+    function clearAll() {
+      clearConsole();
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      document.getElementById('userName').textContent = 'Carregando...';
+      log('✅ localStorage limpo', 'success');
+    }
+
+    function showLocalStorage() {
+      clearConsole();
+      log('='.repeat(60), 'info');
+      log('CONTEÚDO DO LOCALSTORAGE', 'info');
+      log('='.repeat(60), 'info');
+      
+      const token = localStorage.getItem('token');
+      const userRaw = localStorage.getItem('user');
+      
+      log('Token:', 'info');
+      log(token || 'null', token ? 'success' : 'error');
+      log('', 'info');
+      
+      log('User (raw):', 'info');
+      log(userRaw || 'null', userRaw ? 'success' : 'error');
+      log('', 'info');
+      
+      if (userRaw) {
+        try {
+          const userObj = JSON.parse(userRaw);
+          log('User (parsed):', 'success');
+          log(JSON.stringify(userObj, null, 2), 'success');
+        } catch (e) {
+          log('Erro ao fazer parse: ' + e.message, 'error');
+        }
+      }
+    }
+
+    // Auto-executar ao carregar a página
+    window.addEventListener('load', () => {
+      log('Página carregada', 'info');
+      log('Verificando localStorage...', 'info');
+      log('', 'info');
+      
+      showLocalStorage();
+      log('', 'info');
+      log('Tentando carregar nome do usuário...', 'info');
+      loadUserName();
+    });
+  </script>
+</body>
+</html>

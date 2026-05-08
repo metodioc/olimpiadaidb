@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tipo de Pagamento - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item active">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Rankings</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar will be injected by topbar.js -->
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Breadcrumb -->
+        <div style="margin-bottom: 24px;">
+          <nav style="display: flex; align-items: center; gap: 8px; color: rgba(0,0,0,0.6); font-size: 14px;">
+            <a href="tipos-pagamento.html" style="color: #1976D2; text-decoration: none;">Tipos de Pagamento</a>
+            <span>›</span>
+            <span id="breadcrumbTitle">Novo Tipo</span>
+          </nav>
+        </div>
+
+        <!-- Form Card -->
+        <div class="card" style="max-width: 720px;">
+          <div class="card-header">
+            <h2 class="card-title">
+              <span id="formTitle">Dados do Tipo de Pagamento</span>
+            </h2>
+          </div>
+          <div class="card-body">
+            <form id="formTipoPagamento" onsubmit="salvarTipoPagamento(event)">
+              <input type="hidden" id="idTipoPagamento">
+
+              <!-- Campo Descrição -->
+              <div class="form-group">
+                <label for="descricao" class="form-label required">Descrição</label>
+                <input type="text" id="descricao" class="form-input" required maxlength="100"
+                  placeholder="Ex: Boleto, Cartão, PIX">
+                <div class="form-help">Nome do tipo de pagamento</div>
+              </div>
+
+              <!-- Campo Status -->
+              <div class="form-group">
+                <label for="status" class="form-label required">Status</label>
+                <select id="status" class="form-select" required>
+                  <option value="ativo">Ativo</option>
+                  <option value="inativo">Inativo</option>
+                </select>
+                <div class="form-help">Se ativo, estará disponível para seleção nas olimpíadas</div>
+              </div>
+
+              <!-- Botões -->
+              <div style="display: flex; gap: 12px; padding-top: 16px; border-top: 1px solid var(--gray-200); margin-top: 8px;">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='tipos-pagamento.html'">
+                  ← Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  💾 Salvar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/topbar.js"></script>
+  <script>
+    checkAuth();
+    initTopbar('Tipos de Pagamento');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+
+    if (idParam) {
+      document.getElementById('breadcrumbTitle').textContent = 'Editar Tipo';
+      document.getElementById('formTitle').textContent = 'Editar Dados do Tipo de Pagamento';
+      carregarTipoPagamento(idParam);
+    }
+
+    const adminSection = document.getElementById('adminSection');
+    const user = getUser();
+    if (user && user.nivel_acesso === 1 && adminSection) {
+      adminSection.style.display = 'block';
+    }
+
+    async function carregarTipoPagamento(id) {
+      try {
+        const response = await fetchAuth(`/tipos-pagamento/${id}`);
+        if (!response || !response.data) throw new Error('Dados não encontrados');
+        const tipo = response.data;
+
+        document.getElementById('idTipoPagamento').value = tipo.idTipoPagamento;
+        document.getElementById('descricao').value = tipo.descricao;
+
+        const selectStatus = document.getElementById('status');
+        Array.from(selectStatus.options).forEach(opt => {
+          opt.selected = opt.value === tipo.status;
+        });
+      } catch (error) {
+        showNotification('Erro ao carregar tipo de pagamento: ' + error.message, 'error');
+        setTimeout(() => window.location.href = 'tipos-pagamento.html', 2000);
+      }
+    }
+
+    async function salvarTipoPagamento(event) {
+      event.preventDefault();
+
+      const id = document.getElementById('idTipoPagamento').value;
+      const dados = {
+        descricao: document.getElementById('descricao').value.trim(),
+        status: document.getElementById('status').value
+      };
+
+      try {
+        if (id) {
+          await fetchAuth(`/tipos-pagamento/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+          });
+          showNotification('Tipo de pagamento atualizado com sucesso!', 'success');
+        } else {
+          await fetchAuth('/tipos-pagamento', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+          });
+          showNotification('Tipo de pagamento criado com sucesso!', 'success');
+        }
+
+        setTimeout(() => window.location.href = 'tipos-pagamento.html', 1500);
+      } catch (error) {
+        showNotification('Erro ao salvar tipo de pagamento: ' + error.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>

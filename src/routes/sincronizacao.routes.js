@@ -17,6 +17,7 @@ const validateIncremental = [
 // Rotas - Apenas administradores podem sincronizar
 router.post('/sincronizar', authenticate, authorize(1), ...validateSincronizacao, SincronizacaoController.sincronizarTodos);
 router.post('/sincronizar/incremental', authenticate, authorize(1), ...validateIncremental, SincronizacaoController.sincronizarIncremental);
+router.post('/sincronizar/manual', authenticate, authorize(1), SincronizacaoController.sincronizarManual);
 router.get('/verificar-conexao', authenticate, authorize(1), SincronizacaoController.verificarConexao);
 
 module.exports = router;

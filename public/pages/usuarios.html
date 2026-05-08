@@ -4,9 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Usuários - Olimpíada IDB</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -106,26 +103,7 @@
     <!-- Main Content -->
     <main class="main-content">
       <!-- Topbar -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <h1 class="page-title">Usuários</h1>
-          <div class="breadcrumb">
-            <span>Administração</span>
-            <span class="breadcrumb-separator">/</span>
-            <span>Usuários</span>
-          </div>
-        </div>
-        <div class="topbar-right">
-          <div class="user-menu">
-            <div class="user-avatar" id="userAvatar">M</div>
-            <div class="user-info">
-              <div class="user-name" id="userName">Carregando...</div>
-              <div class="user-role" id="userRole">Administrador</div>
-            </div>
-          </div>
-          <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
-        </div>
-      </header>
+      <!-- Topbar will be injected by topbar.js -->
 
       <!-- Content -->
       <div class="content">
@@ -136,8 +114,7 @@
             <p style="color: var(--gray-600); margin-top: 4px;">Gerencie usuários e suas permissões no sistema</p>
           </div>
           <button class="btn btn-primary" onclick="window.location.href='usuario-form.html'">
-            <span class="material-icons">add</span>
-            Novo Usuário
+            + Novo Usuário
           </button>
         </div>
 
@@ -168,36 +145,28 @@
         <!-- Stats Cards -->
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-icon" style="background-color: #E3F2FD;">
-              <span class="material-icons" style="color: #1976D2;">people</span>
-            </div>
+            <div class="stat-icon blue">👥</div>
             <div class="stat-content">
               <div class="stat-value" id="statTotal">0</div>
               <div class="stat-label">Total de Usuários</div>
             </div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon" style="background-color: #E8F5E9;">
-              <span class="material-icons" style="color: #388E3C;">check_circle</span>
-            </div>
+            <div class="stat-icon green">✅</div>
             <div class="stat-content">
               <div class="stat-value" id="statAtivos">0</div>
               <div class="stat-label">Ativos</div>
             </div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon" style="background-color: #FFF3E0;">
-              <span class="material-icons" style="color: #F57C00;">admin_panel_settings</span>
-            </div>
+            <div class="stat-icon orange">🔑</div>
             <div class="stat-content">
               <div class="stat-value" id="statAdmins">0</div>
               <div class="stat-label">Administradores</div>
             </div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon" style="background-color: #FCE4EC;">
-              <span class="material-icons" style="color: #C2185B;">block</span>
-            </div>
+            <div class="stat-icon purple">🚫</div>
             <div class="stat-content">
               <div class="stat-value" id="statInativos">0</div>
               <div class="stat-label">Inativos</div>
@@ -236,32 +205,16 @@
   </div>
 
   <script src="../js/app.js"></script>
+  <script src="../js/topbar.js"></script>
   <script>
     checkAuth();
-    
+    initTopbar('Usuários');
+
+    // Verificar permissão de administrador após topbar inicializar
     const user = getUser();
-    if (user) {
-      document.getElementById('userName').textContent = user.nome || user.email;
-      document.getElementById('userAvatar').textContent = (user.nome || user.email).charAt(0).toUpperCase();
-      
-      const nivelMap = {
-        1: 'Administrador',
-        2: 'Coordenador',
-        3: 'Professor',
-        4: 'Visualizador'
-      };
-      document.getElementById('userRole').textContent = nivelMap[user.nivel_acesso] || 'Usuário';
-      
-      // Mostrar seção de administração apenas para administradores
-      if (user.nivel_acesso === 1) {
-        document.getElementById('adminSection').style.display = 'block';
-      } else {
-        // Redirecionar se não for administrador
-        showNotification('Acesso negado. Apenas administradores podem acessar esta página.', 'error');
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 2000);
-      }
+    if (user && user.nivel_acesso !== 1) {
+      showNotification('Acesso negado. Apenas administradores podem acessar esta página.', 'error');
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 2000);
     }
 
     let usuarios = [];
@@ -327,10 +280,10 @@
           <td>${u.ultimo_acesso ? new Date(u.ultimo_acesso).toLocaleString('pt-BR') : 'Nunca'}</td>
           <td>
             <button class="btn btn-sm btn-primary" onclick="window.location.href='usuario-form.html?id=${u.id_usuario}'" title="Editar">
-              <span class="material-icons">edit</span>
+              ✏️
             </button>
             <button class="btn btn-sm btn-danger" onclick="deletarUsuario(${u.id_usuario}, '${u.nome_completo}')" title="Desativar" ${!u.ativo ? 'disabled' : ''}>
-              <span class="material-icons">block</span>
+              🚫
             </button>
           </td>
         </tr>

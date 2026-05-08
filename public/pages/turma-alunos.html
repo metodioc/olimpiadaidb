@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alunos da Turma - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* ── Cabeçalho da turma ── */
+    .turma-header {
+      background: linear-gradient(135deg, var(--primary-blue) 0%, #1565c0 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .turma-header-info h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+    .turma-header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 14px;
+      opacity: .9;
+    }
+    .turma-header-meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* ── Botão PDF ── */
+    .btn-pdf {
+      background: #fff;
+      color: var(--primary-blue);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: background .2s, box-shadow .2s;
+      text-decoration: none;
+    }
+    .btn-pdf:hover { background: #e3f2fd; box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+
+    /* ── Tabela de alunos ── */
+    .num-col { width: 52px; text-align: center; color: var(--gray-500); font-size: 13px; }
+    .ra-col   { width: 110px; font-family: monospace; }
+
+    /* ── PDF / Impressão ── */
+    @media print {
+      * { box-sizing: border-box; }
+      body { margin: 0; padding: 0; font-size: 11pt; font-family: Arial, sans-serif; }
+      .sidebar, .no-print { display: none !important; }
+      .app-container { display: block !important; }
+      .main-content { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+      .content { padding: 12px 16px !important; }
+
+      /* Cabeçalho colorido preservado na impressão */
+      .turma-header {
+        background: #1565c0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color: #fff !important;
+        border-radius: 0 !important;
+        margin-bottom: 16px !important;
+        padding: 16px !important;
+      }
+      .turma-header-info h1 { font-size: 16pt !important; margin-bottom: 6px !important; }
+      .turma-header-meta { font-size: 10pt !important; }
+      .btn-pdf { display: none !important; }
+
+      /* Tabela */
+      .card { box-shadow: none !important; border: 1px solid #ccc !important; }
+      .card-header { padding: 8px 12px !important; border-bottom: 1px solid #ccc !important; }
+      .card-body { padding: 0 !important; }
+      .table { width: 100% !important; border-collapse: collapse !important; }
+      .table th { background: #1565c0 !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 10pt !important; padding: 6px 8px !important; text-align: left; }
+      .table td { font-size: 10pt !important; padding: 5px 8px !important; border-bottom: 1px solid #e0e0e0 !important; }
+      .table tr:nth-child(even) td { background: #f5f8ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .badge { padding: 2px 6px !important; border-radius: 4px !important; font-size: 9pt !important; }
+      .badge-success { background: #e8f5e9 !important; color: #2e7d32 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .badge-secondary { background: #f5f5f5 !important; color: #616161 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .badge-info { background: #e3f2fd !important; color: #1565c0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .num-col { width: 36px !important; text-align: center !important; }
+      .ra-col { width: 100px !important; }
+
+      /* Rodapé de página */
+      @page { margin: 10mm 12mm; size: A4 portrait; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span><span>Dashboard</span>
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span><span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span><span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span><span>Resultados</span>
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span><span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item active">
+            <span class="nav-icon">🎓</span><span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span><span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span><span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span><span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span><span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span><span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span><span>Tipos de Pagamento</span>
+          </a>
+        </div>
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span><span>Usuários</span>
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Relatórios</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span><span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span><span>Rankings</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar injetado pelo topbar.js -->
+
+      <div class="content">
+
+        <!-- Breadcrumb -->
+        <nav class="no-print" style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 14px; color: var(--gray-600);">
+          <a href="turmas.html" style="color: var(--primary-blue); text-decoration: none;">Turmas</a>
+          <span>›</span>
+          <span id="breadcrumbTurma">Alunos da Turma</span>
+        </nav>
+
+        <!-- Cabeçalho da turma -->
+        <div class="turma-header" id="turmaHeader">
+          <div class="turma-header-info">
+            <h1 id="headerNome">Carregando...</h1>
+            <div class="turma-header-meta">
+              <span>🎓 <span id="headerSerie">-</span></span>
+              <span>🏫 <span id="headerFilial">-</span></span>
+              <span>📅 <span id="headerAno">-</span></span>
+              <span>⏰ <span id="headerTurno">-</span></span>
+              <span>👥 <strong id="headerTotal">0</strong> alunos</span>
+            </div>
+          </div>
+          <button class="btn-pdf" onclick="gerarPDF()" title="Baixar PDF da listagem">
+            📄 Baixar PDF
+          </button>
+        </div>
+
+        <!-- Busca -->
+        <div class="no-print" style="margin-bottom: 16px;">
+          <input type="search" class="form-input" id="searchInput"
+            placeholder="Buscar aluno por nome ou RA..."
+            style="max-width: 340px;"
+            oninput="filtrarAlunos(this.value)">
+        </div>
+
+        <!-- Tabela -->
+        <div class="card">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="card-title">Lista de Alunos</h3>
+            <span id="totalLabel" style="font-size: 13px; color: var(--gray-600);"></span>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="table" id="tabelaAlunos">
+                <thead>
+                  <tr>
+                    <th class="num-col">#</th>
+                    <th>Nome do Aluno</th>
+                    <th class="ra-col">RA</th>
+                    <th>Situação</th>
+                  </tr>
+                </thead>
+                <tbody id="alunosBody">
+                  <tr><td colspan="4" class="text-center">Carregando...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/topbar.js"></script>
+  <script>
+    checkAuth();
+    initTopbar('Turmas');
+
+    const user = getUser();
+    if (user && user.nivel_acesso === 1) {
+      document.getElementById('adminSection').style.display = 'block';
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const idTurma = urlParams.get('idTurma');
+
+    if (!idTurma) {
+      showNotification('Turma não informada', 'error');
+      setTimeout(() => window.location.href = 'turmas.html', 1500);
+    }
+
+    let turmaInfo = null;
+    let todosAlunos = [];
+
+    // ── Situação badge ──────────────────────────────────────────────────────
+    function badgeSituacao(sit) {
+      const map = {
+        ativo:       '<span class="badge badge-success">Ativo</span>',
+        inativo:     '<span class="badge badge-secondary">Inativo</span>',
+        transferido: '<span class="badge badge-info">Transferido</span>',
+        concluído:   '<span class="badge badge-primary">Concluído</span>',
+      };
+      return map[sit] || `<span class="badge badge-secondary">${sit || '-'}</span>`;
+    }
+
+    // ── Carregar turma ──────────────────────────────────────────────────────
+    async function carregarTurma() {
+      try {
+        const resp = await fetchAuth(`/turmas/${idTurma}`);
+        turmaInfo = resp.data || resp.turma || resp;
+
+        const nome  = turmaInfo.turma || turmaInfo.nome_turma || `Turma ${turmaInfo.codTurma}`;
+        const serie = turmaInfo.serie_nome || turmaInfo.serie  || '-';
+        const filial= turmaInfo.filial_nome|| turmaInfo.filial || '-';
+        const ano   = turmaInfo.ano_letivo || turmaInfo.anoLetivo || '-';
+        const turno = turmaInfo.turno      || 'Não informado';
+
+        document.getElementById('breadcrumbTurma').textContent = nome;
+        document.getElementById('headerNome').textContent  = nome;
+        document.getElementById('headerSerie').textContent = serie;
+        document.getElementById('headerFilial').textContent= filial;
+        document.getElementById('headerAno').textContent   = ano;
+        document.getElementById('headerTurno').textContent = turno.charAt(0).toUpperCase() + turno.slice(1);
+        document.title = `${nome} - Olimpíada IDB`;
+      } catch (err) {
+        showNotification('Erro ao carregar dados da turma: ' + err.message, 'error');
+      }
+    }
+
+    // ── Carregar alunos ─────────────────────────────────────────────────────
+    async function carregarAlunos() {
+      const tbody = document.getElementById('alunosBody');
+      try {
+        // Usa ano_letivo e idFilial vindos dos dados da própria turma
+        const anoLetivo = turmaInfo ? turmaInfo.ano_letivo : '';
+        const idFilial  = turmaInfo ? turmaInfo.idFilial  : '';
+
+        let url = `/alunos?idTurma=${idTurma}&limit=9999`;
+        if (anoLetivo) url += `&anoLetivo=${anoLetivo}`;
+        if (idFilial)  url += `&idFilial=${idFilial}`;
+
+        const resp = await fetchAuth(url);
+        let lista = resp.data || resp.alunos || [];
+
+        // Ordenar por nome (campo correto é nome_pessoa)
+        lista.sort((a, b) => {
+          const na = (a.nome_pessoa || '').toLowerCase();
+          const nb = (b.nome_pessoa || '').toLowerCase();
+          return na.localeCompare(nb, 'pt-BR');
+        });
+
+        todosAlunos = lista;
+        document.getElementById('headerTotal').textContent = lista.length;
+        renderAlunos(lista);
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center" style="color:var(--danger);">Erro ao carregar alunos: ${err.message}</td></tr>`;
+      }
+    }
+
+    // ── Renderizar tabela ───────────────────────────────────────────────────
+    function renderAlunos(lista) {
+      const tbody = document.getElementById('alunosBody');
+      document.getElementById('totalLabel').textContent =
+        lista.length === todosAlunos.length
+          ? `${lista.length} alunos`
+          : `${lista.length} de ${todosAlunos.length} alunos`;
+
+      if (lista.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center">Nenhum aluno encontrado</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = lista.map((a, i) => {
+        const nome = a.nome_pessoa || '-';
+        const ra   = a.ra   || '-';
+        const sit  = a.situacao || 'ativo';
+        return `
+          <tr>
+            <td class="num-col">${i + 1}</td>
+            <td><strong>${nome}</strong></td>
+            <td class="ra-col">${ra}</td>
+            <td>${badgeSituacao(sit)}</td>
+          </tr>`;
+      }).join('');
+    }
+
+    // ── Filtro de busca ─────────────────────────────────────────────────────
+    function filtrarAlunos(termo) {
+      const t = termo.toLowerCase().trim();
+      if (!t) { renderAlunos(todosAlunos); return; }
+      const filtrado = todosAlunos.filter(a => {
+        const nome = (a.nome_pessoa || '').toLowerCase();
+        const ra   = (a.ra || '').toLowerCase();
+        return nome.includes(t) || ra.includes(t);
+      });
+      renderAlunos(filtrado);
+    }
+
+    // ── Gerar PDF via impressão do navegador ───────────────────────────────
+    function gerarPDF() {
+      window.print();
+    }
+
+    // ── Init ────────────────────────────────────────────────────────────────
+    async function init() {
+      await carregarTurma();
+      await carregarAlunos();
+    }
+    init();
+  </script>
+</body>
+</html>

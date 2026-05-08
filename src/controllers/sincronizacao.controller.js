@@ -72,12 +72,15 @@ class SincronizacaoController {
   static async verificarConexao(req, res) {
     try {
       const totvsService = require('../services/totvs.service');
-      await totvsService.authenticate();
+      
+      // Testar conexão fazendo uma requisição simples
+      const alunos = await totvsService.getAlunos({ limit: 1 });
 
       return res.status(200).json({
         success: true,
-        message: 'Conexão com TOTVS estabelecida',
-        conectado: true
+        message: 'Conexão com TOTVS estabelecida com sucesso',
+        conectado: true,
+        totalAlunos: Array.isArray(alunos) ? alunos.length : 0
       });
 
     } catch (error) {
@@ -85,6 +88,30 @@ class SincronizacaoController {
         success: false,
         message: 'Falha na conexão com TOTVS',
         conectado: false,
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * Executar sincronização manualmente (fora do cron)
+   */
+  static async sincronizarManual(req, res) {
+    try {
+      const SincronizacaoJob = require('../jobs/sincronizacao.job');
+      const resultado = await SincronizacaoJob.executarAgora();
+
+      return res.status(200).json({
+        success: true,
+        message: 'Sincronização manual executada com sucesso',
+        data: resultado
+      });
+
+    } catch (error) {
+      console.error('Erro na sincronização manual:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Erro na sincronização manual',
         error: error.message
       });
     }
