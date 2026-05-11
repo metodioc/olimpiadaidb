@@ -207,11 +207,11 @@
           <td><span class="badge badge-${a.status === 'ativo' ? 'success' : 'secondary'}">${a.status === 'ativo' ? 'Ativo' : 'Inativo'}</span></td>
           <td>${formatDate(a.createdAt)}</td>
           <td>
-            <button class="btn btn-sm btn-primary" onclick="editarAnoLetivo(${a.idAnoLetivo})" title="Editar">✏️</button>
+            <button class="btn btn-sm btn-primary" onclick="editarAnoLetivo(${a.idAnoLetivo})" title="Editar">Editar</button>
             <button class="btn btn-sm btn-${a.status === 'ativo' ? 'warning' : 'success'}" onclick="toggleStatus(${a.idAnoLetivo}, '${a.status}')" title="${a.status === 'ativo' ? 'Desativar' : 'Ativar'}">
               ${a.status === 'ativo' ? '⏸️' : '▶️'}
             </button>
-            <button class="btn btn-sm btn-danger" onclick="deletarAnoLetivo(${a.idAnoLetivo}, ${a.anoLetivo})" title="Deletar">🗑️</button>
+            <button class="btn btn-sm btn-outline" onclick="deletarAnoLetivo(${a.idAnoLetivo}, ${a.anoLetivo})" title="Deletar">Excluir</button>
           </td>
         </tr>
       `).join('');

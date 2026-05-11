@@ -334,7 +334,7 @@
               <button class="btn btn-sm btn-secondary" onclick="verInscricao(${i.idInscricao})" title="Ver detalhes">👁️</button>
               ${i.statusInscricao === 'Pendente' ? `
                 <button class="btn btn-sm btn-success" onclick="confirmarInscricao(${i.idInscricao})" title="Confirmar">✅</button>
-                <button class="btn btn-sm btn-danger" onclick="cancelarInscricao(${i.idInscricao})" title="Cancelar">❌</button>
+                <button class="btn btn-sm btn-outline" onclick="cancelarInscricao(${i.idInscricao})" title="Cancelar">Cancelar</button>
               ` : ''}
             </td>
           </tr>

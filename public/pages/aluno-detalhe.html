@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Aluno - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item active">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Rankings</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="content">
+
+        <!-- Breadcrumb + Voltar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <div style="font-size: 13px; color: var(--gray-500); margin-bottom: 4px;">
+              <a href="alunos.html" style="color: var(--gray-500); text-decoration: none;">Alunos</a>
+              <span style="margin: 0 6px;">›</span>
+              <span id="breadcrumbNome">Detalhes</span>
+            </div>
+            <h2 id="pageTitle" style="font-size: 24px; font-weight: 600; color: var(--gray-900);">Detalhes do Aluno</h2>
+          </div>
+          <button class="btn btn-outline" onclick="window.location.href='alunos.html'">← Voltar</button>
+        </div>
+
+        <!-- Loading / Erro -->
+        <div id="loadingState" class="card" style="text-align: center; padding: 48px;">
+          <p style="color: var(--gray-500);">Carregando dados do aluno...</p>
+        </div>
+
+        <div id="errorState" class="card" style="text-align: center; padding: 48px; display: none;">
+          <p style="color: var(--danger-red); font-size: 18px;">⚠️ Aluno não encontrado.</p>
+          <button class="btn btn-outline" style="margin-top: 16px;" onclick="window.location.href='alunos.html'">← Voltar para Alunos</button>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div id="mainContent" style="display: none;">
+
+          <!-- Card: Identificação -->
+          <div class="card" style="margin-bottom: 20px;">
+            <div class="card-body" style="padding: 24px;">
+              <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+                <div style="width: 72px; height: 72px; border-radius: 50%; background: var(--primary-blue); display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; flex-shrink: 0;">👤</div>
+                <div>
+                  <h3 id="nomeAluno" style="font-size: 22px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px;">-</h3>
+                  <span id="badgeSituacao" class="badge">-</span>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;">
+                <div class="detalhe-item">
+                  <span class="detalhe-label">RA</span>
+                  <span id="detRA" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Código da Pessoa</span>
+                  <span id="detCodPessoa" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">CPF</span>
+                  <span id="detCpf" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Data de Nascimento</span>
+                  <span id="detDtnasc" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">E-mail</span>
+                  <span id="detEmail" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Tipo</span>
+                  <span id="detTipo" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Sistema</span>
+                  <span id="detSistema" class="detalhe-valor">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card: Dados Acadêmicos -->
+          <div class="card" style="margin-bottom: 20px;">
+            <div class="card-body" style="padding: 24px;">
+              <h4 style="font-size: 16px; font-weight: 600; color: var(--gray-700); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--gray-200);">🎓 Dados Acadêmicos</h4>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;">
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Filial</span>
+                  <span id="detFilial" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Série</span>
+                  <span id="detSerie" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Turma</span>
+                  <span id="detTurma" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Turno</span>
+                  <span id="detTurno" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Ano Letivo</span>
+                  <span id="detAnoLetivo" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Cód. Turma</span>
+                  <span id="detCodTurma" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Cód. Filial</span>
+                  <span id="detCodFilial" class="detalhe-valor">-</span>
+                </div>
+                <div class="detalhe-item">
+                  <span class="detalhe-label">Cód. Série</span>
+                  <span id="detCodSerie" class="detalhe-valor">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- fim mainContent -->
+
+      </div>
+    </main>
+  </div>
+
+  <style>
+    .detalhe-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 12px;
+      background: var(--gray-50);
+      border-radius: var(--radius-md);
+    }
+    .detalhe-label {
+      font-size: 12px;
+      color: var(--gray-500);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .detalhe-valor {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+  </style>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/topbar.js"></script>
+  <script>
+    checkAuth();
+    initTopbar('Detalhes do Aluno');
+    const user = getUser();
+    if (user && user.nivel_acesso === 1) {
+      document.getElementById('adminSection').style.display = 'block';
+    }
+
+    const turnoMap = { 'M': 'Manhã', 'T': 'Tarde' };
+    const situacaoMap = {
+      'Matriculado': '🟢 Matriculado',
+      'ativo': '🟢 Ativo',
+      'Cancelado': '🔴 Cancelado',
+      'Transferido': '🟡 Transferido',
+      'inativo': '⚫ Inativo'
+    };
+
+    function formatarData(data) {
+      if (!data) return '-';
+      const d = new Date(data);
+      if (isNaN(d)) return data;
+      return d.toLocaleDateString('pt-BR');
+    }
+
+    function formatarCpf(cpf) {
+      if (!cpf) return '-';
+      const nums = cpf.replace(/\D/g, '');
+      if (nums.length === 11) {
+        return nums.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+      }
+      return cpf;
+    }
+
+    async function carregarAluno() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      if (!id) {
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('errorState').style.display = 'block';
+        return;
+      }
+
+      try {
+        const response = await fetchAuth(`/alunos/${id}`);
+        const a = response.data || response;
+
+        if (!a || !a.idAluno) {
+          document.getElementById('loadingState').style.display = 'none';
+          document.getElementById('errorState').style.display = 'block';
+          return;
+        }
+
+        // Atualizar título e breadcrumb
+        const nome = a.nome_pessoa || `Aluno RA ${a.ra}`;
+        document.getElementById('nomeAluno').textContent = nome;
+        document.getElementById('pageTitle').textContent = nome;
+        document.getElementById('breadcrumbNome').textContent = nome;
+        document.title = `${nome} - Olimpíada IDB`;
+
+        // Badge situação
+        const badge = document.getElementById('badgeSituacao');
+        badge.textContent = a.situacao || '-';
+        if (a.situacao === 'Matriculado' || a.situacao === 'ativo') {
+          badge.className = 'badge badge-success';
+        } else if (a.situacao === 'Cancelado' || a.situacao === 'inativo') {
+          badge.className = 'badge badge-danger';
+        } else {
+          badge.className = 'badge badge-secondary';
+        }
+
+        // Identificação
+        document.getElementById('detRA').textContent = a.ra || '-';
+        document.getElementById('detCodPessoa').textContent = a.codPessoa || '-';
+        document.getElementById('detCpf').textContent = formatarCpf(a.cpf);
+        document.getElementById('detDtnasc').textContent = formatarData(a.dtnasc);
+        document.getElementById('detEmail').textContent = a.email || '-';
+        document.getElementById('detTipo').textContent = a.tipo || '-';
+        document.getElementById('detSistema').textContent = a.sistema || '-';
+
+        // Dados acadêmicos
+        document.getElementById('detFilial').textContent = a.filial_nome || '-';
+        document.getElementById('detSerie').textContent = a.serie_nome || '-';
+        document.getElementById('detTurma').textContent = a.turma_nome || '-';
+        document.getElementById('detTurno').textContent = turnoMap[a.turno] || a.turno || '-';
+        document.getElementById('detAnoLetivo').textContent = a.anoLetivo || '-';
+        document.getElementById('detCodTurma').textContent = a.codTurma || '-';
+        document.getElementById('detCodFilial').textContent = a.codFilial || '-';
+        document.getElementById('detCodSerie').textContent = a.codSerie || '-';
+
+        // Mostrar conteúdo
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+
+      } catch (error) {
+        console.error('Erro ao carregar aluno:', error);
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('errorState').style.display = 'block';
+      }
+    }
+
+    carregarAluno();
+  </script>
+</body>
+</html>

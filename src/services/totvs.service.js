@@ -252,6 +252,7 @@ class TotvsService {
       nome: totvsPessoa.NOME,
       email: totvsPessoa.EMAIL || null,
       dtnasc: dtnasc,
+      cpf: totvsPessoa.CPF || totvsPessoa.cpf || null,
       imgUrl: null,
       habilitacao: totvsPessoa.HABNOME || null
     };

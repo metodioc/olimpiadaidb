@@ -207,14 +207,16 @@ class AlunoModel {
         p.nome as nome_pessoa,
         p.email,
         p.dtnasc,
+        p.cpf,
         t.turma as turma_nome,
         t.codTurma as codigo_turma,
+        t.turno as turno,
         s.serie as serie_nome,
         f.filial as filial_nome
       FROM tb_aluno a
       LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
       LEFT JOIN (
-        SELECT codPessoa, MAX(nome) as nome, MAX(email) as email, MAX(dtnasc) as dtnasc
+        SELECT codPessoa, MAX(nome) as nome, MAX(email) as email, MAX(dtnasc) as dtnasc, MAX(cpf) as cpf
         FROM tb_pessoa
         WHERE codPessoa IS NOT NULL
         GROUP BY codPessoa

@@ -35,7 +35,7 @@ class SincronizacaoPessoaService {
           
           // Verificar se pessoa já existe e buscar dados atuais
           const [pessoaExistente] = await connection.query(
-            'SELECT idPessoa, nome, email, dtnasc FROM tb_pessoa WHERE codPessoa = ?',
+            'SELECT idPessoa, nome, email, dtnasc, cpf FROM tb_pessoa WHERE codPessoa = ?',
             [pessoaLocal.codPessoa]
           );
 
@@ -45,19 +45,21 @@ class SincronizacaoPessoaService {
             const houveMudanca = (
               pessoaAtual.nome !== pessoaLocal.nome ||
               pessoaAtual.email !== pessoaLocal.email ||
-              pessoaAtual.dtnasc !== pessoaLocal.dtnasc
+              pessoaAtual.dtnasc !== pessoaLocal.dtnasc ||
+              pessoaAtual.cpf !== pessoaLocal.cpf
             );
 
             if (houveMudanca) {
               // Atualizar apenas se houve mudança
               await connection.query(
                 `UPDATE tb_pessoa 
-                 SET nome = ?, email = ?, dtnasc = ?
+                 SET nome = ?, email = ?, dtnasc = ?, cpf = ?
                  WHERE codPessoa = ?`,
                 [
                   pessoaLocal.nome,
                   pessoaLocal.email,
                   pessoaLocal.dtnasc,
+                  pessoaLocal.cpf,
                   pessoaLocal.codPessoa
                 ]
               );
@@ -67,13 +69,14 @@ class SincronizacaoPessoaService {
           } else {
             // Inserir
             await connection.query(
-              `INSERT INTO tb_pessoa (codPessoa, nome, email, dtnasc, imgUrl)
-               VALUES (?, ?, ?, ?, ?)`,
+              `INSERT INTO tb_pessoa (codPessoa, nome, email, dtnasc, cpf, imgUrl)
+               VALUES (?, ?, ?, ?, ?, ?)`,
               [
                 pessoaLocal.codPessoa,
                 pessoaLocal.nome,
                 pessoaLocal.email,
                 pessoaLocal.dtnasc,
+                pessoaLocal.cpf,
                 pessoaLocal.imgUrl
               ]
             );

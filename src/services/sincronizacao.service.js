@@ -194,7 +194,7 @@ class SincronizacaoService {
           if (!pessoaLocal.codPessoa) continue;
 
           const [existente] = await connection.query(
-            'SELECT idPessoa, nome, email, dtnasc FROM tb_pessoa WHERE codPessoa = ?',
+            'SELECT idPessoa, nome, email, dtnasc, cpf FROM tb_pessoa WHERE codPessoa = ?',
             [pessoaLocal.codPessoa]
           );
 
@@ -203,20 +203,21 @@ class SincronizacaoService {
             const houveMudanca = (
               atual.nome !== pessoaLocal.nome ||
               atual.email !== pessoaLocal.email ||
-              String(atual.dtnasc ?? '').slice(0, 10) !== String(pessoaLocal.dtnasc ?? '').slice(0, 10)
+              String(atual.dtnasc ?? '').slice(0, 10) !== String(pessoaLocal.dtnasc ?? '').slice(0, 10) ||
+              atual.cpf !== pessoaLocal.cpf
             );
 
             if (houveMudanca) {
               await connection.query(
-                `UPDATE tb_pessoa SET nome = ?, email = ?, dtnasc = ? WHERE codPessoa = ?`,
-                [pessoaLocal.nome, pessoaLocal.email, pessoaLocal.dtnasc, pessoaLocal.codPessoa]
+                `UPDATE tb_pessoa SET nome = ?, email = ?, dtnasc = ?, cpf = ? WHERE codPessoa = ?`,
+                [pessoaLocal.nome, pessoaLocal.email, pessoaLocal.dtnasc, pessoaLocal.cpf, pessoaLocal.codPessoa]
               );
               resultado.atualizadas++;
             }
           } else {
             await connection.query(
-              `INSERT INTO tb_pessoa (codPessoa, nome, email, dtnasc, imgUrl) VALUES (?, ?, ?, ?, ?)`,
-              [pessoaLocal.codPessoa, pessoaLocal.nome, pessoaLocal.email, pessoaLocal.dtnasc, pessoaLocal.imgUrl]
+              `INSERT INTO tb_pessoa (codPessoa, nome, email, dtnasc, cpf, imgUrl) VALUES (?, ?, ?, ?, ?, ?)`,
+              [pessoaLocal.codPessoa, pessoaLocal.nome, pessoaLocal.email, pessoaLocal.dtnasc, pessoaLocal.cpf, pessoaLocal.imgUrl]
             );
             resultado.inseridas++;
           }
@@ -249,7 +250,7 @@ class SincronizacaoService {
    */
   static async processarPessoa(connection, pessoa) {
     const [pessoaExistente] = await connection.query(
-      'SELECT idPessoa, nome, email, dtnasc FROM tb_pessoa WHERE codPessoa = ?',
+      'SELECT idPessoa, nome, email, dtnasc, cpf FROM tb_pessoa WHERE codPessoa = ?',
       [pessoa.codPessoa]
     );
 
@@ -259,25 +260,26 @@ class SincronizacaoService {
       const houveMudanca = (
         pessoaAtual.nome !== pessoa.nome ||
         pessoaAtual.email !== pessoa.email ||
-        pessoaAtual.dtnasc !== pessoa.dtnasc
+        pessoaAtual.dtnasc !== pessoa.dtnasc ||
+        pessoaAtual.cpf !== pessoa.cpf
       );
 
       if (houveMudanca) {
         // Atualizar pessoa apenas se houve mudança
         await connection.query(
           `UPDATE tb_pessoa 
-           SET nome = ?, email = ?, dtnasc = ?
+           SET nome = ?, email = ?, dtnasc = ?, cpf = ?
            WHERE codPessoa = ?`,
-          [pessoa.nome, pessoa.email, pessoa.dtnasc, pessoa.codPessoa]
+          [pessoa.nome, pessoa.email, pessoa.dtnasc, pessoa.cpf, pessoa.codPessoa]
         );
       }
       return pessoaExistente[0].idPessoa;
     } else {
       // Inserir pessoa
       const [result] = await connection.query(
-        `INSERT INTO tb_pessoa (codPessoa, nome, email, dtnasc, imgUrl)
-         VALUES (?, ?, ?, ?, ?)`,
-        [pessoa.codPessoa, pessoa.nome, pessoa.email, pessoa.dtnasc, pessoa.imgUrl]
+        `INSERT INTO tb_pessoa (codPessoa, nome, email, dtnasc, cpf, imgUrl)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [pessoa.codPessoa, pessoa.nome, pessoa.email, pessoa.dtnasc, pessoa.cpf, pessoa.imgUrl]
       );
       return result.insertId;
     }

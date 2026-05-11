@@ -282,7 +282,7 @@
             <button class="btn btn-sm btn-primary" onclick="window.location.href='usuario-form.html?id=${u.id_usuario}'" title="Editar">
               ✏️
             </button>
-            <button class="btn btn-sm btn-danger" onclick="deletarUsuario(${u.id_usuario}, '${u.nome_completo}')" title="Desativar" ${!u.ativo ? 'disabled' : ''}>
+            <button class="btn btn-sm btn-outline" onclick="deletarUsuario(${u.id_usuario}, '${u.nome_completo}')" title="Desativar" ${!u.ativo ? 'disabled' : ''}>
               🚫
             </button>
           </td>

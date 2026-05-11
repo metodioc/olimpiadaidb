@@ -193,8 +193,8 @@
           </td>
           <td>${tc.observacao || '-'}</td>
           <td>
-            <button class="btn btn-sm btn-primary" onclick="window.location.href='tipo-correcao-form.html?id=${tc.idTipoCorrecao}'" title="Editar">✏️</button>
-            <button class="btn btn-sm btn-danger" onclick="deletarTipoCorrecao(${tc.idTipoCorrecao}, '${tc.descricao}')" title="Deletar">🗑️</button>
+            <button class="btn btn-sm btn-primary" onclick="window.location.href='tipo-correcao-form.html?id=${tc.idTipoCorrecao}'" title="Editar">Editar</button>
+            <button class="btn btn-sm btn-outline" onclick="deletarTipoCorrecao(${tc.idTipoCorrecao}, '${tc.descricao}')" title="Deletar">Excluir</button>
           </td>
         </tr>
       `).join('');

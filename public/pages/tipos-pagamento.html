@@ -182,8 +182,8 @@
           </td>
           <td>${dataFormatada}</td>
           <td>
-            <button class="btn btn-sm btn-primary" onclick="window.location.href='tipo-pagamento-form.html?id=${tipo.idTipoPagamento}'" title="Editar">✏️</button>
-            <button class="btn btn-sm btn-danger" onclick="deletarTipoPagamento(${tipo.idTipoPagamento}, '${tipo.descricao.replace(/'/g, "\\'")}')" title="Excluir">🗑️</button>
+            <button class="btn btn-sm btn-primary" onclick="window.location.href='tipo-pagamento-form.html?id=${tipo.idTipoPagamento}'" title="Editar">Editar</button>
+            <button class="btn btn-sm btn-outline" onclick="deletarTipoPagamento(${tipo.idTipoPagamento}, '${tipo.descricao.replace(/'/g, "\\'")}')" title="Excluir">Excluir</button>
           </td>
         </tr>`;
       }).join('');

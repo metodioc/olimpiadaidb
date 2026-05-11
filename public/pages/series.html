@@ -113,9 +113,6 @@
             <h2 style="font-size: 24px; font-weight: 600; color: var(--gray-900);">Gerenciar Séries</h2>
             <p style="color: var(--gray-600); margin-top: 4px;">Cadastre e gerencie as séries escolares</p>
           </div>
-          <button class="btn btn-primary" onclick="window.location.href='serie-form.html'">
-            <span>+ Nova Série</span>
-          </button>
         </div>
 
         <!-- Barra de ações -->
@@ -268,8 +265,7 @@
           <td>${s.totalTurmas ?? 0}</td>
           <td>${s.totalAlunos ?? 0}</td>
           <td>
-            <button class="btn btn-sm btn-primary" onclick="window.location.href='serie-form.html?id=${s.idSerie}'" title="Editar">✏️</button>
-            <button class="btn btn-sm btn-danger" onclick="deletarSerie(${s.idSerie}, '${(s.serie || '').replace(/'/g, "\\'")}')" title="Deletar">🗑️</button>
+            <button class="btn btn-sm btn-primary" onclick="verSerie(${s.idSerie})" title="Ver detalhes">Ver</button>
           </td>
         </tr>
       `).join('');
@@ -315,72 +311,10 @@
       criarSerie({ codSerie: parseInt(codSerie), serie, abSerie, idFilial });
     }
 
-    function editarSerie(idSerie) {
-      const serie = series.find(s => s.idSerie === idSerie);
-      if (!serie) return;
-
-      const codSerie = prompt('Código da Série:', serie.codSerie);
-      if (!codSerie) return;
-
-      const nomeSerie = prompt('Nome da Série:', serie.serie);
-      if (!nomeSerie) return;
-
-      const abSerie = prompt('Abreviação:', serie.abSerie);
-      if (!abSerie) return;
-
-      let filialOptions = 'Selecione a Filial:\n\n';
-      filiais.forEach((f, i) => {
-        filialOptions += `${i + 1}. ${f.filial} (${f.abFilial})${f.idFilial === serie.idFilial ? ' [ATUAL]' : ''}\n`;
-      });
-      
-      const filialIndex = prompt(filialOptions + '\nDigite o número:');
-      if (!filialIndex || filialIndex < 1 || filialIndex > filiais.length) return;
-
-      const idFilial = filiais[filialIndex - 1].idFilial;
-
-      atualizarSerie(idSerie, { codSerie: parseInt(codSerie), serie: nomeSerie, abSerie, idFilial });
-    }
-
-    async function criarSerie(dados) {
-      try {
-        await fetchAuth('/series', {
-          method: 'POST',
-          body: JSON.stringify(dados)
-        });
-
-        showNotification('Série criada com sucesso!', 'success');
-        await loadSeries();
-      } catch (error) {
-        console.error('Erro ao criar série:', error);
-        showNotification(error.message || 'Erro ao criar série', 'error');
-      }
-    }
-
-    async function atualizarSerie(idSerie, dados) {
-      try {
-        await fetchAuth(`/series/${idSerie}`, {
-          method: 'PUT',
-          body: JSON.stringify(dados)
-        });
-
-        showNotification('Série atualizada com sucesso!', 'success');
-        await loadSeries();
-      } catch (error) {
-        console.error('Erro ao atualizar série:', error);
-        showNotification(error.message || 'Erro ao atualizar série', 'error');
-      }
-    }
-
-    async function deletarSerie(idSerie, nomeSerie) {
-      if (!confirm(`Tem certeza que deseja deletar a série "${nomeSerie}"?\n\nEsta ação não pode ser desfeita!`)) return;
-      try {
-        await fetchAuth(`/series/${idSerie}`, { method: 'DELETE' });
-        showNotification('Série deletada com sucesso!', 'success');
-        await loadSeries();
-      } catch (error) {
-        console.error('Erro ao deletar série:', error);
-        showNotification(error.message || 'Erro ao deletar série', 'error');
-      }
+    function verSerie(idSerie) {
+      const s = series.find(s => s.idSerie === idSerie);
+      if (!s) return;
+      alert(`Série: ${s.serie}\nCódigo: ${s.codSerie}\nAbreviação: ${s.abSerie}\nFilial: ${s.filial || '-'}\nTurmas: ${s.totalTurmas ?? 0}\nAlunos: ${s.totalAlunos ?? 0}`);
     }
 
     // Inicialização

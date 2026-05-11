@@ -148,9 +148,7 @@
               <option value="inativo">Inativo</option>
             </select>
           </div>
-          <button class="btn btn-primary" onclick="novoAluno()">
-            ➕ Novo Aluno
-          </button>
+
         </div>
 
         <!-- Estatísticas rápidas -->
@@ -374,10 +372,7 @@
             <td>${a.filial_nome || '-'}</td>
             <td>${situacaoMap[a.situacao] || a.situacao}</td>
             <td>
-              <div class="flex gap-1">
-                <button class="btn btn-sm btn-primary" onclick="verAluno(${a.idAluno})" title="Ver detalhes">👁️</button>
-                <button class="btn btn-sm btn-secondary" onclick="editarAluno(${a.idAluno})" title="Editar">✏️</button>
-              </div>
+              <button class="btn btn-sm btn-primary" onclick="window.location.href='aluno-detalhe.html?id=${a.idAluno}'" title="Ver detalhes">Ver</button>
             </td>
           </tr>
         `;
@@ -429,26 +424,32 @@
       container.innerHTML = html;
     }
 
-    function updateStats() {
+    async function updateStats() {
       document.getElementById('totalAlunos').textContent = totalAlunos;
-      document.getElementById('alunosAtivos').textContent = alunos.filter(a => a.situacao === 'Matriculado' || a.situacao === 'ativo').length;
       document.getElementById('alunosInscritos').textContent = '0'; // TODO: Implementar
       document.getElementById('medalhistas').textContent = '0'; // TODO: Implementar
-    }
 
-    function verAluno(id) {
-      const aluno = alunos.find(a => a.idAluno === id);
-      if (!aluno) return;
-      
-      alert(`Aluno: ${aluno.nome_pessoa}\nRA: ${aluno.ra}\nTurma: ${aluno.turma_nome}\nSérie: ${aluno.serie_nome}\nFilial: ${aluno.filial_nome}\nSituação: ${aluno.situacao}`);
-    }
+      // Busca contagem real de ativos via API (independente da página)
+      try {
+        const anoLetivo = getAnoLetivoSelecionado();
+        const filterFilial = document.getElementById('filterFilial').value;
+        const filterSerie  = document.getElementById('filterSerie').value;
+        const filterTurma  = document.getElementById('filterTurma').value;
+        const filterTurno  = document.getElementById('filterTurno').value;
+        const searchTerm   = document.getElementById('searchInput').value.trim();
 
-    function editarAluno(id) {
-      showNotification('Funcionalidade de edição em desenvolvimento', 'info');
-    }
+        let url = `/alunos?page=1&limit=1&anoLetivo=${anoLetivo}&situacao=Matriculado`;
+        if (searchTerm)   url += `&search=${encodeURIComponent(searchTerm)}`;
+        if (filterFilial) url += `&idFilial=${filterFilial}`;
+        if (filterSerie)  url += `&idSerie=${filterSerie}`;
+        if (filterTurma)  url += `&idTurma=${filterTurma}`;
+        if (filterTurno)  url += `&turno=${encodeURIComponent(filterTurno)}`;
 
-    function novoAluno() {
-      showNotification('Modal de cadastro de aluno em desenvolvimento', 'info');
+        const resp = await fetchAuth(url);
+        document.getElementById('alunosAtivos').textContent = resp.total || 0;
+      } catch (e) {
+        document.getElementById('alunosAtivos').textContent = '-';
+      }
     }
 
     function exportarAlunos() {
