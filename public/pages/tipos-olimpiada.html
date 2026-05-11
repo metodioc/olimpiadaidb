@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tipos de Olimpíada - Olimpíada IDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Olimpíadas</div>
+          <a href="olimpiadas.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
+          </a>
+          <a href="inscricoes.html" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
+          </a>
+          <a href="resultados.html" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span>Resultados</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Cadastros</div>
+          <a href="alunos.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span>Alunos</span>
+          </a>
+          <a href="turmas.html" class="nav-item">
+            <span class="nav-icon">🎓</span>
+            <span>Turmas</span>
+          </a>
+          <a href="series.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
+          </a>
+          <a href="anos-letivos.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span>Anos Letivos</span>
+          </a>
+          <a href="filiais.html" class="nav-item">
+            <span class="nav-icon">🏫</span>
+            <span>Filiais</span>
+          </a>
+          <a href="tipos-olimpiada.html" class="nav-item active">
+            <span class="nav-icon">🏅</span>
+            <span>Catálogo de Olimpíadas</span>
+          </a>
+          <a href="tipos-correcao.html" class="nav-item">
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
+          </a>
+          <a href="locais-aplicacao.html" class="nav-item">
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
+          </a>
+          <a href="tipos-pagamento.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Tipos de Pagamento</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Rankings</div>
+          <a href="medalhistas.html" class="nav-item">
+            <span class="nav-icon">🥇</span>
+            <span>Medalhistas</span>
+          </a>
+          <a href="rankings.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span>Rankings</span>
+          </a>
+        </div>
+
+        <div class="nav-section" id="adminSection" style="display: none;">
+          <div class="nav-section-title">Administração</div>
+          <a href="usuarios.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="content">
+
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <h2 style="font-size: 24px; font-weight: 600; color: var(--gray-900);">Catálogo de Olimpíadas</h2>
+            <p style="color: var(--gray-600); margin-top: 4px;">Olimpíadas pré-cadastradas para uso no calendário anual</p>
+          </div>
+          <button class="btn btn-primary" onclick="abrirModal()">+ Nova Olimpíada</button>
+        </div>
+
+        <!-- Filtros -->
+        <div class="card" style="margin-bottom: 16px;">
+          <div class="card-body" style="padding: 16px 20px; display: flex; gap: 12px; align-items: center;">
+            <input type="search" id="searchInput" class="form-input" placeholder="Buscar por nome ou abreviação..." style="max-width: 340px;">
+            <select id="filterAtivo" class="form-select" style="max-width: 160px;">
+              <option value="">Todos</option>
+              <option value="1" selected>Ativos</option>
+              <option value="0">Inativos</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tabela -->
+        <div class="card">
+          <div class="card-body">
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Abreviação</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Olimpíadas cadastradas</th>
+                    <th>Status</th>
+                    <th style="width: 120px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tiposTableBody">
+                  <tr><td colspan="6" class="text-center">Carregando...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Criar/Editar -->
+  <div id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+    <div class="card" style="width:520px; max-height:90vh; overflow-y:auto;">
+      <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 id="modalTitle" style="margin:0;">Nova Olimpíada</h3>
+        <button class="btn btn-outline" onclick="fecharModal()" style="padding: 4px 12px;">X</button>
+      </div>
+      <div class="card-body">
+        <form id="formTipo" onsubmit="salvar(event)">
+          <input type="hidden" id="idTipoOlimpiada">
+
+          <div style="margin-bottom: 16px;">
+            <label class="form-label">Nome *</label>
+            <input type="text" id="nomeOlimpiada" class="form-input" required maxlength="200"
+              placeholder="Ex: Olimpíada Brasileira de Matemática">
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label class="form-label">Abreviação *</label>
+            <input type="text" id="abreviacao" class="form-input" required maxlength="20"
+              placeholder="Ex: OBM" style="text-transform: uppercase;">
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label class="form-label">Descrição</label>
+            <textarea id="descricao" class="form-input" rows="3" maxlength="500"
+              placeholder="Descrição opcional da olimpíada..."></textarea>
+          </div>
+
+          <div style="margin-bottom: 24px;">
+            <label class="form-label">Status</label>
+            <select id="ativo" class="form-select">
+              <option value="1">Ativo</option>
+              <option value="0">Inativo</option>
+            </select>
+          </div>
+
+          <div style="display:flex; gap:12px; padding-top:16px; border-top: 1px solid var(--gray-200);">
+            <button type="button" class="btn btn-outline" onclick="fecharModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/topbar.js"></script>
+  <script>
+    checkAuth();
+    initTopbar('Catálogo de Olimpíadas');
+    const user = getUser();
+    if (user && user.nivel_acesso === 1) {
+      document.getElementById('adminSection').style.display = 'block';
+    }
+
+    let tipos = [];
+
+    async function carregarTipos() {
+      try {
+        const search = document.getElementById('searchInput').value;
+        const ativo  = document.getElementById('filterAtivo').value;
+        let url = '/tipos-olimpiada?';
+        if (search) url += `search=${encodeURIComponent(search)}&`;
+        if (ativo !== '') url += `ativo=${ativo}`;
+
+        const response = await fetchAuth(url);
+        tipos = response.data || [];
+        renderTabela();
+      } catch (error) {
+        showNotification('Erro ao carregar catálogo', 'error');
+      }
+    }
+
+    function renderTabela() {
+      const tbody = document.getElementById('tiposTableBody');
+      if (tipos.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center">Nenhuma olimpíada no catálogo</td></tr>';
+        return;
+      }
+      tbody.innerHTML = tipos.map(t => `
+        <tr>
+          <td><strong>${t.abreviacao}</strong></td>
+          <td>${t.nomeOlimpiada}</td>
+          <td style="color: var(--gray-600); font-size: 13px;">${t.descricao || '-'}</td>
+          <td style="text-align:center;">${t.totalOlimpiadas || 0}</td>
+          <td>
+            <span class="badge ${t.ativo ? 'badge-success' : 'badge-secondary'}">
+              ${t.ativo ? 'Ativo' : 'Inativo'}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-primary" onclick="abrirModal(${t.idTipoOlimpiada})">Editar</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function abrirModal(id = null) {
+      document.getElementById('formTipo').reset();
+      document.getElementById('idTipoOlimpiada').value = '';
+      document.getElementById('ativo').value = '1';
+
+      if (id) {
+        const t = tipos.find(x => x.idTipoOlimpiada === id);
+        if (t) {
+          document.getElementById('modalTitle').textContent = 'Editar Olimpíada';
+          document.getElementById('idTipoOlimpiada').value = t.idTipoOlimpiada;
+          document.getElementById('nomeOlimpiada').value = t.nomeOlimpiada;
+          document.getElementById('abreviacao').value = t.abreviacao;
+          document.getElementById('descricao').value = t.descricao || '';
+          document.getElementById('ativo').value = t.ativo ? '1' : '0';
+        }
+      } else {
+        document.getElementById('modalTitle').textContent = 'Nova Olimpíada';
+      }
+
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function fecharModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    async function salvar(event) {
+      event.preventDefault();
+      const id = document.getElementById('idTipoOlimpiada').value;
+      const dados = {
+        nomeOlimpiada: document.getElementById('nomeOlimpiada').value.trim(),
+        abreviacao:    document.getElementById('abreviacao').value.trim().toUpperCase(),
+        descricao:     document.getElementById('descricao').value.trim() || null,
+        ativo:         document.getElementById('ativo').value === '1'
+      };
+
+      try {
+        if (id) {
+          await fetchAuth(`/tipos-olimpiada/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(dados)
+          });
+          showNotification('Atualizado com sucesso!', 'success');
+        } else {
+          await fetchAuth('/tipos-olimpiada', {
+            method: 'POST',
+            body: JSON.stringify(dados)
+          });
+          showNotification('Criado com sucesso!', 'success');
+        }
+        fecharModal();
+        carregarTipos();
+      } catch (error) {
+        showNotification(error.message || 'Erro ao salvar', 'error');
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', debounce(() => carregarTipos(), 400));
+    document.getElementById('filterAtivo').addEventListener('change', () => carregarTipos());
+
+    // Fechar modal ao clicar no fundo
+    document.getElementById('modal').addEventListener('click', function(e) {
+      if (e.target === this) fecharModal();
+    });
+
+    carregarTipos();
+  </script>
+</body>
+</html>

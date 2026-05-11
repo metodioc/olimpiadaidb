@@ -15,12 +15,15 @@ class OlimpiadaModel {
         u.nome_completo as responsavel_nome,
         l.nomeLocal as localAplicacao,
         tp.descricao as tipoPagamento,
-        tc.descricao as tipoCorrecao
+        tc.descricao as tipoCorrecao,
+        tot.nomeOlimpiada as tipoOlimpiadaNome,
+        tot.abreviacao as tipoOlimpiadaAbreviacao
       FROM tb_olimpiada o
       INNER JOIN tb_usuario u ON o.idUsuarioResponsavel = u.id_usuario
       LEFT JOIN tb_local_aplicacao l ON o.idLocalAplicacao = l.idLocalAplicacao
       LEFT JOIN tb_tipo_pagamento tp ON o.idTipoPagamento = tp.idTipoPagamento
       LEFT JOIN tb_tipo_correcao tc ON o.idTipoCorrecao = tc.idTipoCorrecao
+      LEFT JOIN tb_tipo_olimpiada tot ON o.idTipoOlimpiada = tot.idTipoOlimpiada
       WHERE 1=1
     `;
     
@@ -53,12 +56,15 @@ class OlimpiadaModel {
         u.email as responsavel_email,
         l.nomeLocal as localAplicacao,
         tp.descricao as tipoPagamento,
-        tc.descricao as tipoCorrecao
+        tc.descricao as tipoCorrecao,
+        tot.nomeOlimpiada as tipoOlimpiadaNome,
+        tot.abreviacao as tipoOlimpiadaAbreviacao
       FROM tb_olimpiada o
       INNER JOIN tb_usuario u ON o.idUsuarioResponsavel = u.id_usuario
       LEFT JOIN tb_local_aplicacao l ON o.idLocalAplicacao = l.idLocalAplicacao
       LEFT JOIN tb_tipo_pagamento tp ON o.idTipoPagamento = tp.idTipoPagamento
       LEFT JOIN tb_tipo_correcao tc ON o.idTipoCorrecao = tc.idTipoCorrecao
+      LEFT JOIN tb_tipo_olimpiada tot ON o.idTipoOlimpiada = tot.idTipoOlimpiada
       WHERE o.idOlimpiada = ?`,
       [id]
     );
@@ -109,6 +115,7 @@ class OlimpiadaModel {
    */
   static async create(olimpiadaData) {
     const {
+      idTipoOlimpiada,
       nomeOlimpiada,
       abreviacaoOlimpiada,
       ano,
@@ -120,16 +127,18 @@ class OlimpiadaModel {
       dataLimiteInscricao,
       dataAplicacao,
       dataCorrecao,
+      anoLetivo,
       observacoes
     } = olimpiadaData;
     
     const [result] = await pool.query(
       `INSERT INTO tb_olimpiada 
-        (nomeOlimpiada, abreviacaoOlimpiada, ano, idUsuarioResponsavel,
+        (idTipoOlimpiada, nomeOlimpiada, abreviacaoOlimpiada, ano, idUsuarioResponsavel,
          idLocalAplicacao, idTipoPagamento, idTipoCorrecao, valorCusto,
          dataLimiteInscricao, dataAplicacao, dataCorrecao, observacoes)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
+        idTipoOlimpiada || null,
         nomeOlimpiada, abreviacaoOlimpiada, ano, idUsuarioResponsavel,
         idLocalAplicacao, idTipoPagamento, idTipoCorrecao, valorCusto,
         dataLimiteInscricao, dataAplicacao, dataCorrecao, observacoes
@@ -144,6 +153,7 @@ class OlimpiadaModel {
    */
   static async update(olimpiadaId, olimpiadaData) {
     const {
+      idTipoOlimpiada,
       nomeOlimpiada,
       abreviacaoOlimpiada,
       ano,
@@ -160,6 +170,7 @@ class OlimpiadaModel {
     
     const [result] = await pool.query(
       `UPDATE tb_olimpiada SET
+        idTipoOlimpiada = COALESCE(?, idTipoOlimpiada),
         nomeOlimpiada = COALESCE(?, nomeOlimpiada),
         abreviacaoOlimpiada = COALESCE(?, abreviacaoOlimpiada),
         ano = COALESCE(?, ano),
@@ -174,6 +185,7 @@ class OlimpiadaModel {
         observacoes = ?
       WHERE idOlimpiada = ?`,
       [
+        idTipoOlimpiada || null,
         nomeOlimpiada, abreviacaoOlimpiada, ano, idUsuarioResponsavel,
         idLocalAplicacao, idTipoPagamento, idTipoCorrecao, valorCusto,
         dataLimiteInscricao, dataAplicacao, dataCorrecao, observacoes,

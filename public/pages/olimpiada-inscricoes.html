@@ -64,6 +64,10 @@
             <span class="nav-icon">🏫</span>
             <span>Filiais</span>
           </a>
+          <a href="tipos-olimpiada.html" class="nav-item">
+            <span class="nav-icon">🏅</span>
+            <span>Catálogo de Olimpíadas</span>
+          </a>
           <a href="tipos-correcao.html" class="nav-item">
             <span class="nav-icon">✅</span>
             <span>Tipos de Correção</span>
@@ -165,6 +169,7 @@
                 <select id="selectFilial" class="form-select" onchange="carregarSeries()">
                   <option value="">Selecione a filial</option>
                 </select>
+                <p id="infoFilial" style="margin-top: 6px; color: var(--gray-600); font-size: 13px; min-height: 18px;"></p>
               </div>
 
               <!-- Tipo de Inscrição -->
@@ -353,6 +358,12 @@
       }
 
       try {
+        // Mostrar total de matriculados nesta filial
+        const anoLetivo = getAnoLetivoSelecionado();
+        const countResp = await fetchAuth(`/alunos?page=1&limit=1&idFilial=${filialId}&situacao=Matriculado&anoLetivo=${anoLetivo}`);
+        const totalMatriculados = countResp.total || 0;
+        document.getElementById('infoFilial').textContent = `${totalMatriculados} aluno(s) matriculado(s) nesta unidade`;
+
         const response = await fetchAuth(`/series?idFilial=${filialId}`);
         series = response.data || [];
         
@@ -536,7 +547,7 @@
       timeoutBusca = setTimeout(async () => {
         try {
           const anoLetivo = getAnoLetivoSelecionado();
-          const response = await fetchAuth(`/alunos?search=${encodeURIComponent(termo)}&idFilial=${filialId}&anoLetivo=${anoLetivo}`);
+          const response = await fetchAuth(`/alunos?search=${encodeURIComponent(termo)}&idFilial=${filialId}&situacao=Matriculado&anoLetivo=${anoLetivo}`);
           const alunos = response.data || [];
           
           const container = document.getElementById('resultadosBusca');
