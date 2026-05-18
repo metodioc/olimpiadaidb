@@ -497,7 +497,7 @@
             idFilial: chk.value,
             nome: chk.dataset.nome,
             corIdx: parseInt(chk.dataset.corIdx),
-            series: (r.data || []).sort((a, b) => a.serie.localeCompare(b.serie))
+            series: (r.data || []).sort((a, b) => (a.codSerie ?? 9999) - (b.codSerie ?? 9999))
           })))
         );
 

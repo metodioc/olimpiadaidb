@@ -10,7 +10,7 @@ class FilialModel {
    */
   static async findAll() {
     const [rows] = await pool.query(
-      `SELECT * FROM tb_filial ORDER BY filial ASC`
+      `SELECT * FROM tb_filial ORDER BY codFilial ASC`
     );
     return rows;
   }
