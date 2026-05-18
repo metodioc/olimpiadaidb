@@ -11,24 +11,28 @@ class InscricaoModel {
   static async findAll(filters = {}) {
     let query = `
       SELECT 
-        i.*,
+        i.idOlimpiadaInscricao,
+        i.idOlimpiada,
+        i.idAluno,
+        i.statusInscricao,
+        i.dataInscricao,
         o.nomeOlimpiada,
         o.ano,
         a.ra,
-        p.nome AS aluno_nome,
-        s.serie,
-        t.turma,
-        f.filial
+        COALESCE(p.nome, CONCAT('RA: ', a.ra)) AS aluno_nome,
+        MAX(s.serie) AS serie,
+        MAX(t.turma) AS turma,
+        MAX(f.filial) AS filial
       FROM tb_olimpiada_inscricao i
       INNER JOIN tb_olimpiada o ON i.idOlimpiada = o.idOlimpiada
       INNER JOIN tb_aluno a ON i.idAluno = a.idAluno
-      LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
       LEFT JOIN (
         SELECT codPessoa, MAX(nome) as nome
         FROM tb_pessoa
         WHERE codPessoa IS NOT NULL
         GROUP BY codPessoa
       ) p ON a.codPessoa = p.codPessoa
+      LEFT JOIN tb_ano_letivo al ON a.anoLetivo = al.anoLetivo
       LEFT JOIN (
         SELECT codTurma, idAnoLetivo, MAX(idTurma) as idTurma
         FROM tb_turma
@@ -62,6 +66,7 @@ class InscricaoModel {
       params.push(parseInt(filters.anoLetivo));
     }
     
+    query += ' GROUP BY i.idOlimpiadaInscricao, i.idOlimpiada, i.idAluno, i.statusInscricao, i.dataInscricao, o.nomeOlimpiada, o.ano, a.ra, aluno_nome';
     query += ' ORDER BY i.dataInscricao DESC';
     
     const [rows] = await pool.query(query, params);

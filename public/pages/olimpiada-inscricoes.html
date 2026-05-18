@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -298,56 +298,11 @@
           </div>
         </div>
 
-        <!-- Tab: Listagem -->
+        <!-- ===== Tab: Listagem ===== -->
         <div id="tabListagem" class="tab-content" style="display: none;">
           <div class="card">
             <div class="card-header flex-between">
-              <h3>Alunos Inscritos</h3>
-              <div>
-                <input 
-                  type="text" 
-                  id="filtroListagem" 
-                  class="form-input" 
-                  placeholder="Filtrar alunos..."
-                  style="width: 300px; margin-right: 12px;"
-                  oninput="filtrarListagem()"
-                >
-                <button class="btn btn-outline" onclick="removerSelecionados()">
-                  🗑️ Remover Selecionados
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th><input type="checkbox" onchange="selecionarTodos(this)"></th>
-                    <th>Matrícula</th>
-                    <th>Nome</th>
-                    <th>Série</th>
-                    <th>Turma</th>
-                    <th>Filial</th>
-                    <th>Data Inscrição</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody id="tabelaInscritos">
-                  <tr>
-                    <td colspan="8" style="text-align: center; padding: 40px;">
-                      Carregando inscritos...
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab: Listagem -->
-        <div id="tabListagem" class="tab-content" style="display: none;">
-          <div class="card">
-            <div class="card-header flex-between">
-              <h3>Alunos Inscritos</h3>
+              <h3>📋 Alunos Inscritos</h3>
               <div>
                 <input 
                   type="text" 
