@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const InscricaoModel = require('../models/Inscricao.model');
+const OlimpiadaModel = require('../models/Olimpiada.model');
 
 // Controller de Inscricoes - v2.0 - ${Date.now()}
 
@@ -129,8 +130,10 @@ exports.enrollByTurma = async (req, res) => {
       });
     }
     
-    const { id_olimpiada, id_turma } = req.body;
-    const result = await InscricaoModel.enrollByTurma(id_olimpiada, id_turma);
+    const { id_olimpiada, id_turma, ano_letivo } = req.body;
+    const olimpiadaData = await OlimpiadaModel.findById(id_olimpiada);
+    const anoLetivo = ano_letivo || olimpiadaData?.ano || new Date().getFullYear();
+    const result = await InscricaoModel.enrollByTurma(id_olimpiada, id_turma, anoLetivo);
     
     return res.status(201).json({
       message: `${result.inseridos} aluno(s) inscrito(s) da turma`,
@@ -192,11 +195,15 @@ exports.createLote = async (req, res) => {
     
     const { idOlimpiada, tipo, idSerie, idFilial, idTurma } = req.body;
     let result;
-    
+
+    // Buscar o ano da olimpíada para filtrar alunos pelo período correto
+    const olimpiadaData = await OlimpiadaModel.findById(idOlimpiada);
+    const anoLetivo = olimpiadaData?.ano || new Date().getFullYear();
+
     if (tipo === 'serie') {
-      result = await InscricaoModel.enrollBySerie(idOlimpiada, idSerie, idFilial);
+      result = await InscricaoModel.enrollBySerie(idOlimpiada, idSerie, idFilial, anoLetivo);
     } else if (tipo === 'turma') {
-      result = await InscricaoModel.enrollByTurma(idOlimpiada, idTurma);
+      result = await InscricaoModel.enrollByTurma(idOlimpiada, idTurma, anoLetivo);
     } else {
       return res.status(400).json({
         success: false,

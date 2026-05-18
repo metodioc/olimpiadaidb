@@ -564,12 +564,12 @@
       preview.style.display = 'block';
 
       try {
-        const anoLetivo = getAnoLetivoSelecionado();
+        const anoLetivo = olimpiada?.ano || getAnoLetivoSelecionado();
         const contagens = await Promise.all(
           pares.map(p =>
             fetchAuth(`/alunos?page=1&limit=1&idFilial=${p.fId}&idSerie=${p.sId}&situacao=Matriculado&anoLetivo=${anoLetivo}`)
-              .then(r => r.total || 0)
-              .catch(() => 0)
+              .then(r => { const v = r?.total ?? r?.pagination?.total ?? 0; return v; })
+              .catch(e => { console.error('Erro contagem', p, e); return 0; })
           )
         );
         const total = contagens.reduce((s, n) => s + n, 0);

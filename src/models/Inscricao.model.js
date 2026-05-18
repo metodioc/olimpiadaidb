@@ -181,7 +181,7 @@ class InscricaoModel {
   /**
    * Inscrever todos os alunos de uma turma
    */
-  static async enrollByTurma(idOlimpiada, idTurma) {
+  static async enrollByTurma(idOlimpiada, idTurma, anoLetivo) {
     const [alunos] = await pool.query(
       `SELECT DISTINCT a.idAluno 
       FROM tb_aluno a
@@ -192,8 +192,8 @@ class InscricaoModel {
         GROUP BY codTurma, idAnoLetivo
       ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
       INNER JOIN tb_turma t ON t.idTurma = t_map.idTurma
-      WHERE t.idTurma = ? AND a.situacao = "Matriculado" AND al.status = "ativo"`,
-      [idTurma]
+      WHERE t.idTurma = ? AND a.situacao = 'Matriculado' AND a.anoLetivo = ?`,
+      [idTurma, anoLetivo]
     );
     
     const alunosIds = alunos.map(a => a.idAluno);
@@ -203,7 +203,7 @@ class InscricaoModel {
   /**
    * Inscrever todos os alunos de uma série
    */
-  static async enrollBySerie(idOlimpiada, idSerie, idFilial) {
+  static async enrollBySerie(idOlimpiada, idSerie, idFilial, anoLetivo) {
     const [alunos] = await pool.query(
       `SELECT DISTINCT a.idAluno 
       FROM tb_aluno a
@@ -215,8 +215,8 @@ class InscricaoModel {
       ) t_map ON a.codTurma = t_map.codTurma AND t_map.idAnoLetivo = al.idAnoLetivo
       INNER JOIN tb_turma t ON t.idTurma = t_map.idTurma
       INNER JOIN tb_serie s ON t.idSerie = s.idSerie
-      WHERE s.idSerie = ? AND s.idFilial = ? AND a.situacao = "Matriculado" AND al.status = "ativo"`,
-      [idSerie, idFilial]
+      WHERE s.idSerie = ? AND s.idFilial = ? AND a.situacao = 'Matriculado' AND a.anoLetivo = ?`,
+      [idSerie, idFilial, anoLetivo]
     );
     
     const alunosIds = alunos.map(a => a.idAluno);
