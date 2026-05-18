@@ -12,18 +12,21 @@ class InscricaoModel {
     let query = `
       SELECT 
         i.idOlimpiadaInscricao,
+        i.idOlimpiadaInscricao AS idInscricao,
         i.idOlimpiada,
         i.idAluno,
         i.statusInscricao,
         i.dataInscricao,
         o.nomeOlimpiada,
         o.nomeOlimpiada AS nome_olimpiada,
+        o.ano,
         a.ra,
         COALESCE(p.nome, CONCAT('RA: ', a.ra)) AS aluno_nome,
         COALESCE(p.nome, CONCAT('RA: ', a.ra)) AS nome_aluno,
         MAX(s.serie) AS serie,
         MAX(t.turma) AS turma,
         MAX(t.turma) AS nome_turma,
+        MAX(f.filial) AS filial
       FROM tb_olimpiada_inscricao i
       INNER JOIN tb_olimpiada o ON i.idOlimpiada = o.idOlimpiada
       INNER JOIN tb_aluno a ON i.idAluno = a.idAluno
