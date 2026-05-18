@@ -210,7 +210,9 @@
                     <th>ID</th>
                     <th>Aluno</th>
                     <th>RA</th>
+                    <th>Série</th>
                     <th>Turma</th>
+                    <th>Filial</th>
                     <th>Olimpíada</th>
                     <th>Data Inscrição</th>
                     <th>Status</th>
@@ -350,7 +352,7 @@
       const filtered = getFilteredInscricoes();
 
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="text-center">Nenhuma inscrição encontrada</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="text-center">Nenhuma inscrição encontrada</td></tr>';
         return;
       }
 
@@ -366,7 +368,9 @@
             <td>${i.idInscricao}</td>
             <td>${i.nome_aluno || '-'}</td>
             <td>${i.ra || '-'}</td>
+            <td>${i.serie || '-'}</td>
             <td>${i.nome_turma || '-'}</td>
+            <td title="${i.filial || ''}"><span style="font-size:12px;">${i.abFilial || i.filial || '-'}</span></td>
             <td>${i.nome_olimpiada || '-'}</td>
             <td>${formatDate(i.dataInscricao)}</td>
             <td><span class="badge badge-${statusClass}">${i.statusInscricao}</span></td>

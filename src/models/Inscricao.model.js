@@ -27,7 +27,8 @@ class InscricaoModel {
         MAX(t.turma) AS turma,
         MAX(t.turma) AS nome_turma,
         MAX(t.idTurma) AS idTurma,
-        MAX(f.filial) AS filial
+        MAX(f.filial) AS filial,
+        MAX(f.abFilial) AS abFilial
       FROM tb_olimpiada_inscricao i
       INNER JOIN tb_olimpiada o ON i.idOlimpiada = o.idOlimpiada
       INNER JOIN tb_aluno a ON i.idAluno = a.idAluno
