@@ -17,12 +17,13 @@ class InscricaoModel {
         i.statusInscricao,
         i.dataInscricao,
         o.nomeOlimpiada,
-        o.ano,
+        o.nomeOlimpiada AS nome_olimpiada,
         a.ra,
         COALESCE(p.nome, CONCAT('RA: ', a.ra)) AS aluno_nome,
+        COALESCE(p.nome, CONCAT('RA: ', a.ra)) AS nome_aluno,
         MAX(s.serie) AS serie,
         MAX(t.turma) AS turma,
-        MAX(f.filial) AS filial
+        MAX(t.turma) AS nome_turma,
       FROM tb_olimpiada_inscricao i
       INNER JOIN tb_olimpiada o ON i.idOlimpiada = o.idOlimpiada
       INNER JOIN tb_aluno a ON i.idAluno = a.idAluno
@@ -66,7 +67,7 @@ class InscricaoModel {
       params.push(parseInt(filters.anoLetivo));
     }
     
-    query += ' GROUP BY i.idOlimpiadaInscricao, i.idOlimpiada, i.idAluno, i.statusInscricao, i.dataInscricao, o.nomeOlimpiada, o.ano, a.ra, aluno_nome';
+    query += ' GROUP BY i.idOlimpiadaInscricao, i.idOlimpiada, i.idAluno, i.statusInscricao, i.dataInscricao, o.nomeOlimpiada, o.ano, a.ra, aluno_nome, nome_aluno';
     query += ' ORDER BY i.dataInscricao DESC';
     
     const [rows] = await pool.query(query, params);
