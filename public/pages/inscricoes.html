@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -117,7 +117,7 @@
             <h3 class="card-title">Filtros</h3>
           </div>
           <div class="card-body">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
               <div>
                 <label class="form-label">Olimpíada</label>
                 <select class="form-control" id="filterOlimpiada">
@@ -125,18 +125,31 @@
                 </select>
               </div>
               <div>
-                <label class="form-label">Status</label>
-                <select class="form-control" id="filterStatus">
-                  <option value="">Todos</option>
-                  <option value="Confirmada">Confirmada</option>
-                  <option value="Pendente">Pendente</option>
-                  <option value="Cancelada">Cancelada</option>
+                <label class="form-label">Filial</label>
+                <select class="form-control" id="filterFilial">
+                  <option value="">Todas as filiais</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Série</label>
+                <select class="form-control" id="filterSerie">
+                  <option value="">Todas as séries</option>
                 </select>
               </div>
               <div>
                 <label class="form-label">Turma</label>
                 <select class="form-control" id="filterTurma">
                   <option value="">Todas as turmas</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Status</label>
+                <select class="form-control" id="filterStatus">
+                  <option value="">Todos</option>
+                  <option value="inscrito">Inscrito</option>
+                  <option value="Confirmada">Confirmada</option>
+                  <option value="Pendente">Pendente</option>
+                  <option value="Cancelada">Cancelada</option>
                 </select>
               </div>
               <div>
@@ -225,6 +238,8 @@
 
     let inscricoes = [];
     let olimpiadas = [];
+    let filiais = [];
+    let series = [];
     let turmas = [];
 
     // Carregar dados
@@ -232,8 +247,10 @@
       await Promise.all([
         loadInscricoes(),
         loadOlimpiadas(),
-        loadTurmas()
+        loadFiliais()
       ]);
+      await loadSeries();
+      await loadTurmas();
       renderInscricoes();
       updateStats();
     }
@@ -255,36 +272,55 @@
         const anoLetivo = getAnoLetivoSelecionado();
         const data = await fetchAuth(`/olimpiadas?ano=${anoLetivo}`);
         olimpiadas = data.data || [];
-        
-        // Preencher select de olimpíadas
         const select = document.getElementById('filterOlimpiada');
-        select.innerHTML = '<option value="">Todas as olimpíadas</option>';
-        olimpiadas.forEach(o => {
-          const option = document.createElement('option');
-          option.value = o.idOlimpiada;
-          option.textContent = `${o.nomeOlimpiada} (${o.anoOlimpiada})`;
-          select.appendChild(option);
-        });
+        select.innerHTML = '<option value="">Todas as olimpíadas</option>' +
+          olimpiadas.map(o => `<option value="${o.idOlimpiada}">${o.nomeOlimpiada} (${o.ano || o.anoOlimpiada})</option>`).join('');
       } catch (error) {
         console.error('Erro ao carregar olimpíadas:', error);
       }
     }
 
-    async function loadTurmas() {
+    async function loadFiliais() {
+      try {
+        const data = await fetchAuth('/filiais');
+        filiais = data.data || [];
+        const select = document.getElementById('filterFilial');
+        select.innerHTML = '<option value="">Todas as filiais</option>' +
+          filiais.map(f => `<option value="${f.idFilial}">${f.filial}</option>`).join('');
+      } catch (error) {
+        console.error('Erro ao carregar filiais:', error);
+      }
+    }
+
+    async function loadSeries(idFilial = '') {
+      try {
+        let url = '/series';
+        if (idFilial) url += `?idFilial=${idFilial}`;
+        const data = await fetchAuth(url);
+        series = data.data || [];
+        const select = document.getElementById('filterSerie');
+        const valorAtual = select.value;
+        select.innerHTML = '<option value="">Todas as séries</option>' +
+          series.map(s => `<option value="${s.idSerie}">${s.serie || s.abSerie}</option>`).join('');
+        if (valorAtual && series.some(s => String(s.idSerie) === valorAtual)) select.value = valorAtual;
+      } catch (error) {
+        console.error('Erro ao carregar séries:', error);
+      }
+    }
+
+    async function loadTurmas(idFilial = '', idSerie = '') {
       try {
         const anoLetivo = getAnoLetivoSelecionado();
-        const data = await fetchAuth(`/turmas?anoLetivo=${anoLetivo}`);
+        let url = `/turmas?anoLetivo=${anoLetivo}`;
+        if (idFilial) url += `&idFilial=${idFilial}`;
+        if (idSerie)  url += `&idSerie=${idSerie}`;
+        const data = await fetchAuth(url);
         turmas = data.data || [];
-        
-        // Preencher select de turmas
         const select = document.getElementById('filterTurma');
-        select.innerHTML = '<option value="">Todas as turmas</option>';
-        turmas.forEach(t => {
-          const option = document.createElement('option');
-          option.value = t.idTurma;
-          option.textContent = `${t.nomeTurma} - ${t.serie || ''} - ${t.filial || ''}`;
-          select.appendChild(option);
-        });
+        const valorAtual = select.value;
+        select.innerHTML = '<option value="">Todas as turmas</option>' +
+          turmas.map(t => `<option value="${t.idTurma}">${t.turma} - ${t.serie_nome || t.serie || ''} - ${t.filial || ''}</option>`).join('');
+        if (valorAtual && turmas.some(t => String(t.idTurma) === valorAtual)) select.value = valorAtual;
       } catch (error) {
         console.error('Erro ao carregar turmas:', error);
       }
@@ -356,27 +392,33 @@
     }
 
     // Event listeners
-    document.getElementById('filterOlimpiada').addEventListener('change', () => {
-      renderInscricoes();
-      updateStats();
+    document.getElementById('filterOlimpiada').addEventListener('change', () => { renderInscricoes(); updateStats(); });
+    document.getElementById('filterStatus').addEventListener('change', () => { renderInscricoes(); updateStats(); });
+    document.getElementById('filterTurma').addEventListener('change', () => { renderInscricoes(); updateStats(); });
+    document.getElementById('searchAluno').addEventListener('input', debounce(() => { renderInscricoes(); updateStats(); }, 300));
+
+    // Filial → reseta série e turma, recarrega séries e turmas filtradas
+    document.getElementById('filterFilial').addEventListener('change', async () => {
+      const idFilial = document.getElementById('filterFilial').value;
+      document.getElementById('filterSerie').value = '';
+      document.getElementById('filterTurma').value = '';
+      await loadSeries(idFilial);
+      await loadTurmas(idFilial, '');
+      renderInscricoes(); updateStats();
     });
 
-    document.getElementById('filterStatus').addEventListener('change', () => {
-      renderInscricoes();
-      updateStats();
+    // Série → reseta turma, recarrega turmas filtradas por filial + série
+    document.getElementById('filterSerie').addEventListener('change', async () => {
+      const idFilial = document.getElementById('filterFilial').value;
+      const idSerie  = document.getElementById('filterSerie').value;
+      document.getElementById('filterTurma').value = '';
+      await loadTurmas(idFilial, idSerie);
+      renderInscricoes(); updateStats();
     });
-
-    document.getElementById('filterTurma').addEventListener('change', () => {
-      renderInscricoes();
-      updateStats();
-    });
-
-    document.getElementById('searchAluno').addEventListener('input', debounce(() => {
-      renderInscricoes();
-      updateStats();
-    }, 300));
 
     window.addEventListener('anoLetivoChanged', async () => {
+      document.getElementById('filterSerie').value = '';
+      document.getElementById('filterTurma').value = '';
       await loadData();
     });
 
