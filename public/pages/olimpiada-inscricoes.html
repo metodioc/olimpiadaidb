@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscrever Alunos - OlimpÃ­ada IDB</title>
+  <title>Inscrever Alunos - Olimpíada IDB</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -12,8 +12,8 @@
     <aside class="sidebar">
       <div class="sidebar-header">
         <a href="dashboard.html" class="sidebar-logo">
-          <div class="sidebar-logo-icon">ðŸ†</div>
-          <span>OlimpÃ­ada IDB</span>
+          <div class="sidebar-logo-icon">🏆</div>
+          <span>Olimpíada IDB</span>
         </a>
       </div>
 
@@ -21,23 +21,23 @@
         <div class="nav-section">
           <div class="nav-section-title">Principal</div>
           <a href="dashboard.html" class="nav-item">
-            <span class="nav-icon">ðŸ“Š</span>
+            <span class="nav-icon">📊</span>
             <span>Dashboard</span>
           </a>
         </div>
 
         <div class="nav-section">
-          <div class="nav-section-title">OlimpÃ­adas</div>
+          <div class="nav-section-title">Olimpíadas</div>
           <a href="olimpiadas.html" class="nav-item">
-            <span class="nav-icon">ðŸ…</span>
-            <span>OlimpÃ­adas</span>
+            <span class="nav-icon">🏅</span>
+            <span>Olimpíadas</span>
           </a>
           <a href="inscricoes.html" class="nav-item">
-            <span class="nav-icon">ðŸ“</span>
-            <span>InscriÃ§Ãµes</span>
+            <span class="nav-icon">📝</span>
+            <span>Inscrições</span>
           </a>
           <a href="resultados.html" class="nav-item">
-            <span class="nav-icon">ðŸ“ˆ</span>
+            <span class="nav-icon">📈</span>
             <span>Resultados</span>
           </a>
         </div>
@@ -45,48 +45,48 @@
         <div class="nav-section">
           <div class="nav-section-title">Cadastros</div>
           <a href="alunos.html" class="nav-item">
-            <span class="nav-icon">ðŸ‘¥</span>
+            <span class="nav-icon">👥</span>
             <span>Alunos</span>
           </a>
           <a href="turmas.html" class="nav-item">
-            <span class="nav-icon">ðŸŽ“</span>
+            <span class="nav-icon">🎓</span>
             <span>Turmas</span>
           </a>
           <a href="series.html" class="nav-item">
-            <span class="nav-icon">ðŸ“š</span>
-            <span>SÃ©ries</span>
+            <span class="nav-icon">📚</span>
+            <span>Séries</span>
           </a>
           <a href="anos-letivos.html" class="nav-item">
-            <span class="nav-icon">ðŸ“…</span>
+            <span class="nav-icon">📅</span>
             <span>Anos Letivos</span>
           </a>
           <a href="filiais.html" class="nav-item">
-            <span class="nav-icon">ðŸ«</span>
+            <span class="nav-icon">🏫</span>
             <span>Filiais</span>
           </a>
           <a href="tipos-olimpiada.html" class="nav-item">
-            <span class="nav-icon">ðŸ…</span>
-            <span>CatÃ¡logo de OlimpÃ­adas</span>
+            <span class="nav-icon">🏅</span>
+            <span>Catálogo de Olimpíadas</span>
           </a>
           <a href="tipos-correcao.html" class="nav-item">
-            <span class="nav-icon">âœ…</span>
-            <span>Tipos de CorreÃ§Ã£o</span>
+            <span class="nav-icon">✅</span>
+            <span>Tipos de Correção</span>
           </a>
           <a href="locais-aplicacao.html" class="nav-item">
-            <span class="nav-icon">ðŸ“</span>
-            <span>Locais de AplicaÃ§Ã£o</span>
+            <span class="nav-icon">📍</span>
+            <span>Locais de Aplicação</span>
           </a>
           <a href="tipos-pagamento.html" class="nav-item">
-            <span class="nav-icon">ðŸ’°</span>
+            <span class="nav-icon">💰</span>
             <span>Tipos de Pagamento</span>
           </a>
         </div>
 
         <div class="nav-section" id="adminSection" style="display: none;">
-          <div class="nav-section-title">AdministraÃ§Ã£o</div>
+          <div class="nav-section-title">Administração</div>
           <a href="usuarios.html" class="nav-item">
-            <span class="nav-icon">ðŸ‘¤</span>
-            <span>UsuÃ¡rios</span>
+            <span class="nav-icon">👤</span>
+            <span>Usuários</span>
           </a>
         </div>
       </nav>
@@ -97,7 +97,7 @@
           <div class="user-name" id="userName">Carregando...</div>
           <div class="user-role" id="userRole">...</div>
         </div>
-        <button class="btn-icon" onclick="logout()" title="Sair">ðŸšª</button>
+        <button class="btn-icon" onclick="logout()" title="Sair">🚪</button>
       </div>
     </aside>
 
@@ -105,40 +105,40 @@
     <main class="main-content">
       <div class="page-header">
         <div>
-          <h1>Inscrever Alunos na OlimpÃ­ada</h1>
+          <h1>Inscrever Alunos na Olimpíada</h1>
           <p class="subtitle" id="olimpiadaNome">Carregando...</p>
         </div>
         <button class="btn btn-secondary" onclick="window.location.href='olimpiadas.html'">
-          â† Voltar
+          ← Voltar
         </button>
       </div>
 
       <div class="content">
-        <!-- EstatÃ­sticas -->
+        <!-- Estatísticas -->
         <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;">
           <div class="stat-card">
-            <div class="stat-icon blue">ðŸ‘¥</div>
+            <div class="stat-icon blue">👥</div>
             <div class="stat-info">
               <div class="stat-label">Total Inscritos</div>
               <div class="stat-value" id="totalInscritos">0</div>
             </div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon green">ðŸ«</div>
+            <div class="stat-icon green">🏫</div>
             <div class="stat-info">
               <div class="stat-label">Filiais Participantes</div>
               <div class="stat-value" id="totalFiliais">0</div>
             </div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon purple">ðŸ“š</div>
+            <div class="stat-icon purple">📚</div>
             <div class="stat-info">
-              <div class="stat-label">SÃ©ries Distintas</div>
+              <div class="stat-label">Séries Distintas</div>
               <div class="stat-value" id="totalSeries">0</div>
             </div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon orange">ðŸŽ“</div>
+            <div class="stat-icon orange">🎓</div>
             <div class="stat-info">
               <div class="stat-label">Turmas Distintas</div>
               <div class="stat-value" id="totalTurmas">0</div>
@@ -149,16 +149,16 @@
         <!-- Tabs -->
         <div class="tabs">
           <button class="tab-btn active" onclick="changeTab('lote')" id="tabBtnLote">
-            ðŸ—‚ï¸ InscriÃ§Ã£o por Lote
+            🗂️ Inscrição por Lote
           </button>
           <button class="tab-btn" onclick="changeTab('turma')" id="tabBtnTurma">
-            ðŸŽ“ Por Turma
+            🎓 Por Turma
           </button>
           <button class="tab-btn" onclick="changeTab('individual')" id="tabBtnIndividual">
-            ðŸ‘¤ Individual
+            👤 Individual
           </button>
           <button class="tab-btn" onclick="changeTab('listagem')" id="tabBtnListagem">
-            ðŸ“‹ Alunos Inscritos
+            📋 Alunos Inscritos
           </button>
         </div>
 
@@ -166,9 +166,9 @@
         <div id="tabLote" class="tab-content active">
           <div class="card">
             <div class="card-header">
-              <h3>ðŸ—‚ï¸ InscriÃ§Ã£o por Lote â€” MÃºltiplas Unidades e SÃ©ries</h3>
+              <h3>🗂️ Inscrição por Lote — Múltiplas Unidades e Séries</h3>
               <p style="margin: 4px 0 0; font-size: 13px; color: var(--gray-500); font-weight: 400;">
-                Selecione uma ou mais unidades e depois as sÃ©ries desejadas. Todos os alunos matriculados serÃ£o inscritos de uma sÃ³ vez.
+                Selecione uma ou mais unidades e depois as séries desejadas. Todos os alunos matriculados serão inscritos de uma só vez.
               </p>
             </div>
             <div class="card-body">
@@ -188,18 +188,18 @@
                 </div>
               </div>
 
-              <!-- Passo 2: SÃ©ries -->
+              <!-- Passo 2: Séries -->
               <div style="margin-bottom: 28px;">
                 <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
                   <div style="background: var(--primary-color); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0;">2</div>
-                  <label class="form-label" style="margin: 0;">Selecione as SÃ©ries</label>
+                  <label class="form-label" style="margin: 0;">Selecione as Séries</label>
                   <div style="margin-left: auto; display: flex; gap: 8px;">
                     <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;" onclick="selecionarTodasSeries(true)">Selecionar todas</button>
                     <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;" onclick="selecionarTodasSeries(false)">Limpar</button>
                   </div>
                 </div>
                 <div id="checkboxSeries" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
-                  <p style="color: var(--gray-400);">Selecione ao menos uma unidade para ver as sÃ©ries.</p>
+                  <p style="color: var(--gray-400);">Selecione ao menos uma unidade para ver as séries.</p>
                 </div>
               </div>
 
@@ -211,7 +211,7 @@
                     <p style="margin: 4px 0 0; font-size: 12px; color: #1976D2;" id="previewDetalhe"></p>
                   </div>
                   <button class="btn btn-primary" onclick="inscreverLote()" id="btnInscreverLote">
-                    âœ… Inscrever Lote
+                    ✅ Inscrever Lote
                   </button>
                 </div>
               </div>
@@ -231,9 +231,9 @@
         <div id="tabTurma" class="tab-content" style="display: none;">
           <div class="card">
             <div class="card-header">
-              <h3>ðŸŽ“ InscriÃ§Ã£o por Turma</h3>
+              <h3>🎓 Inscrição por Turma</h3>
               <p style="margin: 4px 0 0; font-size: 13px; color: var(--gray-500); font-weight: 400;">
-                Selecione a unidade, sÃ©rie e turma especÃ­fica para inscrever todos os alunos dela.
+                Selecione a unidade, série e turma específica para inscrever todos os alunos dela.
               </p>
             </div>
             <div class="card-body">
@@ -245,9 +245,9 @@
                   </select>
                 </div>
                 <div>
-                  <label class="form-label">SÃ©rie *</label>
+                  <label class="form-label">Série *</label>
                   <select id="selectSerieTurma" class="form-select" onchange="carregarTurmas()">
-                    <option value="">Selecione a sÃ©rie</option>
+                    <option value="">Selecione a série</option>
                   </select>
                 </div>
               </div>
@@ -259,7 +259,7 @@
                 <p id="infoTurma" style="margin-top: 8px; color: var(--gray-600); font-size: 14px;"></p>
               </div>
               <button class="btn btn-primary" onclick="inscreverPorTurma()">
-                âž• Inscrever Toda a Turma
+                ➕ Inscrever Toda a Turma
               </button>
             </div>
           </div>
@@ -269,7 +269,7 @@
         <div id="tabIndividual" class="tab-content" style="display: none;">
           <div class="card">
             <div class="card-header">
-              <h3>ðŸ‘¤ InscriÃ§Ã£o Individual</h3>
+              <h3>👤 Inscrição Individual</h3>
               <p style="margin: 4px 0 0; font-size: 13px; color: var(--gray-500); font-weight: 400;">
                 Busque e inscreva alunos um a um pelo nome ou RA.
               </p>
@@ -313,7 +313,7 @@
                   oninput="filtrarListagem()"
                 >
                 <button class="btn btn-outline" onclick="removerSelecionados()">
-                  ðŸ—‘ï¸ Remover Selecionados
+                  🗑️ Remover Selecionados
                 </button>
               </div>
             </div>
@@ -322,13 +322,13 @@
                 <thead>
                   <tr>
                     <th><input type="checkbox" onchange="selecionarTodos(this)"></th>
-                    <th>MatrÃ­cula</th>
+                    <th>Matrícula</th>
                     <th>Nome</th>
-                    <th>SÃ©rie</th>
+                    <th>Série</th>
                     <th>Turma</th>
                     <th>Filial</th>
-                    <th>Data InscriÃ§Ã£o</th>
-                    <th>AÃ§Ãµes</th>
+                    <th>Data Inscrição</th>
+                    <th>Ações</th>
                   </tr>
                 </thead>
                 <tbody id="tabelaInscritos">
@@ -358,7 +358,7 @@
                   oninput="filtrarListagem()"
                 >
                 <button class="btn btn-outline" onclick="removerSelecionados()">
-                  ðŸ—‘ï¸ Remover Selecionados
+                  🗑️ Remover Selecionados
                 </button>
               </div>
             </div>
@@ -367,13 +367,13 @@
                 <thead>
                   <tr>
                     <th><input type="checkbox" onchange="selecionarTodos(this)"></th>
-                    <th>MatrÃ­cula</th>
+                    <th>Matrícula</th>
                     <th>Nome</th>
-                    <th>SÃ©rie</th>
+                    <th>Série</th>
                     <th>Turma</th>
                     <th>Filial</th>
-                    <th>Data InscriÃ§Ã£o</th>
-                    <th>AÃ§Ãµes</th>
+                    <th>Data Inscrição</th>
+                    <th>Ações</th>
                   </tr>
                 </thead>
                 <tbody id="tabelaInscritos">
@@ -405,26 +405,26 @@
     const urlParams = new URLSearchParams(window.location.search);
     const olimpiadaId = urlParams.get('id');
     if (!olimpiadaId) {
-      showNotification('OlimpÃ­ada nÃ£o especificada', 'error');
+      showNotification('Olimpíada não especificada', 'error');
       setTimeout(() => window.location.href = 'olimpiadas.html', 2000);
     }
 
     let olimpiada = null;
     let inscritos = [];
     let filiais = [];
-    let todasSeries = []; // sÃ©ries Ãºnicas (union de todas as filiais)
+    let todasSeries = []; // séries únicas (union de todas as filiais)
 
-    // â”€â”€ OlimpÃ­ada â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Olimpíada ──────────────────────────────────────────────────
     async function carregarOlimpiada() {
       try {
         const response = await fetchAuth(`/olimpiadas/${olimpiadaId}`);
         olimpiada = response.data || response.olimpiada;
         document.getElementById('olimpiadaNome').textContent =
           `${olimpiada.nomeOlimpiada} (${olimpiada.ano})`;
-      } catch (e) { console.error(e); showNotification('Erro ao carregar olimpÃ­ada', 'error'); }
+      } catch (e) { console.error(e); showNotification('Erro ao carregar olimpíada', 'error'); }
     }
 
-    // â”€â”€ Filiais â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Filiais ────────────────────────────────────────────────────
     async function carregarFiliais() {
       try {
         const response = await fetchAuth('/filiais');
@@ -440,7 +440,7 @@
                    data-nome="${f.filial}"
                    onchange="onFiliaisMudaram()"
                    style="width: 16px; height: 16px; accent-color: var(--primary-color);">
-            <span style="font-weight: 500;">ðŸ« ${f.filial}</span>
+            <span style="font-weight: 500;">🏫 ${f.filial}</span>
           </label>
         `).join('');
 
@@ -459,23 +459,23 @@
       } catch (e) { console.error(e); }
     }
 
-    // â”€â”€ Lote: reagir Ã  seleÃ§Ã£o de filiais â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Lote: reagir à seleção de filiais ─────────────────────────
     async function onFiliaisMudaram() {
       const idsSelecionados = filialSelecionadasLote();
       const container = document.getElementById('checkboxSeries');
       document.getElementById('previewLote').style.display = 'none';
 
       if (idsSelecionados.length === 0) {
-        container.innerHTML = '<p style="color: var(--gray-400);">Selecione ao menos uma unidade para ver as sÃ©ries.</p>';
+        container.innerHTML = '<p style="color: var(--gray-400);">Selecione ao menos uma unidade para ver as séries.</p>';
         todasSeries = [];
         return;
       }
 
-      container.innerHTML = '<p style="color: var(--gray-400);">Carregando sÃ©ries...</p>';
+      container.innerHTML = '<p style="color: var(--gray-400);">Carregando séries...</p>';
 
       try {
         const anoLetivo = getAnoLetivoSelecionado();
-        // Buscar sÃ©ries de todas as filiais selecionadas em paralelo
+        // Buscar séries de todas as filiais selecionadas em paralelo
         const respostas = await Promise.all(
           idsSelecionados.map(id => fetchAuth(`/series?idFilial=${id}`))
         );
@@ -488,7 +488,7 @@
         todasSeries = Object.values(mapaS).sort((a, b) => a.serie.localeCompare(b.serie));
 
         if (todasSeries.length === 0) {
-          container.innerHTML = '<p style="color: var(--gray-400);">Nenhuma sÃ©rie encontrada para as unidades selecionadas.</p>';
+          container.innerHTML = '<p style="color: var(--gray-400);">Nenhuma série encontrada para as unidades selecionadas.</p>';
           return;
         }
 
@@ -500,7 +500,7 @@
                    data-nome="${s.serie}"
                    onchange="onSeriesMudaram()"
                    style="width: 16px; height: 16px; accent-color: var(--primary-color);">
-            <span style="font-weight: 500;">ðŸ“š ${s.serie}</span>
+            <span style="font-weight: 500;">📚 ${s.serie}</span>
           </label>
         `).join('');
       } catch (e) { console.error(e); }
@@ -522,7 +522,7 @@
 
       try {
         const anoLetivo = getAnoLetivoSelecionado();
-        // Contar alunos para cada combinaÃ§Ã£o filial Ã— sÃ©rie
+        // Contar alunos para cada combinação filial × série
         const combos = [];
         for (const fId of filiais) for (const sId of series) combos.push({ fId, sId });
 
@@ -541,9 +541,9 @@
         const seriesNomes  = Array.from(document.querySelectorAll('.chk-serie:checked')).map(c => c.dataset.nome);
 
         document.getElementById('previewTexto').textContent =
-          `${total} aluno(s) matriculado(s) serÃ£o inscritos`;
+          `${total} aluno(s) matriculado(s) serão inscritos`;
         document.getElementById('previewDetalhe').textContent =
-          `${nFiliais} unidade(s): ${filiaisNomes.join(', ')} Â· ${nSeries} sÃ©rie(s): ${seriesNomes.join(', ')}`;
+          `${nFiliais} unidade(s): ${filiaisNomes.join(', ')} · ${nSeries} série(s): ${seriesNomes.join(', ')}`;
       } catch (e) { console.error(e); }
     }
 
@@ -563,20 +563,20 @@
       onSeriesMudaram();
     }
 
-    // â”€â”€ Inscrever Lote â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Inscrever Lote ─────────────────────────────────────────────
     async function inscreverLote() {
       const idFiliais = filialSelecionadasLote();
       const idSeries  = seriesSelecionadasLote();
 
       if (idFiliais.length === 0 || idSeries.length === 0) {
-        showNotification('Selecione ao menos uma filial e uma sÃ©rie', 'error');
+        showNotification('Selecione ao menos uma filial e uma série', 'error');
         return;
       }
 
       const combos = [];
       for (const fId of idFiliais) for (const sId of idSeries) combos.push({ fId, sId });
 
-      if (!confirm(`Inscrever alunos de ${idFiliais.length} unidade(s) Ã— ${idSeries.length} sÃ©rie(s) (${combos.length} combinaÃ§Ã£o(Ãµes))?`)) return;
+      if (!confirm(`Inscrever alunos de ${idFiliais.length} unidade(s) × ${idSeries.length} série(s) (${combos.length} combinação(ões))?`)) return;
 
       document.getElementById('previewLote').style.display = 'none';
       const prog = document.getElementById('progressoLote');
@@ -590,7 +590,7 @@
 
       for (let i = 0; i < combos.length; i++) {
         const { fId, sId } = combos[i];
-        texto.textContent = `Processando combinaÃ§Ã£o ${i + 1} de ${combos.length}...`;
+        texto.textContent = `Processando combinação ${i + 1} de ${combos.length}...`;
         barra.style.width = `${Math.round(((i + 1) / combos.length) * 100)}%`;
 
         try {
@@ -612,9 +612,9 @@
       }
 
       prog.style.display = 'none';
-      const msg = `âœ… ${totalInscritos} aluno(s) inscrito(s)` +
-        (totalJaInscritos > 0 ? ` Â· ${totalJaInscritos} jÃ¡ estavam inscritos` : '') +
-        (erros > 0 ? ` Â· ${erros} erro(s)` : '');
+      const msg = `✅ ${totalInscritos} aluno(s) inscrito(s)` +
+        (totalJaInscritos > 0 ? ` · ${totalJaInscritos} já estavam inscritos` : '') +
+        (erros > 0 ? ` · ${erros} erro(s)` : '');
       showNotification(msg, totalInscritos > 0 ? 'success' : 'warning');
 
       // Desmarcar tudo e recarregar
@@ -623,10 +623,10 @@
       atualizarEstatisticas();
     }
 
-    // â”€â”€ Aba Turma â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Aba Turma ──────────────────────────────────────────────────
     async function carregarSeriesTurma() {
       const filialId = document.getElementById('selectFilialTurma').value;
-      document.getElementById('selectSerieTurma').innerHTML = '<option value="">Selecione a sÃ©rie</option>';
+      document.getElementById('selectSerieTurma').innerHTML = '<option value="">Selecione a série</option>';
       document.getElementById('selectTurma').innerHTML = '<option value="">Selecione a turma</option>';
       document.getElementById('infoTurma').textContent = '';
       if (!filialId) return;
@@ -681,7 +681,7 @@
       } catch (e) { showNotification(e.message || 'Erro ao inscrever', 'error'); }
     }
 
-    // â”€â”€ Individual â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Individual ─────────────────────────────────────────────────
     let timeoutBusca;
     async function buscarAlunos() {
       clearTimeout(timeoutBusca);
@@ -708,10 +708,10 @@
               <div>
                 <strong>${a.nome_pessoa}</strong>
                 <div style="font-size: 13px; color: var(--gray-500);">
-                  RA: ${a.ra} &nbsp;Â·&nbsp; ${a.serie_nome || ''} ${a.turma_nome ? 'â€” ' + a.turma_nome : ''} &nbsp;Â·&nbsp; ${a.filial || ''}
+                  RA: ${a.ra} &nbsp;·&nbsp; ${a.serie_nome || ''} ${a.turma_nome ? '— ' + a.turma_nome : ''} &nbsp;·&nbsp; ${a.filial || ''}
                 </div>
               </div>
-              <button class="btn btn-primary btn-sm" onclick="inscreverAluno(${a.idAluno})">âž• Inscrever</button>
+              <button class="btn btn-primary btn-sm" onclick="inscreverAluno(${a.idAluno})">➕ Inscrever</button>
             </div>
           `).join('');
         } catch (e) { console.error(e); }
@@ -731,7 +731,7 @@
       } catch (e) { showNotification(e.message || 'Erro ao inscrever aluno', 'error'); }
     }
 
-    // â”€â”€ Listagem â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Listagem ───────────────────────────────────────────────────
     async function carregarInscritos() {
       try {
         const r = await fetchAuth(`/inscricoes?idOlimpiada=${olimpiadaId}`);
@@ -757,7 +757,7 @@
           <td>${i.filial}</td>
           <td>${new Date(i.dataInscricao).toLocaleDateString('pt-BR')}</td>
           <td>
-            <button class="btn-action btn-delete" onclick="removerInscricao(${i.idOlimpiadaInscricao})" title="Remover">ðŸ—‘ï¸</button>
+            <button class="btn-action btn-delete" onclick="removerInscricao(${i.idOlimpiadaInscricao})" title="Remover">🗑️</button>
           </td>
         </tr>
       `).join('');
@@ -777,24 +777,24 @@
     async function removerSelecionados() {
       const ids = Array.from(document.querySelectorAll('.checkbox-inscrito:checked')).map(c => c.value);
       if (ids.length === 0) { showNotification('Selecione ao menos um aluno', 'warning'); return; }
-      if (!confirm(`Remover ${ids.length} inscriÃ§Ã£o(Ãµes)?`)) return;
+      if (!confirm(`Remover ${ids.length} inscrição(ões)?`)) return;
       try {
         await fetchAuth('/inscricoes/lote', { method: 'DELETE', body: JSON.stringify({ ids }) });
-        showNotification('InscriÃ§Ãµes removidas!', 'success');
+        showNotification('Inscrições removidas!', 'success');
         await carregarInscritos(); atualizarEstatisticas();
-      } catch (e) { showNotification('Erro ao remover inscriÃ§Ãµes', 'error'); }
+      } catch (e) { showNotification('Erro ao remover inscrições', 'error'); }
     }
 
     async function removerInscricao(id) {
-      if (!confirm('Remover esta inscriÃ§Ã£o?')) return;
+      if (!confirm('Remover esta inscrição?')) return;
       try {
         await fetchAuth(`/inscricoes/${id}`, { method: 'DELETE' });
-        showNotification('InscriÃ§Ã£o removida!', 'success');
+        showNotification('Inscrição removida!', 'success');
         await carregarInscritos(); atualizarEstatisticas();
-      } catch (e) { showNotification('Erro ao remover inscriÃ§Ã£o', 'error'); }
+      } catch (e) { showNotification('Erro ao remover inscrição', 'error'); }
     }
 
-    // â”€â”€ EstatÃ­sticas â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Estatísticas ───────────────────────────────────────────────
     function atualizarEstatisticas() {
       document.getElementById('totalInscritos').textContent = inscritos.length;
       const fSet = {}, sSet = {}, tSet = {};
@@ -808,7 +808,7 @@
       document.getElementById('totalTurmas').textContent  = Object.keys(tSet).length;
     }
 
-    // â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Tabs ───────────────────────────────────────────────────────
     const TABS = {
       lote:      { btn: 'tabBtnLote',      panel: 'tabLote'      },
       turma:     { btn: 'tabBtnTurma',     panel: 'tabTurma'     },
@@ -822,12 +822,12 @@
       });
     }
 
-    // â”€â”€ Helper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Helper ─────────────────────────────────────────────────────
     function getAnoLetivoSelecionado() {
       return parseInt(localStorage.getItem('anoLetivoSelecionado') || new Date().getFullYear());
     }
 
-    // â”€â”€ Init â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Init ───────────────────────────────────────────────────────
     carregarOlimpiada();
     carregarFiliais();
     carregarInscritos();
