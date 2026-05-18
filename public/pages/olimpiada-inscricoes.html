@@ -198,7 +198,7 @@
                     <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;" onclick="selecionarTodasSeries(false)">Limpar</button>
                   </div>
                 </div>
-                <div id="checkboxSeries" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+                <div id="checkboxSeries" style="display: block;">
                   <p style="color: var(--gray-400);">Selecione ao menos uma unidade para ver as séries.</p>
                 </div>
               </div>
@@ -412,7 +412,22 @@
     let olimpiada = null;
     let inscritos = [];
     let filiais = [];
-    let todasSeries = []; // séries únicas (union de todas as filiais)
+    let seriesPorFilial = {}; // { idFilial: { filial, cor, series: [] } }
+
+    // Paleta de cores para filiais (bg, border, accent, checkbox)
+    const FILIAL_CORES = [
+      { bg: '#E3F2FD', border: '#1976D2', accent: '#1565C0', chk: '#1976D2' },
+      { bg: '#F3E5F5', border: '#8E24AA', accent: '#6A1B9A', chk: '#8E24AA' },
+      { bg: '#E8F5E9', border: '#43A047', accent: '#2E7D32', chk: '#43A047' },
+      { bg: '#FFF3E0', border: '#FB8C00', accent: '#E65100', chk: '#FB8C00' },
+      { bg: '#FCE4EC', border: '#E53935', accent: '#B71C1C', chk: '#E53935' },
+      { bg: '#E0F7FA', border: '#00ACC1', accent: '#006064', chk: '#00ACC1' },
+      { bg: '#FFF8E1', border: '#F9A825', accent: '#F57F17', chk: '#F9A825' },
+      { bg: '#EDE7F6', border: '#5E35B1', accent: '#4527A0', chk: '#5E35B1' },
+      { bg: '#F1F8E9', border: '#7CB342', accent: '#33691E', chk: '#7CB342' },
+      { bg: '#FBE9E7', border: '#F4511E', accent: '#BF360C', chk: '#F4511E' },
+    ];
+    function corFilial(idx) { return FILIAL_CORES[idx % FILIAL_CORES.length]; }
 
     // ── Olimpíada ──────────────────────────────────────────────────
     async function carregarOlimpiada() {
@@ -430,19 +445,21 @@
         const response = await fetchAuth('/filiais');
         filiais = response.data || [];
 
-        // Checkboxes (aba Lote)
+        // Checkboxes (aba Lote) — com cor por filial
         const container = document.getElementById('checkboxFiliais');
-        container.innerHTML = filiais.map(f => `
+        container.innerHTML = filiais.map((f, idx) => {
+          const cor = corFilial(idx);
+          return `
           <label style="display: flex; align-items: center; gap: 10px; padding: 10px 14px;
-                         background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px;
+                         background: ${cor.bg}; border: 2px solid ${cor.border}; border-radius: 8px;
                          cursor: pointer; user-select: none;">
             <input type="checkbox" class="chk-filial" value="${f.idFilial}"
-                   data-nome="${f.filial}"
+                   data-nome="${f.filial}" data-cor-idx="${idx}"
                    onchange="onFiliaisMudaram()"
-                   style="width: 16px; height: 16px; accent-color: var(--primary-color);">
-            <span style="font-weight: 500;">🏫 ${f.filial}</span>
-          </label>
-        `).join('');
+                   style="width: 16px; height: 16px; accent-color: ${cor.chk};">
+            <span style="font-weight: 600; color: ${cor.accent};">🏫 ${f.filial}</span>
+          </label>`;
+        }).join('');
 
         // Selects (aba Turma e Individual)
         ['selectFilialTurma', 'selectFilialIndividual'].forEach(id => {
@@ -461,57 +478,83 @@
 
     // ── Lote: reagir à seleção de filiais ─────────────────────────
     async function onFiliaisMudaram() {
-      const idsSelecionados = filialSelecionadasLote();
+      const filiaisSel = Array.from(document.querySelectorAll('.chk-filial:checked'));
       const container = document.getElementById('checkboxSeries');
       document.getElementById('previewLote').style.display = 'none';
+      seriesPorFilial = {};
 
-      if (idsSelecionados.length === 0) {
+      if (filiaisSel.length === 0) {
         container.innerHTML = '<p style="color: var(--gray-400);">Selecione ao menos uma unidade para ver as séries.</p>';
-        todasSeries = [];
         return;
       }
 
       container.innerHTML = '<p style="color: var(--gray-400);">Carregando séries...</p>';
 
       try {
-        const anoLetivo = getAnoLetivoSelecionado();
-        // Buscar séries de todas as filiais selecionadas em paralelo
+        // Buscar séries de cada filial selecionada em paralelo
         const respostas = await Promise.all(
-          idsSelecionados.map(id => fetchAuth(`/series?idFilial=${id}`))
+          filiaisSel.map(chk => fetchAuth(`/series?idFilial=${chk.value}`).then(r => ({
+            idFilial: chk.value,
+            nome: chk.dataset.nome,
+            corIdx: parseInt(chk.dataset.corIdx),
+            series: (r.data || []).sort((a, b) => a.serie.localeCompare(b.serie))
+          })))
         );
 
-        // Union sem duplicatas (por idSerie)
-        const mapaS = {};
-        respostas.forEach(r => {
-          (r.data || []).forEach(s => { mapaS[s.idSerie] = s; });
-        });
-        todasSeries = Object.values(mapaS).sort((a, b) => a.serie.localeCompare(b.serie));
+        // Guardar no mapa para uso posterior
+        respostas.forEach(r => { seriesPorFilial[r.idFilial] = r; });
 
-        if (todasSeries.length === 0) {
-          container.innerHTML = '<p style="color: var(--gray-400);">Nenhuma série encontrada para as unidades selecionadas.</p>';
+        if (respostas.every(r => r.series.length === 0)) {
+          container.innerHTML = '<p style="color: var(--gray-400);">Nenhuma série encontrada.</p>';
           return;
         }
 
-        container.innerHTML = todasSeries.map(s => `
-          <label style="display: flex; align-items: center; gap: 10px; padding: 10px 14px;
-                         background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px;
-                         cursor: pointer; user-select: none;">
-            <input type="checkbox" class="chk-serie" value="${s.idSerie}"
-                   data-nome="${s.serie}"
-                   onchange="onSeriesMudaram()"
-                   style="width: 16px; height: 16px; accent-color: var(--primary-color);">
-            <span style="font-weight: 500;">📚 ${s.serie}</span>
-          </label>
-        `).join('');
+        // Renderizar agrupado por filial com cor
+        container.style.display = 'block'; // reset para block (não grid)
+        container.innerHTML = respostas.map(grupo => {
+          const cor = corFilial(grupo.corIdx);
+          if (grupo.series.length === 0) return '';
+          return `
+            <div style="margin-bottom: 16px; border: 2px solid ${cor.border}; border-radius: 10px; overflow: hidden;">
+              <!-- Header da filial -->
+              <div style="background: ${cor.border}; padding: 8px 14px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="color: #fff; font-weight: 700; font-size: 13px;">🏫 ${grupo.nome}</span>
+                <div style="display: flex; gap: 8px;">
+                  <button type="button" onclick="selecionarSeriesFilial('${grupo.idFilial}', true)"
+                    style="background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.5); color:#fff;
+                           border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer;">Todas</button>
+                  <button type="button" onclick="selecionarSeriesFilial('${grupo.idFilial}', false)"
+                    style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4); color:#fff;
+                           border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer;">Nenhuma</button>
+                </div>
+              </div>
+              <!-- Séries da filial -->
+              <div style="background: ${cor.bg}; padding: 12px 14px;
+                           display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px;">
+                ${grupo.series.map(s => `
+                  <label style="display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+                                 background: rgba(255,255,255,0.7); border: 1px solid ${cor.border};
+                                 border-radius: 6px; cursor: pointer; user-select: none;">
+                    <input type="checkbox" class="chk-serie chk-serie-f${grupo.idFilial}"
+                           value="${s.idSerie}"
+                           data-filial="${grupo.idFilial}"
+                           data-filial-nome="${grupo.nome}"
+                           data-nome="${s.serie}"
+                           onchange="onSeriesMudaram()"
+                           style="width: 15px; height: 15px; accent-color: ${cor.chk}; flex-shrink: 0;">
+                    <span style="font-size: 13px; font-weight: 500; color: ${cor.accent};">📚 ${s.serie}</span>
+                  </label>`).join('')}
+              </div>
+            </div>`;
+        }).join('');
       } catch (e) { console.error(e); }
     }
 
     async function onSeriesMudaram() {
-      const filiais = filialSelecionadasLote();
-      const series  = seriesSelecionadasLote();
+      const pares = seriesSelecionadasLote(); // [{fId, sId, fNome, sNome}]
       const preview = document.getElementById('previewLote');
 
-      if (filiais.length === 0 || series.length === 0) {
+      if (pares.length === 0) {
         preview.style.display = 'none';
         return;
       }
@@ -522,36 +565,43 @@
 
       try {
         const anoLetivo = getAnoLetivoSelecionado();
-        // Contar alunos para cada combinação filial × série
-        const combos = [];
-        for (const fId of filiais) for (const sId of series) combos.push({ fId, sId });
-
         const contagens = await Promise.all(
-          combos.map(c =>
-            fetchAuth(`/alunos?page=1&limit=1&idFilial=${c.fId}&idSerie=${c.sId}&situacao=Matriculado&anoLetivo=${anoLetivo}`)
+          pares.map(p =>
+            fetchAuth(`/alunos?page=1&limit=1&idFilial=${p.fId}&idSerie=${p.sId}&situacao=Matriculado&anoLetivo=${anoLetivo}`)
               .then(r => r.total || 0)
               .catch(() => 0)
           )
         );
         const total = contagens.reduce((s, n) => s + n, 0);
 
-        const nFiliais = filiais.length;
-        const nSeries  = series.length;
-        const filiaisNomes = Array.from(document.querySelectorAll('.chk-filial:checked')).map(c => c.dataset.nome);
-        const seriesNomes  = Array.from(document.querySelectorAll('.chk-serie:checked')).map(c => c.dataset.nome);
+        // Resumo por filial
+        const porFilial = {};
+        pares.forEach((p, i) => {
+          if (!porFilial[p.fNome]) porFilial[p.fNome] = { series: [], total: 0 };
+          porFilial[p.fNome].series.push(p.sNome);
+          porFilial[p.fNome].total += contagens[i];
+        });
+        const resumo = Object.entries(porFilial)
+          .map(([f, v]) => `${f}: ${v.series.join(', ')} (${v.total} alunos)`)
+          .join(' · ');
 
         document.getElementById('previewTexto').textContent =
-          `${total} aluno(s) matriculado(s) serão inscritos`;
-        document.getElementById('previewDetalhe').textContent =
-          `${nFiliais} unidade(s): ${filiaisNomes.join(', ')} · ${nSeries} série(s): ${seriesNomes.join(', ')}`;
+          `${total} aluno(s) matriculado(s) serão inscritos em ${pares.length} combinação(ões)`;
+        document.getElementById('previewDetalhe').textContent = resumo;
       } catch (e) { console.error(e); }
     }
 
     function filialSelecionadasLote() {
       return Array.from(document.querySelectorAll('.chk-filial:checked')).map(c => c.value);
     }
+    // Retorna pares {fId, sId, fNome, sNome}
     function seriesSelecionadasLote() {
-      return Array.from(document.querySelectorAll('.chk-serie:checked')).map(c => c.value);
+      return Array.from(document.querySelectorAll('.chk-serie:checked')).map(c => ({
+        fId:   c.dataset.filial,
+        sId:   c.value,
+        fNome: c.dataset.filialNome,
+        sNome: c.dataset.nome
+      }));
     }
 
     function selecionarTodasFiliais(marcar) {
@@ -562,21 +612,22 @@
       document.querySelectorAll('.chk-serie').forEach(c => c.checked = marcar);
       onSeriesMudaram();
     }
+    function selecionarSeriesFilial(idFilial, marcar) {
+      document.querySelectorAll(`.chk-serie-f${idFilial}`).forEach(c => c.checked = marcar);
+      onSeriesMudaram();
+    }
 
     // ── Inscrever Lote ─────────────────────────────────────────────
     async function inscreverLote() {
-      const idFiliais = filialSelecionadasLote();
-      const idSeries  = seriesSelecionadasLote();
+      const combos = seriesSelecionadasLote(); // [{fId, sId, fNome, sNome}]
 
-      if (idFiliais.length === 0 || idSeries.length === 0) {
-        showNotification('Selecione ao menos uma filial e uma série', 'error');
+      if (combos.length === 0) {
+        showNotification('Selecione ao menos uma série', 'error');
         return;
       }
 
-      const combos = [];
-      for (const fId of idFiliais) for (const sId of idSeries) combos.push({ fId, sId });
-
-      if (!confirm(`Inscrever alunos de ${idFiliais.length} unidade(s) × ${idSeries.length} série(s) (${combos.length} combinação(ões))?`)) return;
+      const filiaisUnicas = [...new Set(combos.map(c => c.fNome))];
+      if (!confirm(`Inscrever ${combos.length} combinação(ões) de série/unidade?\n\nUnidades: ${filiaisUnicas.join(', ')}`)) return;
 
       document.getElementById('previewLote').style.display = 'none';
       const prog = document.getElementById('progressoLote');
