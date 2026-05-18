@@ -114,8 +114,9 @@
 
         <!-- Form Card -->
         <div class="card" style="max-width: 900px;">
-          <div class="card-header">
+          <div class="card-header" style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
             <h2 style="margin: 0; font-size: 20px; font-weight: 600;" id="formTitle">Dados da Olimpíada</h2>
+            <span style="font-size: 12px; color: var(--gray-500);">* Campo obrigatório</span>
           </div>
           <div class="card-body">
             <form id="formOlimpiada" onsubmit="salvarOlimpiada(event)">
@@ -173,15 +174,15 @@
                 </h3>
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
                   <div>
-                    <label class="form-label">Data Limite de Inscrição</label>
+                    <label class="form-label">Data Limite de Inscrição <span style="font-weight:400; color:var(--gray-400); font-size:12px;">(opcional)</span></label>
                     <input type="date" id="dataLimiteInscricao" class="form-input">
                   </div>
                   <div>
-                    <label class="form-label">Data de Aplicação</label>
+                    <label class="form-label">Data de Aplicação <span style="font-weight:400; color:var(--gray-400); font-size:12px;">(opcional)</span></label>
                     <input type="date" id="dataAplicacao" class="form-input">
                   </div>
                   <div>
-                    <label class="form-label">Data de Correção</label>
+                    <label class="form-label">Data de Correção <span style="font-weight:400; color:var(--gray-400); font-size:12px;">(opcional)</span></label>
                     <input type="date" id="dataCorrecao" class="form-input">
                   </div>
                 </div>
@@ -224,7 +225,7 @@
 
               <!-- ===== OBSERVAÇÕES ===== -->
               <div style="margin-bottom: 28px;">
-                <label class="form-label">Observações</label>
+                <label class="form-label">Observações <span style="font-weight:400; color:var(--gray-400); font-size:12px;">(opcional)</span></label>
                 <textarea id="observacoes" class="form-input" rows="3" maxlength="500"
                   placeholder="Informações adicionais sobre esta edição da olimpíada..."></textarea>
               </div>
